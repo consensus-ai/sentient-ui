@@ -8,14 +8,13 @@ const defaultSiadPath = Path.join(__dirname, '../Sia/' + (process.platform === '
 
 // The default settings
 const defaultConfig = {
-	homePlugin:  'Overview',
 	siad: {
 		path: defaultSiadPath,
 		datadir: Path.join(app.getPath('userData'), './sia'),
-		rpcaddr: ':9981',
-		hostaddr: ':9982',
+		rpcaddr: ':9911',
+		hostaddr: ':9912',
 		detached: false,
-		address: '127.0.0.1:9980',
+		address: '127.0.0.1:9910',
 	},
 	closeToTray: process.platform === 'win32' || process.platform === 'darwin' ? true : false,
 	width:	   1024,

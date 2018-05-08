@@ -150,12 +150,6 @@ export const pushToTop = (plugins, target) =>
 export const getOrderedPlugins = (path, homePlugin) => {
 	let plugins = scanFolder(path)
 
-	// Push the Terminal plugin to the bottom
-	plugins = pushToBottom(plugins, 'Terminal')
-
-	// Push the About plugin to the bottom
-	plugins = pushToBottom(plugins, 'About')
-
 	// Push the home plugin to the top
 	plugins = pushToTop(plugins, homePlugin)
 

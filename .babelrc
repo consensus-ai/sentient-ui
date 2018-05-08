@@ -1,0 +1,23 @@
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "electron": "1.6"
+      },
+      "modules": false,
+      "useBuiltIns": true
+    }],
+    "react",
+    "stage-3"
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        "env",
+        "react",
+        "stage-3"
+      ]
+    }
+  },
+  "plugins": ["syntax-dynamic-import"]
+}

@@ -1,0 +1,25 @@
+/*	Style Guide:
+ *		Transparent: 70% Opacity
+ *
+ * 		White:      #FFFFFF
+ * 		Grey-White: #F5F5F5
+ *		Faint-Grey: #ECECEC
+ *		Light-Grey: #DDDDDD
+ *		Grey:       #C5C5C5
+ * 		Grey-Black: #4A4A4A
+ * 		Black:      #000000
+ */
+.about {
+	color: #c5c5c5;
+	margin: 20px 20px;
+	padding-left: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #e0e0e0;
+}
+.about .version {
+	display: inline-block;
+	color: #4a4a4a;
+}
+button {
+    color: #4a4a4a;
+}

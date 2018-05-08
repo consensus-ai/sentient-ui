@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>About</title>
+		<!-- CSS -->
+		<link rel="stylesheet" href="../../css/roboto-condensed-min.css">
+		<link rel="stylesheet" href="../../css/font-awesome.min.css">
+		<link rel='stylesheet' href='../../css/pure-min.css'>
+		<link rel="stylesheet" href="../../css/plugin-standard.css">
+		<link rel="stylesheet" href="css/about.css">
+	</head>
+	<body>
+		<!-- Frame -->
+		<div class="frame">
+			<!-- Header -->
+			<div class="header">
+				<div class="title">About</div>
+			</div>
+
+			<!-- Version Info -->
+			<div class='about'>
+				Sia UI version:
+				<div class='version'>
+					<span id='uiversion'></span>
+				</div>
+			</div>
+			<div class='about'>
+				Sia version:
+				<div class='version'>
+					<span id='siaversion'></span>
+				</div>
+			</div>
+			<div class='about'>
+				<button id='updatecheck'>Check for Update</button>
+			</div>
+			<div class='about'>
+				<button id='datadiropen'>Show Sia Data</button>
+			</div>
+			<div id='nonew' class='about' style='display:none'>
+				You are on the latest version.
+			</div>
+			<div id='yesnew' class='about' style='display:none'>
+				A new version is available:
+				<span id='newversion'></span>
+				<div class='version'>
+					<a href='' id='downloadlink'>
+						<button>Download</button>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- JS -->
+		<script src="../../dist/manifest.js"></script>
+		<script src="../../dist/vendor.js"></script>
+		<script src="../../dist/plugins/About.js"></script>
+	</body>
+</html>

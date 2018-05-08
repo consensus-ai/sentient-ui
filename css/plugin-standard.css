@@ -1,0 +1,125 @@
+/*  Style Guide: 
+ *    Transparent: 70% Opacity
+ *    
+ *    White:      #FFFFFF
+ *    Grey-White: #F5F5F5
+ *    Faint-Grey: #ECECEC
+ *    Light-Grey: #DDDDDD
+ *    Grey:       #C5C5C5
+ *    Grey-Black: #4A4A4A
+ *    Black:      #000000
+ *    Neon-Green: #00CBA0
+ */
+/* Overall Effects */
+@keyframes fadeout {
+	from { opacity: 1; }
+	to   { opacity: 0; }
+}
+@keyframes fadein {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+select, input, html, body {
+	margin: 0;
+	padding: 0;
+	border-spacing: 0;
+	font-family: 'Roboto Condensed', sans-serif;
+	font-weight: 300;
+	font-size: 18px;
+}
+html, body {
+	height: 100%;
+	min-width: 100%;
+}
+select, input {
+	position: relative;
+
+	box-shadow: none;
+	color:#4a4a4a;
+
+	border: solid 1px #dddddd;
+	transition: box-shadow 0.3s, border 0.3s;
+	box-sizing: content-box;
+	border-radius: 4px;
+}
+select {
+	background:#ffffff;
+}
+select:focus, input:focus {
+	outline: none;
+	border: solid 1px #4a4a4a;
+	box-shadow: 0 0 5px 1px #c5c5c5;
+}
+select:hover {
+	cursor: pointer;
+}
+
+.hidden {
+	display: none;
+}
+
+/* Plugin header */
+.header {
+	padding-top: 10px;
+	padding-left: 20px;
+	background-color: #4a4a4a;
+	background: linear-gradient(to top, #5A5A5A 15%, #4A4A4A 85%);
+	color: #fff;
+	height: 50px;
+	vertical-align: top;
+}
+.header .title {
+	display: inline-block;
+	font-size: 30px;
+	color: #fff;
+}
+.header .capsule {
+	white-space: nowrap;
+	float: right;
+	font-size: 16px;
+}
+.capsule {
+	position: absolute;
+	right: 20px;
+	max-height: 50px;
+	max-width: calc(100% - 200px);
+	display: inline-block;
+	border: 1px solid #00CBA0;
+
+	border-radius: 0;
+}
+.capsule .pod {
+	display: inline-block;
+	padding: 8px;
+	padding-left: 16px;
+	padding-right: 16px;
+	border-left: 1px solid #00CBA0;
+	color: #f5f5f5;
+}
+.capsule .pod.button:hover {
+	color: #00CBA0;
+}
+.capsule .pod * {
+	display: inline-block;
+}
+.capsule .pod:first-child {
+	border: none;
+}
+
+/* Main Display */
+.frame {
+	height: 100%;
+	overflow: hidden;
+	color: #606060;
+	font-size: 26px;
+	position: relative;
+	width: 100%;
+	-webkit-animation: fadein 0.5s;
+}
+.button {
+	-webkit-user-select: none;
+}
+.button:hover {
+	color: #4a4a4a;
+	cursor: pointer;
+}

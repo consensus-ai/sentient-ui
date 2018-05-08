@@ -4,17 +4,16 @@ import { app } from 'electron'
 import { version } from '../../package.json'
 import semver from 'semver'
 
-const defaultSiadPath = Path.join(__dirname, '../Sia/' + (process.platform === 'win32' ? 'siad.exe' : 'siad'))
+const defaultSiadPath = process.env.SIAD_PATH || Path.join(__dirname, '../Sia/' + (process.platform === 'win32' ? 'siad.exe' : 'siad'))
 
 // The default settings
 const defaultConfig = {
 	siad: {
 		path: defaultSiadPath,
-		datadir: Path.join(app.getPath('userData'), './sia'),
-		rpcaddr: ':9911',
-		hostaddr: ':9912',
+		datadir: process.env.SIAD_DATA_DIR || Path.join(app.getPath('userData'), './sia'),
+		rpcaddr: process.env.SIAD_RPC_ADDR || ':9911',
 		detached: false,
-		address: '127.0.0.1:9910',
+		address: process.env.SIAD_API_ADDR || '127.0.0.1:9910',
 	},
 	closeToTray: process.platform === 'win32' || process.platform === 'darwin' ? true : false,
 	width:	   1024,

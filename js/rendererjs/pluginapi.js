@@ -43,9 +43,8 @@ window.onload = async function() {
 		const siadProcess = Siad.launch(siadConfig.path, {
 			'sia-directory': siadConfig.datadir,
 			'rpc-addr': siadConfig.rpcaddr,
-			'host-addr': siadConfig.hostaddr,
 			'api-addr': siadConfig.address,
-			'modules': 'cghrtw',
+			'modules': 'gctmw',
 		})
 		siadProcess.on('error', renderSiadCrashlog)
 		siadProcess.on('close', renderSiadCrashlog)

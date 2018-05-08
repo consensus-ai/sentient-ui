@@ -4,7 +4,8 @@ import loadConfig from './config.js'
 import initWindow from './initWindow.js'
 
 // load config.json manager
-global.config = loadConfig(Path.join(app.getPath('userData'), 'config.json'))
+const basePath = process.env.SIAD_DATA_DIR || app.getPath('userData')
+global.config = loadConfig(Path.join(basePath, 'config.json'))
 let mainWindow
 
 // disable hardware accelerated rendering

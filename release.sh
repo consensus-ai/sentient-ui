@@ -35,9 +35,9 @@ electronOSX="https://github.com/electron/electron/releases/download/${electronVe
 electronLinux="https://github.com/electron/electron/releases/download/${electronVersion}/electron-${electronVersion}-linux-x64.zip"
 electronWindows="https://github.com/electron/electron/releases/download/${electronVersion}/electron-${electronVersion}-win32-x64.zip"
 
-siaOSX="/home/luke/go/src/github.com/NebulousLabs/Sia/release/Sia-${siaVersion}-darwin-amd64.zip"
-siaLinux="/home/luke/go/src/github.com/NebulousLabs/Sia/release/Sia-${siaVersion}-linux-amd64.zip"
-siaWindows="/home/luke/go/src/github.com/NebulousLabs/Sia/release/Sia-${siaVersion}-windows-amd64.zip"
+siaOSX="/Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/Sia-${siaVersion}-darwin-amd64.zip"
+siaLinux="/Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/Sia-${siaVersion}-linux-amd64.zip"
+siaWindows="/Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/Sia-${siaVersion}-windows-amd64.zip"
 
 rm -rf release/
 mkdir -p release/{osx,linux,win32}
@@ -51,12 +51,12 @@ package() {
 
 buildOSX() {
 	cd release/osx
-	wget $electronOSX 
+	wget $electronOSX
 	unzip ./electron*
 	mv Electron.app Sia-UI.app
 	mv Sia-UI.app/Contents/MacOS/Electron Sia-UI.app/Contents/MacOS/Sia-UI
 	# NOTE: this only works with GNU sed, other platforms (like OSX) may fail here
-	sed -i 's/>Electron</>Sia-UI</' Sia-UI.app/Contents/Info.plist 
+	sed -i 's/>Electron</>Sia-UI</' Sia-UI.app/Contents/Info.plist
 	sed -i 's/>'"${electronVersion:1}"'</>'"${siaVersion:1}"'</' Sia-UI.app/Contents/Info.plist
 	sed -i 's/>com.github.electron\</>com.nebulouslabs.siaui</' Sia-UI.app/Contents/Info.plist
 	sed -i 's/>electron.icns</>icon.icns</' Sia-UI.app/Contents/Info.plist
@@ -126,7 +126,7 @@ buildWindows() {
 ( buildWindows )
 
 # make signed zip archives for each release
-for os in win32 linux osx; do 
+for os in win32 linux osx; do
 	(
 		cd release/${os}
 		zip -r ../Sia-UI-${uiVersion}-${os}-x64.zip .

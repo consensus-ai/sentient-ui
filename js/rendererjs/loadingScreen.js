@@ -2,7 +2,7 @@
 // if an available daemon is not running on the host,
 // launch an instance of siad using config.js.
 import { remote, shell } from 'electron'
-import * as Siad from 'sia.js'
+import * as Siad from 'sentient.js'
 import Path from 'path'
 import React from 'react'
 import ReactDOM from 'react-dom'

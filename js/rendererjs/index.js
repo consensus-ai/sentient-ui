@@ -1,6 +1,6 @@
 // Imported Electron modules
 import Path from 'path'
-import * as Siad from 'sia.js'
+import * as Siad from 'sentient.js'
 import loadingScreen from './loadingScreen.js'
 import { remote, ipcRenderer } from 'electron'
 import { unloadPlugins, loadPlugin, setCurrentPlugin, getOrderedPlugins, getPluginName } from './plugins.js'

@@ -2,7 +2,7 @@ import { Application } from 'spectron'
 import { spawn } from 'child_process'
 import { expect } from 'chai'
 import psTree from 'ps-tree'
-import * as Siad from 'sia.js'
+import * as Siad from 'sentient.js'
 import fs from 'fs'
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))

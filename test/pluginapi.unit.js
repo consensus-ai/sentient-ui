@@ -12,7 +12,7 @@ const mock = {
 	'react-dom': {
 		render: sinon.spy(),
 	},
-	'sia.js': {
+	'sentient.js': {
 		isRunning: () => new Promise((resolve) => {
 			resolve(running)
 		}),
@@ -72,9 +72,9 @@ describe('plugin API', () => {
 	})
 	describe('DisabledPlugin component', () => {
 		it('calls siajs.launch on click', () => {
-			const component = shallow(<DisabledPlugin startSiad={mock['sia.js'].launch} />)
+			const component = shallow(<DisabledPlugin startSiad={mock['sentient.js'].launch} />)
 			component.find('button').first().simulate('click')
-			expect(mock['sia.js'].launch.called).to.be.true
+			expect(mock['sentient.js'].launch.called).to.be.true
 		})
 	})
 })

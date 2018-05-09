@@ -1,6 +1,6 @@
 // pluginapi.js: Sia-UI plugin API interface exposed to all plugins.
 // This is injected into every plugin's global namespace.
-import * as Siad from 'sia.js'
+import * as Siad from 'sentient.js'
 import { remote } from 'electron'
 import React from 'react'
 import DisabledPlugin from './disabledplugin.js'

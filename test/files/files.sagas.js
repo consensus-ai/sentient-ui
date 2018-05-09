@@ -8,7 +8,7 @@ import { expect } from 'chai'
 import { spy } from 'sinon'
 import proxyquire from 'proxyquire'
 import { List } from 'immutable'
-import * as Siad from 'sia.js'
+import * as Siad from 'sentient.js'
 import rootReducer from '../../plugins/Files/js/reducers/index.js'
 const sagaMiddleware = createSagaMiddleware()
 

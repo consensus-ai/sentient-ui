@@ -138,7 +138,7 @@ function* getBalanceSaga() {
 // Get all the transactions from /wallet transactions, parse them, and dispatch setTransactions()
 function* getTransactionsSaga() {
 	try {
-		const response = yield siadCall('/wallet/transactions?startheight=0&endheight=-1')
+		const response = yield siadCall('/wallet/transactions?startheight=0&endheight=0')
 		const transactions = parseRawTransactions(response)
 		yield put(actions.setTransactions(transactions))
 	} catch (e) {

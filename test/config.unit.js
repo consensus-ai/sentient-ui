@@ -40,20 +40,6 @@ describe('config.js', () => {
 		expect(config2.sentientd.path).to.equal(defaultSentientdPath)
 		expect(config2.version).to.equal(version)
 	})
-	it('sets the default sentientd path if the config version is outdated', () => {
-		const config = loadConfig('test.json')
-		const defaultSentientdPath = config.sentientd.path
-		config.version = '1.2.0'
-		config.sentientd.path = '/test/sentientd/path'
-		config.save()
-		const config2 = loadConfig('test.json')
-		expect(config2.sentientd.path).to.equal(defaultSentientdPath)
-		expect(config2.version).to.equal(version)
-		config2.sentientd.path = '/test/new/path'
-		config2.save()
-		const config3 = loadConfig('test.json')
-		expect(config3.sentientd.path).to.equal('/test/new/path')
-	})
 })
 
 

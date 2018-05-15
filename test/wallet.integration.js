@@ -7,7 +7,7 @@ import senConfig from '../js/mainjs/config.js'
 
 const mockSentientAPI = {
 	call: stub(),
-	config: senConfig(''),
+	config: senConfig('sen-testing/config.json'),
 	hastingsToSen: Sentientd.hastingsToSen,
 	senToHastings: Sentientd.senToHastings,
 	openFile: () => spy(),
@@ -317,6 +317,16 @@ describe('wallet plugin integration tests', () => {
 
 	describe('receive prompt', () => {
 		it('shows a new wallet address when receive sen is clicked initially', async () => {
+			// These tests are inherited from Sia-UI, and they are not idempotent.
+			// To fix them properly we'd want to put in a lot of effort to redo the entire test suite,
+			// the way config files are handled, or even use a new test suite.
+			//
+			// That's why for now we're just going to get rid of the state that's interfering with this
+			// test case, until we can really fix the bigger issue with the broader test suite.
+			delete global.SentientAPI.config.receiveAddresses
+			delete global.SentientAPI.config.receiveAddress
+			console.log(global.SentientAPI.config)
+
 			setMockReceiveAddress('testaddress')
 			setMockAddresses(['testaddress'])
 			expect(walletComponent.find('.receive-prompt')).to.have.length(0)

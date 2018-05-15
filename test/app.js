@@ -4,6 +4,7 @@ import { expect } from 'chai'
 import psTree from 'ps-tree'
 import * as Sentientd from 'sentient.js'
 import fs from 'fs'
+import senConfig from '../js/mainjs/config.js'
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -17,7 +18,7 @@ const getSentientdChild = (pid) => new Promise((resolve, reject) => {
 			reject(err)
 		}
 		children.forEach((child) => {
-			if (child.COMMAND === 'sentientd' || child.COMMAND === 'sentientd.exe') {
+			if (child.COMM.endsWith('sentientd') || child.COMM.endsWith('sentientd.exe')) {
 				resolve({exists: true, pid: child.PID})
 			}
 		})
@@ -33,7 +34,7 @@ const pkillSentientd = () => new Promise((resolve, reject) => {
 			reject(err)
 		}
 		children.forEach((child) => {
-			if (child.COMMAND === 'sentientd' || child.COMMAND === 'sentientd.exe') {
+			if (child.COMM.endsWith('sentientd') || child.COMM.endsWith('sentientd.exe')) {
 				if (process.platform === 'win32') {
 					spawn('taskkill', ['/pid', child.PID, '/f', '/t'])
 				} else {
@@ -57,7 +58,14 @@ const isProcessRunning = (pid) => {
 	}
 }
 
-const electronBinary = process.platform === 'win32' ? 'node_modules\\electron\\dist\\electron.exe' : './node_modules/electron/dist/electron'
+let electronBinary
+if (process.platform === 'win32') {
+	electronBinary = 'node_modules\\electron\\dist\\electron.exe'
+} else if (process.platform === 'darwin') {
+	electronBinary = './node_modules/electron/dist/Electron.app/Contents/MacOS/Electron'
+} else {
+	electronBinary = './node_modules/electron/dist/electron'
+}
 
 // we need functions for mocha's `this` for setting timeouts.
 /* eslint-disable no-invalid-this */
@@ -185,14 +193,20 @@ describe('startup and shutdown behaviour', () => {
 		this.timeout(120000)
 		let app
 		let sentientdProcess
+		let sentientdConfig
 		before(async () => {
 			if (!fs.existsSync('sen-testing')) {
 				fs.mkdirSync('sen-testing')
 			}
-			sentientdProcess = Sentientd.launch(process.platform === 'win32' ? 'Sentient\\sentientd.exe' : './Sentient/sentientd', {
+			sentientdConfig = senConfig('sen-testing/config.json').sentientd
+			sentientdProcess = Sentientd.launch(sentientdConfig.path, {
 				'sen-directory': 'sen-testing',
+				'rpc-addr': sentientdConfig.rpcaddr,
+				'api-addr': sentientdConfig.address,
+				'genesis-file': sentientdConfig.genesisfile,
+				'modules': 'gctmw',
 			})
-			while (await Sentientd.isRunning('localhost:9980') === false) {
+			while (await Sentientd.isRunning(sentientdConfig.address) === false) {
 				await sleep(10)
 			}
 			app = new Application({

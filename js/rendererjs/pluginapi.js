@@ -1,4 +1,4 @@
-// pluginapi.js: Sia-UI plugin API interface exposed to all plugins.
+// pluginapi.js: Sentient-UI plugin API interface exposed to all plugins.
 // This is injected into every plugin's global namespace.
 import * as Siad from 'sentient.js'
 import { remote } from 'electron'

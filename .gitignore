@@ -4,7 +4,7 @@ node_modules
 npm-debug.log
 config.json
 Sia
-doc/Sia-UI
+doc/Sentient-UI
 errors.log
 dist
 sia-testing

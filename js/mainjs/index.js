@@ -11,7 +11,7 @@ let mainWindow
 // disable hardware accelerated rendering
 app.disableHardwareAcceleration()
 
-// Allow only one instance of Sia-UI
+// Allow only one instance of Sentient-UI
 const shouldQuit = app.makeSingleInstance(() => {
 	if (mainWindow) {
 		if (mainWindow.isMinimized()) {
@@ -25,7 +25,7 @@ if (shouldQuit) {
 	app.quit()
 }
 
-// When Electron loading has finished, start Sia-UI.
+// When Electron loading has finished, start Sentient-UI.
 app.on('ready', () => {
 	// Load mainWindow
 	mainWindow = initWindow(config)

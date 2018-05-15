@@ -6,7 +6,7 @@ electron app standards.
 The full root level structure is as follows
 
 ```diff
- Sia-UI/
+ Sentient-UI/
  ├── .git/                // Git folder
 +├── Sia/                 // Contains siad and wallet files
  ├── assets/              // Font & image files
@@ -79,7 +79,7 @@ functionality of the general UI. In this immediate folder level, there's:
 
 ## [node_modules/](https://www.npmjs.com/)
 Created upon `npm install`. Contains all npm package dependencies used by the UI
-and its plugins. 
+and its plugins.
 
 ## [plugins/](/doc/Plugins.md)
 Contains all plugin folders, natively designed or third-party. Plugins are
@@ -105,7 +105,7 @@ Created upon a user opening the UI. Records error notifications for the UI.
 The starting point of the renderer process. This file structures the layout of
 the general UI and loads `/js/rendererjs/uiManager.js` and
 `/js/rendererjs/pluginManager.js`. This is the only non-plugin html file since
-Sia-UI is intended to be a one-page desktop app.
+Sentient-UI is intended to be a one-page desktop app.
 
 ## index.js
 The entry point of the app and main process. This:

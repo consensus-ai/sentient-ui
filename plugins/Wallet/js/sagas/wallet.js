@@ -9,7 +9,7 @@ import { List } from 'immutable'
 // Send an error notification.
 const sendError = (e) => {
 	SiaAPI.showError({
-		title: 'Sia-UI Wallet Error',
+		title: 'Sentient-UI Wallet Error',
 		content: typeof e.message !== 'undefined' ? e.message : e.toString(),
 	})
 }
@@ -164,7 +164,7 @@ function* showReceivePromptSaga() {
 }
 
 // saveAddressSaga handles SAVE_ADDRESS actions, adding the address object to
-// the collection of stored Sia-UI addresses and dispatching any necessary
+// the collection of stored Sentient-UI addresses and dispatching any necessary
 // resulting actions.
 function* saveAddressSaga(action) {
 	let addrs = List(SiaAPI.config.attr('receiveAddresses'))

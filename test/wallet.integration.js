@@ -351,8 +351,8 @@ describe('wallet plugin integration tests', () => {
 		})
 		it('doesnt display addresses the node does not have', async() => {
 			// set our mock node's receiving addresses to empty, simulating the case
-			// where Sia-UI has a bunch of saved addresses which the node has no
-			// recolletion of. Sia-UI should not render any of the saved receiving
+			// where Sentient-UI has a bunch of saved addresses which the node has no
+			// recolletion of. Sentient-UI should not render any of the saved receiving
 			// addresses.
 			setMockAddresses([])
 			walletComponent.find('.done-button').simulate('click')

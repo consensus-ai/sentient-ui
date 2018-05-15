@@ -3,7 +3,7 @@
 # error output terminates this script
 set -e
 
-# This script creates a Sia-UI release for all 3 platforms: osx (darwin),
+# This script creates a Sentient-UI release for all 3 platforms: osx (darwin),
 # linux, and windows. It takes 5 arguments, the first two arguments are the
 # private and public key used to sign the release archives. The last three
 # arguments are semver strings, the first of which being the ui version, second
@@ -53,24 +53,24 @@ buildOSX() {
 	cd release/osx
 	wget $electronOSX
 	unzip ./electron*
-	mv Electron.app Sia-UI.app
-	mv Sia-UI.app/Contents/MacOS/Electron Sia-UI.app/Contents/MacOS/Sia-UI
+	mv Electron.app Sentient-UI.app
+	mv Sentient-UI.app/Contents/MacOS/Electron Sentient-UI.app/Contents/MacOS/Sentient-UI
 	# NOTE: this only works with GNU sed, other platforms (like OSX) may fail here
-	sed -i 's/>Electron</>Sia-UI</' Sia-UI.app/Contents/Info.plist
-	sed -i 's/>'"${electronVersion:1}"'</>'"${siaVersion:1}"'</' Sia-UI.app/Contents/Info.plist
-	sed -i 's/>com.github.electron\</>com.nebulouslabs.siaui</' Sia-UI.app/Contents/Info.plist
-	sed -i 's/>electron.icns</>icon.icns</' Sia-UI.app/Contents/Info.plist
-	cp ../../assets/icon.icns Sia-UI.app/Contents/Resources/
-	rm -r Sia-UI.app/Contents/Resources/default_app.asar
-	mkdir Sia-UI.app/Contents/Resources/app
+	sed -i 's/>Electron</>Sentient-UI</' Sentient-UI.app/Contents/Info.plist
+	sed -i 's/>'"${electronVersion:1}"'</>'"${siaVersion:1}"'</' Sentient-UI.app/Contents/Info.plist
+	sed -i 's/>com.github.electron\</>com.nebulouslabs.siaui</' Sentient-UI.app/Contents/Info.plist
+	sed -i 's/>electron.icns</>icon.icns</' Sentient-UI.app/Contents/Info.plist
+	cp ../../assets/icon.icns Sentient-UI.app/Contents/Resources/
+	rm -r Sentient-UI.app/Contents/Resources/default_app.asar
+	mkdir Sentient-UI.app/Contents/Resources/app
 	(
-		cd Sia-UI.app/Contents/Resources/app
+		cd Sentient-UI.app/Contents/Resources/app
 		cp $siaOSX .
 		unzip ./Sia-*
 		rm ./Sia*.zip
 		mv ./Sia-* ./Sia
 	)
-	package "../../" "Sia-UI.app/Contents/Resources/app"
+	package "../../" "Sentient-UI.app/Contents/Resources/app"
 	rm -r electron*.zip
 	cp ../../LICENSE .
 }
@@ -79,7 +79,7 @@ buildLinux() {
 	cd release/linux
 	wget $electronLinux
 	unzip ./electron*
-	mv electron Sia-UI
+	mv electron Sentient-UI
 	rm -r resources/default_app.asar
 	mkdir resources/app
 	(
@@ -98,9 +98,9 @@ buildWindows() {
 	cd release/win32
 	wget $electronWindows
 	unzip ./electron*
-	mv electron.exe Sia-UI.exe
+	mv electron.exe Sentient-UI.exe
 	wget https://github.com/electron/rcedit/releases/download/v0.1.0/rcedit.exe
-	wine rcedit.exe Sia-UI.exe --set-icon '../../assets/icon.ico'
+	wine rcedit.exe Sentient-UI.exe --set-icon '../../assets/icon.ico'
 	rm -f rcedit.exe
 	rm resources/default_app.asar
 	mkdir resources/app
@@ -129,11 +129,11 @@ buildWindows() {
 for os in win32 linux osx; do
 	(
 		cd release/${os}
-		zip -r ../Sia-UI-${uiVersion}-${os}-x64.zip .
+		zip -r ../Sentient-UI-${uiVersion}-${os}-x64.zip .
 		cd ..
-		openssl dgst -sha256 -sign $keyFile -out Sia-UI-${uiVersion}-${os}-x64.zip.sig Sia-UI-${uiVersion}-${os}-x64.zip
+		openssl dgst -sha256 -sign $keyFile -out Sentient-UI-${uiVersion}-${os}-x64.zip.sig Sentient-UI-${uiVersion}-${os}-x64.zip
 		if [[ -n $pubkeyFile ]]; then
-			openssl dgst -sha256 -verify $pubkeyFile -signature Sia-UI-${uiVersion}-${os}-x64.zip.sig Sia-UI-${uiVersion}-${os}-x64.zip
+			openssl dgst -sha256 -verify $pubkeyFile -signature Sentient-UI-${uiVersion}-${os}-x64.zip.sig Sentient-UI-${uiVersion}-${os}-x64.zip
 		fi
 		rm -rf release/${os}
 	)

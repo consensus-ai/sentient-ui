@@ -1,7 +1,7 @@
 import { Menu } from 'electron'
 
 export default function(window) {
-	// Template for Sia-UI tray menu.
+	// Template for Sentient-UI tray menu.
 	const menutemplate = [
 		{
 			label: 'Show Sia',

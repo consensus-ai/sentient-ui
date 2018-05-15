@@ -20,7 +20,7 @@ function genDownloadLink(version, thePlatform) {
 		plat = 'osx'
 	}
 
-	return `https://github.com/NebulousLabs/Sia-UI/releases/download/v${version}/Sia-UI-v${version}-${plat}-x64.zip`
+	return `https://github.com/NebulousLabs/Sentient-UI/releases/download/v${version}/Sentient-UI-v${version}-${plat}-x64.zip`
 }
 
 function updateCheck() {

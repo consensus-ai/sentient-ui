@@ -6,7 +6,7 @@ use.
 
 ## It's a webpage... it's that simple.
 
-Plugins are loaded into Sia-UI on run-time through an electron utility called
+Plugins are loaded into Sentient-UI on run-time through an electron utility called
 the [web-view tag](http://electron.atom.io/docs/v0.29.0/api/web-view-tag/).
 These tags open up the viewing of guest content by pointing to an HTML file
 that displays the rest of the plugin, importing CSS, Javascript as is usually
@@ -27,18 +27,18 @@ For this, we'll go through implementing the Overview plugin.
 
 Plugins are loaded dynamically based on the folders in the plugins/ directory.
 The sidebar is handled on our part so plugins only need a properly
-placed png file and folder name for a button. 
+placed png file and folder name for a button.
 
 The plugin directory should now be:
 
 ```diff
- Sia-UI/plugins/Overview/
+ Sentient-UI/plugins/Overview/
  └── assets/
      └── button.png
 ```
 
 The Overview uses the 'bars' [font awesome icon in png form](http://fa2png.io/).
-Loading up Sia-UI again, we'll see: ![Impressive plugin ain't
+Loading up Sentient-UI again, we'll see: ![Impressive plugin ain't
 it?](/doc/assets/sidebar.png)
 
 ## Making a Mainbar View
@@ -96,12 +96,12 @@ unique id's to update each of them separately later in JS.
 The plugin directory should now be:
 
 ```diff
- Sia-UI/plugins/Overview/
+ Sentient-UI/plugins/Overview/
 +├── index.html
  └── assets/
      └── button.png
 ```
-Loading up Sia-UI again, we'll see: ![Impressive plugin ain't it?](/doc/assets/basic-overview.png)
+Loading up Sentient-UI again, we'll see: ![Impressive plugin ain't it?](/doc/assets/basic-overview.png)
 
 ## Styling the View
 
@@ -111,7 +111,7 @@ taking shape, form, and last-but-not-least, style!
 The UI has a font that we use for the text called roboto condensed, so let's
 include that for consistency's sake.  With a cool font, we need a cool layout.
 We use a general css file among plugins we're making:
-css/plugin-standard.css. It was adapted from the old Sia-UI and applies to
+css/plugin-standard.css. It was adapted from the old Sentient-UI and applies to
 general header and frame styling.  We're skimming over this because it's not
 too important to review in this particular guide, though any css besides the
 standard can be used.
@@ -132,7 +132,7 @@ section:
 The plugin-standard.css:
 
 ```css
-/*	Style Guide: 
+/*	Style Guide:
  *		Transparent: 70% Opacity
  *
  * 		White:      #FFFFFF
@@ -288,12 +288,12 @@ The Overview-specific css:
 }
 ```
 
-Quite a lot to take in without review, but that's how styling webpages goes. 
+Quite a lot to take in without review, but that's how styling webpages goes.
 
 The plugin directory should reflect our css files:
 
 ```diff
- Sia-UI/plugins/Overview/
+ Sentient-UI/plugins/Overview/
  ├── index.html
  ├── assets/
  │   └── button.png
@@ -301,7 +301,7 @@ The plugin directory should reflect our css files:
 +    └── overview.css
 ```
 
-Loading up Sia-UI again, we'll see: ![Impressive plugin ain't it?](/doc/assets/styled-overview.png)
+Loading up Sentient-UI again, we'll see: ![Impressive plugin ain't it?](/doc/assets/styled-overview.png)
 
 ## Updating our View
 
@@ -317,7 +317,7 @@ and fill our fields after the general skeleton has been parsed.
 ```
 
 After we make such a javascript file, we should cover the additional tools
-Sia-UI gives to its plugins beyond just a sidebar-button.
+Sentient-UI gives to its plugins beyond just a sidebar-button.
 
 ### IPC
 
@@ -329,7 +329,7 @@ and the UI will be through an asynchronous electron library tool called 'ipc' or
 
 ```js
 'use strict';
-// Library for communicating with Sia-UI
+// Library for communicating with Sentient-UI
 const IPCRenderer = require('ipc');
 ```
 
@@ -424,7 +424,7 @@ function update() {
 function start() {
 	// DEVTOOL: uncomment to bring up devtools on plugin view
 	// IPCRenderer.sendToHost('devtools');
-	
+
 	// Call the API
 	update();
 }
@@ -505,7 +505,7 @@ Finally, the aggregated Javascript code should look like this:
 
 ```js
 'use strict';
-// Library for communicating with Sia-UI
+// Library for communicating with Sentient-UI
 const IPCRenderer = require('ipc');
 // Library for arbitrary precision in numbers
 const BigNumber = require('bignumber.js');
@@ -557,7 +557,7 @@ IPCRenderer.on('/consensus/status', function(event, err, result) {
 function start() {
 	// DEVTOOL: uncomment to bring up devtools on plugin view
 	// IPCRenderer.sendToHost('devtools');
-	
+
 	// Call the API
 	update();
 }
@@ -569,7 +569,7 @@ function stop() {
 ```
 
 ```diff
- Sia-UI/plugins/Overview/
+ Sentient-UI/plugins/Overview/
  ├── index.html
  ├── assets/
  │   └── button.png
@@ -579,7 +579,7 @@ function stop() {
 +    └── overview.js
 ```
 
-Loading up Sia-UI again, we'll all see something different because the numbers
+Loading up Sentient-UI again, we'll all see something different because the numbers
 should be pulled from the API and one's siad-state. In our case, the view shows
 the yet-encrypted release network:
 ![Impressive plugin ain't it?](/doc/assets/working-overview.png)
@@ -621,7 +621,7 @@ Now the aggregate javascript should be:
 
 ```js
 'use strict';
-// Library for communicating with Sia-UI
+// Library for communicating with Sentient-UI
 const IPCRenderer = require('ipc');
 // Library for arbitrary precision in numbers
 const BigNumber = require('bignumber.js');
@@ -661,7 +661,7 @@ function formatSiacoin(hastings) {
 function start() {
 	// DEVTOOL: uncomment to bring up devtools on plugin view
 	// IPCRenderer.sendToHost('devtools');
-	
+
 	// Call the API
 	update();
 }

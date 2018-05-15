@@ -124,6 +124,7 @@ export default async function loadingScreen(initUI) {
 			'sen-directory': sentientdConfig.datadir,
 			'rpc-addr': sentientdConfig.rpcaddr,
 			'api-addr': sentientdConfig.address,
+			'genesis-file': sentientdConfig.genesisfile,
 			'modules': 'gctmw',
 		})
 		sentientdProcess.on('error', (e) => showError('Sentientd couldnt start: ' + e.toString()))

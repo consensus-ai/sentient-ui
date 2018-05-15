@@ -14,6 +14,7 @@ const defaultConfig = {
 		rpcaddr: process.env.SENTIENTD_RPC_ADDR || ':9911',
 		detached: false,
 		address: process.env.SENTIENTD_API_ADDR || '127.0.0.1:9910',
+		genesisfile: process.env.SENTIENTD_GENESIS_FILE || Path.join(app.getPath('userData'), './sentient/genesis.json'),
 	},
 	closeToTray: process.platform === 'win32' || process.platform === 'darwin' ? true : false,
 	width:	   1024,

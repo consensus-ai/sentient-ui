@@ -268,7 +268,7 @@ function* changePasswordSaga(action) {
 function *startSendPromptSaga() {
 	try {
 		const response = yield sentientdCall('/tpool/fee')
-		const feeEstimate = SentientAPI.hastingsToSen(response.maximum).times(1e3).round(8).toString() + ' SC/KB'
+		const feeEstimate = SentientAPI.hastingsToSen(response.maximum).times(1e3).round(8).toString() + ' SEN/KB'
 		yield put(actions.setFeeEstimate(feeEstimate))
 	} catch (e) {
 		console.error('error fetching fee estimate for send prompt: ' + e.toString())

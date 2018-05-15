@@ -5,7 +5,7 @@ const initialState = Map({
 	sendaddress: '',
 	sendamount: '',
 	currencytype: 'sen',
-	feeEstimate: '0 SC/KB',
+	feeEstimate: '0 SEN/KB',
 	error: '',
 })
 export default function sendPromptReducer(state = initialState, action) {

@@ -19,7 +19,7 @@ const SendPrompt = ({currencytype, sendAddress, sendAmount, feeEstimate, sendErr
 		<div className="modal">
 			<div className="sendprompt">
 				<div className="sendamount">
-					<h3>Send Amount {currencytype === 'sen' ? '(SC)' : '(SF)'} </h3>
+					<h3>Send Amount {currencytype === 'sen' ? '(SEN)' : '(SF)'} </h3>
 					<input onChange={handleSendAmountChange} value={sendAmount} />
 				</div>
 				<div className="sendaddress">

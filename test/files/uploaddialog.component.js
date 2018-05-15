@@ -37,7 +37,7 @@ describe('files upload dialog component', () => {
 	})
 
 	it('correctly displays dialog for multiple files', () => {
-		const testFiles = ['filename.png', 'tomuch.meme', 'sia.sia.sia.sia.sia', '.sia.test']
+		const testFiles = ['filename.png', 'tomuch.meme', 'sen.sen.sen.sen.sen', '.sen.test']
 		const testResults = testDialog(testFiles)
 		expect(testResults.uploadDialog.find('.upload-dialog').children('div').first().text()).to.equal(`Would you like to upload ${testFiles.length} ${testFiles.length === 1 ? 'item' : 'items'}?`)
 		expect(testResults.uploadFolderSpy.callCount).to.equal(0)
@@ -59,7 +59,7 @@ describe('files upload dialog component', () => {
 	})
 
 	it('correctly displays dialog for multiple folders', () => {
-		const testFiles = ['foldername', 'An amazing name', 'SIASIASIASIASIASIA', 'FTW']
+		const testFiles = ['foldername', 'An amazing name', 'SENSENSENSENSENSEN', 'FTW']
 		const testResults = testDialog(testFiles, true)
 		expect(testResults.uploadDialog.find('.upload-dialog').children('div').first().text()).to.equal(`Would you like to upload ${testFiles.length} ${testFiles.length === 1 ? 'item' : 'items'}?`)
 		expect(testResults.uploadFileSpy.callCount).to.equal(0)

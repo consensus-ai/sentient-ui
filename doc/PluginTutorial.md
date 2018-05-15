@@ -74,7 +74,7 @@ user. Inspired by the previous UI, we pick the block height, peer count, and
 wallet balance. The first lets the user know they're up to date with the
 blockchain. The second lets the user further know that they're connected with
 other people on the network. Lastly each and every user, whether they host,
-rent, or mine, will probably have some balance of Siacoin.
+rent, or mine, will probably have some balance of Sen.
 
 We'll add a containing div, let's call it 'capsule' for our header section and
 div fields for each of these to our index.html, keeping them all the same class
@@ -439,12 +439,12 @@ function stop() {
 
 This all functions well enough, but it's a bit of an amateur design when one
 actually uses the plugin. Numbers are jerky and we see a large amount of
-numbers for our balance since it's in 10^-24 Siacoin, or what we call
+numbers for our balance since it's in 10^-24 Sen, or what we call
 Hastings, similar to Bitcoin and satoshis.
 
 ```js
-// Convert to Siacoin
-function formatSiacoin(hastings) {
+// Convert to Sen
+function formatSen(hastings) {
 	var ConversionFactor = Math.pow(10, 24);
 	var display = hastings / ConversionFactor);
 	return display + ' SC';
@@ -464,8 +464,8 @@ const BigNumber = require('bignumber.js');
 BigNumber.config({ DECIMAL_PLACES: 24 })
 BigNumber.config({ EXPONENTIAL_AT: 1e+9 })
 
-// Convert to Siacoin
-function formatSiacoin(hastings) {
+// Convert to Sen
+function formatSen(hastings) {
 	var ConversionFactor = new BigNumber(10).pow(24);
 	var display = new BigNumber(hastings).dividedBy(ConversionFactor);
 	return display + ' SC';
@@ -523,8 +523,8 @@ function update() {
 	updating = setTimeout(update, 1000);
 }
 
-// Convert to Siacoin
-function formatSiacoin(hastings) {
+// Convert to Sen
+function formatSen(hastings) {
 	var ConversionFactor = new BigNumber(10).pow(24);
 	var display = new BigNumber(hastings).dividedBy(ConversionFactor);
 	return display + ' SC';
@@ -604,7 +604,7 @@ function updateField(err, caption, newValue, elementID) {
 
 // Define IPC listeners and update DOM per call
 IPCRenderer.on('balance-update', function(event, err, result) {
-	var value = result !== null ? formatSiacoin(result.ConfirmedSiacoinBalance) : null;
+	var value = result !== null ? formatSen(result.ConfirmedSenBalance) : null;
 	updateField(err, 'Balance: ', value, 'balance');
 });
 IPCRenderer.on('peers-update', function(event, err, result) {
@@ -650,8 +650,8 @@ function updateField(err, caption, newValue, elementID) {
 	}
 }
 
-// Convert to Siacoin
-function formatSiacoin(hastings) {
+// Convert to Sen
+function formatSen(hastings) {
 	var ConversionFactor = new BigNumber(10).pow(24);
 	var display = new BigNumber(hastings).dividedBy(ConversionFactor);
 	return display + ' SC';
@@ -673,7 +673,7 @@ function stop() {
 
 // Define IPC listeners and update DOM per call
 IPCRenderer.on('balance-update', function(event, err, result) {
-	var value = result !== null ? formatSiacoin(result.ConfirmedSiacoinBalance) : null;
+	var value = result !== null ? formatSen(result.ConfirmedSenBalance) : null;
 	updateField(err, 'Balance: ', value, 'balance');
 });
 IPCRenderer.on('peers-update', function(event, err, result) {

@@ -6,11 +6,11 @@ import { shell } from 'electron'
 document.getElementById('uiversion').innerHTML = VERSION
 
 // Set daemon version via API call.
-SiaAPI.call('/daemon/version', (err, result) => {
+SentientAPI.call('/daemon/version', (err, result) => {
 	if (err) {
-		SiaAPI.showError('Error', err.toString())
+		SentientAPI.showError('Error', err.toString())
 	} else {
-		document.getElementById('siaversion').innerHTML = result.version
+		document.getElementById('senversion').innerHTML = result.version
 	}
 })
 
@@ -24,9 +24,9 @@ function genDownloadLink(version, thePlatform) {
 }
 
 function updateCheck() {
-	SiaAPI.call('/daemon/update', (err, result) => {
+	SentientAPI.call('/daemon/update', (err, result) => {
 		if (err) {
-			SiaAPI.showError('Error', err.toString())
+			SentientAPI.showError('Error', err.toString())
 		} else if (result.available) {
 			document.getElementById('newversion').innerHTML = result.version
 			document.getElementById('downloadlink').href = genDownloadLink(result.version, platform())
@@ -41,5 +41,5 @@ function updateCheck() {
 
 document.getElementById('updatecheck').onclick = updateCheck
 document.getElementById('datadiropen').onclick = () => {
-	shell.showItemInFolder(SiaAPI.config.siad.datadir)
+	shell.showItemInFolder(SentientAPI.config.sentientd.datadir)
 }

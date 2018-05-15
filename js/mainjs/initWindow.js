@@ -26,7 +26,7 @@ export default function(config) {
 	mainWindow.closeToTray = config.closeToTray
 
 	mainWindow.tray = new Tray(Path.join(app.getAppPath(), 'assets', 'tray.png'))
-	mainWindow.tray.setToolTip('Sia - The Collaborative Cloud.')
+	mainWindow.tray.setToolTip('Sentient')
 	mainWindow.tray.setContextMenu(appTray(mainWindow))
 
 	// Load the window's size and position

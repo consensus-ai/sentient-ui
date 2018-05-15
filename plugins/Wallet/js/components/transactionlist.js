@@ -41,20 +41,20 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 			if (!filter) {
 				return true
 			}
-			return txn.transactionsums.totalSiacoin.abs().gt(0) || txn.transactionsums.totalSiafund.abs().gt(0) || txn.transactionsums.totalMiner.abs().gt(0)
+			return txn.transactionsums.totalSen.abs().gt(0) || txn.transactionsums.totalSenfund.abs().gt(0) || txn.transactionsums.totalMiner.abs().gt(0)
 		})
 		.map((txn, key) => {
 			let valueData = ''
-			if (txn.transactionsums.totalSiacoin.abs().gt(0)) {
+			if (txn.transactionsums.totalSen.abs().gt(0)) {
 				valueData +=
-					txn.transactionsums.totalSiacoin
+					txn.transactionsums.totalSen
 						.round(4)
 						.toNumber()
 						.toLocaleString() + ' SC '
 			}
-			if (txn.transactionsums.totalSiafund.abs().gt(0)) {
+			if (txn.transactionsums.totalSenfund.abs().gt(0)) {
 				valueData +=
-					txn.transactionsums.totalSiafund
+					txn.transactionsums.totalSenfund
 						.round(4)
 						.toNumber()
 						.toLocaleString() + ' SF '

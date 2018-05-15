@@ -1,6 +1,6 @@
 // pluginapi.js: Sentient-UI plugin API interface exposed to all plugins.
 // This is injected into every plugin's global namespace.
-import * as Siad from 'sentient.js'
+import * as Sentientd from 'sentient.js'
 import { remote } from 'electron'
 import React from 'react'
 import DisabledPlugin from './disabledplugin.js'
@@ -9,7 +9,7 @@ import Path from 'path'
 const dialog = remote.dialog
 const mainWindow = remote.getCurrentWindow()
 const config = remote.getGlobal('config')
-const siadConfig = config.siad
+const sentientdConfig = config.sentientd
 const fs = remote.require('fs')
 let disabled = false
 
@@ -24,62 +24,62 @@ window.onload = async function() {
 	const ReactDOM = require('react-dom')
 	/* eslint-enable global-require */
 
-	let startSiad = () => {}
+	let startSentientd = () => {}
 
-	const renderSiadCrashlog = () => {
+	const renderSentientdCrashlog = () => {
 		// load the error log and display it in the disabled plugin
-		let errorMsg = 'Siad exited unexpectedly for an unknown reason.'
+		let errorMsg = 'Sentientd exited unexpectedly for an unknown reason.'
 		try {
-			errorMsg = fs.readFileSync(Path.join(siadConfig.datadir, 'siad-output.log'), {'encoding': 'utf-8'})
+			errorMsg = fs.readFileSync(Path.join(sentientdConfig.datadir, 'sentientd-output.log'), {'encoding': 'utf-8'})
 		} catch (e) {
 			console.error('error reading error log: ' +  e.toString())
 		}
 
 		document.body.innerHTML = '<div style="width:100%;height:100%;" id="crashdiv"></div>'
-		ReactDOM.render(<DisabledPlugin errorMsg={errorMsg} startSiad={startSiad} />, document.getElementById('crashdiv'))
+		ReactDOM.render(<DisabledPlugin errorMsg={errorMsg} startSentientd={startSentientd} />, document.getElementById('crashdiv'))
 	}
 
-	startSiad = () => {
-		const siadProcess = Siad.launch(siadConfig.path, {
-			'sia-directory': siadConfig.datadir,
-			'rpc-addr': siadConfig.rpcaddr,
-			'api-addr': siadConfig.address,
+	startSentientd = () => {
+		const sentientdProcess = Sentientd.launch(sentientdConfig.path, {
+			'sen-directory': sentientdConfig.datadir,
+			'rpc-addr': sentientdConfig.rpcaddr,
+			'api-addr': sentientdConfig.address,
 			'modules': 'gctmw',
 		})
-		siadProcess.on('error', renderSiadCrashlog)
-		siadProcess.on('close', renderSiadCrashlog)
-		siadProcess.on('exit', renderSiadCrashlog)
-		window.siadProcess = siadProcess
+		sentientdProcess.on('error', renderSentientdCrashlog)
+		sentientdProcess.on('close', renderSentientdCrashlog)
+		sentientdProcess.on('exit', renderSentientdCrashlog)
+		window.sentientdProcess = sentientdProcess
 	}
-	// Continuously check (every 2000ms) if siad is running.
-	// If siad is not running, disable the plugin by mounting
+	// Continuously check (every 2000ms) if sentientd is running.
+	// If sentientd is not running, disable the plugin by mounting
 	// the `DisabledPlugin` component in the DOM's body.
-	// If siad is running and the plugin has been disabled,
+	// If sentientd is running and the plugin has been disabled,
 	// reload the plugin.
 	while (true) {
-		const running = await Siad.isRunning(siadConfig.address)
+		const running = await Sentientd.isRunning(sentientdConfig.address)
 		if (running && disabled) {
 			disabled = false
 			window.location.reload()
 		}
 		if (!running && !disabled) {
 			disabled = true
-			renderSiadCrashlog()
+			renderSentientdCrashlog()
 		}
 		await sleep(2000)
 	}
 }
 
 
-window.SiaAPI = {
+window.SentientAPI = {
 	call: function(url, callback) {
-		Siad.call(siadConfig.address, url)
+		Sentientd.call(sentientdConfig.address, url)
 		    .then((res) => callback(null, res))
 				.catch((err) => callback(err, null))
 	},
 	config: config,
-	hastingsToSiacoins: Siad.hastingsToSiacoins,
-	siacoinsToHastings: Siad.siacoinsToHastings,
+	hastingsToSen: Sentientd.hastingsToSen,
+	senToHastings: Sentientd.senToHastings,
 	openFile: (options) => dialog.showOpenDialog(mainWindow, options),
 	saveFile: (options) => dialog.showSaveDialog(mainWindow, options),
 	showMessage: (options) => dialog.showMessageBox(mainWindow, options),

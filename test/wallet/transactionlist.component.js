@@ -10,8 +10,8 @@ const testTxns = List([
 	{
 		confirmed: true,
 		transactionsums: {
-			totalSiacoin: new BigNumber(10),
-			totalSiafund: new BigNumber(0),
+			totalSen: new BigNumber(10),
+			totalSenfund: new BigNumber(0),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid',
@@ -20,8 +20,8 @@ const testTxns = List([
 	{
 		confirmed: true,
 		transactionsums: {
-			totalSiacoin: new BigNumber(0),
-			totalSiafund: new BigNumber(10),
+			totalSen: new BigNumber(0),
+			totalSenfund: new BigNumber(10),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid1',
@@ -30,8 +30,8 @@ const testTxns = List([
 	{
 		confirmed: true,
 		transactionsums: {
-			totalSiacoin: new BigNumber(0),
-			totalSiafund: new BigNumber(0),
+			totalSen: new BigNumber(0),
+			totalSenfund: new BigNumber(0),
 			totalMiner: new BigNumber(10),
 		},
 		transactionid: 'testid2',
@@ -40,8 +40,8 @@ const testTxns = List([
 	{
 		confirmed: true,
 		transactionsums: {
-			totalSiacoin: new BigNumber(-10),
-			totalSiafund: new BigNumber(0),
+			totalSen: new BigNumber(-10),
+			totalSenfund: new BigNumber(0),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid3',
@@ -50,8 +50,8 @@ const testTxns = List([
 	{
 		confirmed: true,
 		transactionsums: {
-			totalSiacoin: new BigNumber(0),
-			totalSiafund: new BigNumber(-10),
+			totalSen: new BigNumber(0),
+			totalSenfund: new BigNumber(-10),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid4',
@@ -60,8 +60,8 @@ const testTxns = List([
 	{
 		confirmed: true,
 		transactionsums: {
-			totalSiacoin: new BigNumber(0),
-			totalSiafund: new BigNumber(0),
+			totalSen: new BigNumber(0),
+			totalSenfund: new BigNumber(0),
 			totalMiner: new BigNumber(-10),
 		},
 		transactionid: 'testid5',
@@ -70,8 +70,8 @@ const testTxns = List([
 	{
 		confirmed: false,
 		transactionsums: {
-			totalSiacoin: new BigNumber(1),
-			totalSiafund: new BigNumber(0),
+			totalSen: new BigNumber(1),
+			totalSenfund: new BigNumber(0),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid6',
@@ -80,8 +80,8 @@ const testTxns = List([
 	{
 		confirmed: false,
 		transactionsums: {
-			totalSiacoin: new BigNumber(10),
-			totalSiafund: new BigNumber(-5),
+			totalSen: new BigNumber(10),
+			totalSenfund: new BigNumber(-5),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid7',
@@ -90,8 +90,8 @@ const testTxns = List([
 	{
 		confirmed: false,
 		transactionsums: {
-			totalSiacoin: new BigNumber(10),
-			totalSiafund: new BigNumber(1),
+			totalSen: new BigNumber(10),
+			totalSenfund: new BigNumber(1),
 			totalMiner: new BigNumber(1),
 		},
 		transactionid: 'testid8',
@@ -100,8 +100,8 @@ const testTxns = List([
 	{
 		confirmed: false,
 		transactionsums: {
-			totalSiacoin: new BigNumber(0),
-			totalSiafund: new BigNumber(0),
+			totalSen: new BigNumber(0),
+			totalSenfund: new BigNumber(0),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid9',
@@ -173,8 +173,8 @@ describe('wallet transaction list component', () => {
 		const txns = List(timestamps.map((timestamp) => ({
 			confirmed: true,
 			transactionsums: {
-				totalSiacoin: new BigNumber(0),
-				totalSiafund: new BigNumber(0),
+				totalSen: new BigNumber(0),
+				totalSenfund: new BigNumber(0),
 				totalMiner: new BigNumber(0),
 			},
 			transactionid: 'testid',

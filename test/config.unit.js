@@ -30,29 +30,29 @@ describe('config.js', () => {
 		const config2 = loadConfig('test.json')
 		expect(config2).to.deep.equal(config)
 	})
-	it('sets the default siad path if the config version is undefined', () => {
+	it('sets the default sentientd path if the config version is undefined', () => {
 		const config = loadConfig('test.json')
-		const defaultSiadPath = config.siad.path
+		const defaultSentientdPath = config.sentientd.path
 		config.version = undefined
-		config.siad.path = '/test/siad/path'
+		config.sentientd.path = '/test/sentientd/path'
 		config.save()
 		const config2 = loadConfig('test.json')
-		expect(config2.siad.path).to.equal(defaultSiadPath)
+		expect(config2.sentientd.path).to.equal(defaultSentientdPath)
 		expect(config2.version).to.equal(version)
 	})
-	it('sets the default siad path if the config version is outdated', () => {
+	it('sets the default sentientd path if the config version is outdated', () => {
 		const config = loadConfig('test.json')
-		const defaultSiadPath = config.siad.path
+		const defaultSentientdPath = config.sentientd.path
 		config.version = '1.2.0'
-		config.siad.path = '/test/siad/path'
+		config.sentientd.path = '/test/sentientd/path'
 		config.save()
 		const config2 = loadConfig('test.json')
-		expect(config2.siad.path).to.equal(defaultSiadPath)
+		expect(config2.sentientd.path).to.equal(defaultSentientdPath)
 		expect(config2.version).to.equal(version)
-		config2.siad.path = '/test/new/path'
+		config2.sentientd.path = '/test/new/path'
 		config2.save()
 		const config3 = loadConfig('test.json')
-		expect(config3.siad.path).to.equal('/test/new/path')
+		expect(config3.sentientd.path).to.equal('/test/new/path')
 	})
 })
 

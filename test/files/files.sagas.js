@@ -8,7 +8,7 @@ import { expect } from 'chai'
 import { spy } from 'sinon'
 import proxyquire from 'proxyquire'
 import { List } from 'immutable'
-import * as Siad from 'sentient.js'
+import * as Sentientd from 'sentient.js'
 import rootReducer from '../../plugins/Files/js/reducers/index.js'
 const sagaMiddleware = createSagaMiddleware()
 
@@ -34,7 +34,7 @@ const helperMocks = {
 const rootSaga = proxyquire('../../plugins/Files/js/sagas/index.js', helperMocks).default
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-// Stub the parts of the Sia API that the files plugin uses.
+// Stub the parts of the Sentient API that the files plugin uses.
 const contracts = []
 let testFiles
 let walletState
@@ -43,8 +43,8 @@ const setAllowanceSpy = spy()
 const downloadSpy = spy()
 const deleteSpy = spy()
 const renameSpy = spy()
-const testFunds = Siad.siacoinsToHastings(100000)
-const mockSiaAPI = {
+const testFunds = Sentientd.senToHastings(100000)
+const mockSentientAPI = {
 	call: (uri, callback) => {
 		if (uri === '/renter/contracts') {
 			callback(null, { contracts })
@@ -89,7 +89,7 @@ const mockSiaAPI = {
 				callback()
 			}
 			if (uri.url.indexOf('/renter/rename') !== -1) {
-				renameSpy(uri.url, uri.qs.newsiapath)
+				renameSpy(uri.url, uri.qs.newsenpath)
 				callback()
 			}
 			if (uri.url === '/renter') {
@@ -99,15 +99,15 @@ const mockSiaAPI = {
 		}
 	},
 	showError: spy(),
-	siacoinsToHastings: Siad.siacoinsToHastings,
-	hastingsToSiacoins: Siad.hastingsToSiacoins,
+	senToHastings: Sentientd.senToHastings,
+	hastingsToSen: Sentientd.hastingsToSen,
 }
 
 let store
 
 describe('files plugin sagas', () => {
 	before(() => {
-		global.SiaAPI = mockSiaAPI
+		global.SentientAPI = mockSentientAPI
 		store = createStore(
 			rootReducer,
 			applyMiddleware(sagaMiddleware)
@@ -115,7 +115,7 @@ describe('files plugin sagas', () => {
 		sagaMiddleware.run(rootSaga)
 	})
 	afterEach(() => {
-		SiaAPI.showError.reset()
+		SentientAPI.showError.reset()
 	})
 	it('runs every watcher saga defined in files', () => {
 		expect(rootSaga().next().value).to.have.length(Object.keys(sagas).length)
@@ -128,25 +128,25 @@ describe('files plugin sagas', () => {
 		store.dispatch(actions.getContractCount())
 		await sleep(10)
 		expect(store.getState().files.get('contractCount')).to.equal(contracts.length)
-		expect(SiaAPI.showError.called).to.be.false
+		expect(SentientAPI.showError.called).to.be.false
 	})
 	it('sets files on getFiles', async () => {
 		testFiles = [
-			{ siapath: 'testfile', available: true, redundancy: 6 },
-			{ siapath: 'testfile2', available: true, redundancy: 6 },
-			{ siapath: 'testfile3', available: true, redundancy: 6 },
-			{ siapath: 'testfile4', available: true, redundancy: 6 },
+			{ senpath: 'testfile', available: true, redundancy: 6 },
+			{ senpath: 'testfile2', available: true, redundancy: 6 },
+			{ senpath: 'testfile3', available: true, redundancy: 6 },
+			{ senpath: 'testfile4', available: true, redundancy: 6 },
 		]
 		store.dispatch(actions.getFiles())
 		await sleep(500)
 		expect(store.getState().files.get('files').size).to.equal(testFiles.length)
-		expect(SiaAPI.showError.called).to.be.false
+		expect(SentientAPI.showError.called).to.be.false
 	})
 	it('sets wallet lock state on getWalletLockstate', async () => {
 		walletState = {
 			unlocked: false,
 			encrypted: true,
-			confirmedsiacoinbalance: Siad.siacoinsToHastings(1000).toString(),
+			confirmedsenbalance: Sentientd.senToHastings(1000).toString(),
 		}
 		store.dispatch(actions.getWalletLockstate())
 		await sleep(10)
@@ -155,14 +155,14 @@ describe('files plugin sagas', () => {
 		store.dispatch(actions.getWalletLockstate())
 		await sleep(10)
 		expect(store.getState().wallet.get('unlocked')).to.be.true
-		expect(SiaAPI.showError.called).to.be.false
+		expect(SentientAPI.showError.called).to.be.false
 	})
 	it('calls /renter/upload on uploadFile', async () => {
 		uploadSpy.reset()
 		store.dispatch(actions.uploadFile('testfile', ''))
 		await sleep(10)
 		expect(uploadSpy.calledWithExactly('/renter/upload/testfile')).to.be.true
-		expect(SiaAPI.showError.called).to.be.false
+		expect(SentientAPI.showError.called).to.be.false
 	})
 	it('calls /renter/upload correctly on every file in a folder on uploadFolder', async () => {
 		uploadSpy.reset()
@@ -173,40 +173,40 @@ describe('files plugin sagas', () => {
 			'/test/testdir/testfolder/testfolder2/testfolder.png',
 			'/test/testdir/testfile.app.png',
 		])
-		store.dispatch(actions.uploadFolder('test/testsiapath', '/test/testdir'))
+		store.dispatch(actions.uploadFolder('test/testsenpath', '/test/testdir'))
 		await sleep(10)
-		expect(SiaAPI.showError.called).to.be.false
+		expect(SentientAPI.showError.called).to.be.false
 		expect(uploadSpy.callCount).to.equal(testDirectoryFiles.size)
-		expect(uploadSpy.calledWithExactly('/renter/upload/test/testsiapath/testdir/testfile5')).to.be.true
-		expect(uploadSpy.calledWithExactly('/renter/upload/test/testsiapath/testdir/testfile6')).to.be.true
-		expect(uploadSpy.calledWithExactly('/renter/upload/test/testsiapath/testdir/testfolder/testfile2.jpg')).to.be.true
-		expect(uploadSpy.calledWithExactly('/renter/upload/test/testsiapath/testdir/testfolder/testfolder2/testfolder.png')).to.be.true
-		expect(uploadSpy.calledWithExactly('/renter/upload/test/testsiapath/testdir/testfile.app.png')).to.be.true
+		expect(uploadSpy.calledWithExactly('/renter/upload/test/testsenpath/testdir/testfile5')).to.be.true
+		expect(uploadSpy.calledWithExactly('/renter/upload/test/testsenpath/testdir/testfile6')).to.be.true
+		expect(uploadSpy.calledWithExactly('/renter/upload/test/testsenpath/testdir/testfolder/testfile2.jpg')).to.be.true
+		expect(uploadSpy.calledWithExactly('/renter/upload/test/testsenpath/testdir/testfolder/testfolder2/testfolder.png')).to.be.true
+		expect(uploadSpy.calledWithExactly('/renter/upload/test/testsenpath/testdir/testfile.app.png')).to.be.true
 	})
 	it('sets uploads on getUploads', async () => {
 		testUploads = List([
-			{siapath: 'upload1'},
-			{siapath: 'upload2'},
-			{siapath: 'upload3'},
+			{senpath: 'upload1'},
+			{senpath: 'upload2'},
+			{senpath: 'upload3'},
 		])
 		store.dispatch(actions.getUploads())
 		await sleep(10)
 		expect(store.getState().files.get('uploading')).to.deep.equal(testUploads)
-		expect(SiaAPI.showError.called).to.be.false
+		expect(SentientAPI.showError.called).to.be.false
 	})
 	it('sets downloads on getDownloads', async () => {
 		testDownloads = List([
-			{ siapath: 'upload4', name: 'upload4', starttime: new Date() },
-			{ siapath: 'upload5', name: 'upload5', starttime: new Date() },
-			{ siapath: 'upload6', name: 'upload6', starttime: new Date() },
+			{ senpath: 'upload4', name: 'upload4', starttime: new Date() },
+			{ senpath: 'upload5', name: 'upload5', starttime: new Date() },
+			{ senpath: 'upload6', name: 'upload6', starttime: new Date() },
 		])
 		store.dispatch(actions.getDownloads())
 		await sleep(10)
 		expect(store.getState().files.get('downloading').toObject()).to.deep.equal(testDownloads.toObject())
-		expect(SiaAPI.showError.called).to.be.false
+		expect(SentientAPI.showError.called).to.be.false
 	})
 	const testFile = {
-		siapath: 'test/siapath',
+		senpath: 'test/senpath',
 		type: 'file',
 	}
 	it('can buffer lots of delete actions', function() {
@@ -214,49 +214,49 @@ describe('files plugin sagas', () => {
 		for (let i = 0; i < 4096; i++) {
 			store.dispatch(actions.deleteFile(testFile))
 		}
-		expect(SiaAPI.showError.called).to.be.false
+		expect(SentientAPI.showError.called).to.be.false
 	})
 	it('can buffer lots of upload actions', function() {
 		this.timeout(40000)
 		for (let i = 0; i < 4096; i++) {
 			store.dispatch(actions.uploadFile('testfile', ''))
 		}
-		expect(SiaAPI.showError.called).to.be.false
+		expect(SentientAPI.showError.called).to.be.false
 	})
 	it('can buffer lots of download actions', function() {
 		this.timeout(20000)
 		for (let i = 0; i < 4096; i++) {
 			store.dispatch(actions.downloadFile('testfile', ''))
 		}
-		expect(SiaAPI.showError.called).to.be.false
+		expect(SentientAPI.showError.called).to.be.false
 	})
 	it('calls /renter/download on downloadFile', async () => {
 		store.dispatch(actions.downloadFile(testFile, '/test/downloadpath'))
 		await sleep(10)
-		expect(downloadSpy.calledWithExactly('/renter/download/test/siapath', '/test/downloadpath')).to.be.true
-		expect(SiaAPI.showError.called).to.be.false
+		expect(downloadSpy.calledWithExactly('/renter/download/test/senpath', '/test/downloadpath')).to.be.true
+		expect(SentientAPI.showError.called).to.be.false
 	})
 	describe('deletion sagas', () => {
 		it('calls /renter/delete on deleteFile', async () => {
 			store.dispatch(actions.deleteFile(testFile))
 			await sleep(10)
-			expect(deleteSpy.calledWithExactly('/renter/delete/test/siapath')).to.be.true
-			expect(SiaAPI.showError.called).to.be.false
+			expect(deleteSpy.calledWithExactly('/renter/delete/test/senpath')).to.be.true
+			expect(SentientAPI.showError.called).to.be.false
 		})
 		it('calls /renter/delete for every file in a directory and subdirectories', async () => {
 			testFiles = [
-				{ siapath: 'testfile', available: true, redundancy: 6 },
-				{ siapath: 'testfile2', available: true, redundancy: 6 },
-				{ siapath: 'testfile3', available: true, redundancy: 6 },
-				{ siapath: 'testfile4', available: true, redundancy: 6 },
-				{ siapath: 'testdir/testfile', available: true, redundancy: 6 },
-				{ siapath: 'testdir/testfile2', available: true, redundancy: 6 },
-				{ siapath: 'testdir/testdir2/testfile2', available: true, redundancy: 6 },
-				{ siapath: 'testdir/testdir2/testdir3/testfile2', available: true, redundancy: 6 },
+				{ senpath: 'testfile', available: true, redundancy: 6 },
+				{ senpath: 'testfile2', available: true, redundancy: 6 },
+				{ senpath: 'testfile3', available: true, redundancy: 6 },
+				{ senpath: 'testfile4', available: true, redundancy: 6 },
+				{ senpath: 'testdir/testfile', available: true, redundancy: 6 },
+				{ senpath: 'testdir/testfile2', available: true, redundancy: 6 },
+				{ senpath: 'testdir/testdir2/testfile2', available: true, redundancy: 6 },
+				{ senpath: 'testdir/testdir2/testdir3/testfile2', available: true, redundancy: 6 },
 			]
 			store.dispatch(actions.getFiles())
 			await sleep(10)
-			store.dispatch(actions.deleteFile({ type: 'directory', siapath: 'testdir' }))
+			store.dispatch(actions.deleteFile({ type: 'directory', senpath: 'testdir' }))
 			await sleep(10)
 			expect(deleteSpy.calledWith('/renter/delete/testdir/testfile')).to.be.true
 			expect(deleteSpy.calledWith('/renter/delete/testdir/testfile2')).to.be.true
@@ -270,19 +270,19 @@ describe('files plugin sagas', () => {
 		await sleep(10)
 		expect(store.getState().files.get('showAllowanceDialog')).to.be.false
 		expect(store.getState().files.get('settingAllowance')).to.be.false
-		expect(SiaAPI.showError.called).to.be.false
+		expect(SentientAPI.showError.called).to.be.false
 	})
 	it('sets the correct wallet balance on getWalletBalance', async () => {
 		store.dispatch(actions.getWalletBalance())
 		await sleep(10)
-		expect(store.getState().wallet.get('balance')).to.equal(Siad.hastingsToSiacoins(walletState.confirmedsiacoinbalance).round(2).toString())
-		expect(SiaAPI.showError.called).to.be.false
+		expect(store.getState().wallet.get('balance')).to.equal(Sentientd.hastingsToSen(walletState.confirmedsenbalance).round(2).toString())
+		expect(SentientAPI.showError.called).to.be.false
 	})
 	it('calls /renter/rename on renameFile', async () => {
-		store.dispatch(actions.renameFile(testFile, 'test/newsiapath'))
+		store.dispatch(actions.renameFile(testFile, 'test/newsenpath'))
 		await sleep(10)
-		expect(renameSpy.calledWithExactly('/renter/rename/test/siapath', 'test/newsiapath')).to.be.true
-		expect(SiaAPI.showError.called).to.be.false
+		expect(renameSpy.calledWithExactly('/renter/rename/test/senpath', 'test/newsenpath')).to.be.true
+		expect(SentientAPI.showError.called).to.be.false
 	})
 })
 /* eslint-enable no-unused-expressions */

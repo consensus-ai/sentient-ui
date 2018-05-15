@@ -39,11 +39,11 @@ describe('files plugin helper functions', () => {
 				'/tmp/test/testdir/testfile.png',
 				'/tmp/test/testdir/test.png',
 			])
-			expect(uploadDirectory('/tmp/test', directoryTree, 'testsiapath')).to.deep.equal(List([
-				actions.uploadFile('testsiapath/test', '/tmp/test/testfile.png'),
-				actions.uploadFile('testsiapath/test', '/tmp/test/test_file.pdf'),
-				actions.uploadFile('testsiapath/test/testdir', '/tmp/test/testdir/testfile.png'),
-				actions.uploadFile('testsiapath/test/testdir', '/tmp/test/testdir/test.png'),
+			expect(uploadDirectory('/tmp/test', directoryTree, 'testsenpath')).to.deep.equal(List([
+				actions.uploadFile('testsenpath/test', '/tmp/test/testfile.png'),
+				actions.uploadFile('testsenpath/test', '/tmp/test/test_file.pdf'),
+				actions.uploadFile('testsenpath/test/testdir', '/tmp/test/testdir/testfile.png'),
+				actions.uploadFile('testsenpath/test/testdir', '/tmp/test/testdir/test.png'),
 			]))
 		})
 		it('handles windows paths correctly', () => {
@@ -53,88 +53,88 @@ describe('files plugin helper functions', () => {
 				'C:\\tmp\\test\\testdir\\testfile.png',
 				'C:\\tmp\\test\\testdir\\test.png',
 			])
-			expect(uploadDirectoryWin32('C:\\tmp\\test', directoryTree, 'testsiapath')).to.deep.equal(List([
-				actions.uploadFile('testsiapath/test', 'C:\\tmp\\test\\testfile.png'),
-				actions.uploadFile('testsiapath/test', 'C:\\tmp\\test\\test_file.pdf'),
-				actions.uploadFile('testsiapath/test/testdir', 'C:\\tmp\\test\\testdir\\testfile.png'),
-				actions.uploadFile('testsiapath/test/testdir', 'C:\\tmp\\test\\testdir\\test.png'),
+			expect(uploadDirectoryWin32('C:\\tmp\\test', directoryTree, 'testsenpath')).to.deep.equal(List([
+				actions.uploadFile('testsenpath/test', 'C:\\tmp\\test\\testfile.png'),
+				actions.uploadFile('testsenpath/test', 'C:\\tmp\\test\\test_file.pdf'),
+				actions.uploadFile('testsenpath/test/testdir', 'C:\\tmp\\test\\testdir\\testfile.png'),
+				actions.uploadFile('testsenpath/test/testdir', 'C:\\tmp\\test\\testdir\\test.png'),
 			]))
 		})
 	})
 	describe('range selection', () => {
 		const testFiles = List([
-			{ siapath: 'test1' },
-			{ siapath: 'test2' },
-			{ siapath: 'test3' },
-			{ siapath: 'test4' },
-			{ siapath: 'test5' },
+			{ senpath: 'test1' },
+			{ senpath: 'test2' },
+			{ senpath: 'test3' },
+			{ senpath: 'test4' },
+			{ senpath: 'test5' },
 		])
 		it('selects all from first -> last', () => {
 			const selected = OrderedSet([
-				{ siapath: 'test1' },
+				{ senpath: 'test1' },
 			])
 			expect(rangeSelect(testFiles.last(), testFiles, selected).toArray()).to.deep.equal(testFiles.toArray())
 		})
 		it('selects all from last -> first', () => {
 			const selected = OrderedSet([
-				{ siapath: 'test5' },
+				{ senpath: 'test5' },
 			])
 			expect(rangeSelect(testFiles.first(), testFiles, selected).toArray()).to.deep.equal(testFiles.reverse().toArray())
 		})
 		it('adds selections correctly top -> bottom', () => {
 			const selected = OrderedSet([
-				{ siapath: 'test2' },
+				{ senpath: 'test2' },
 			])
 			const expectedSelection = [
-				{ siapath: 'test2' },
-				{ siapath: 'test3' },
+				{ senpath: 'test2' },
+				{ senpath: 'test3' },
 			]
-			expect(rangeSelect({ siapath: 'test3' }, testFiles, selected).toArray()).to.deep.equal(expectedSelection)
+			expect(rangeSelect({ senpath: 'test3' }, testFiles, selected).toArray()).to.deep.equal(expectedSelection)
 		})
 		it('adds selections correctly bottom -> top', () => {
 			const selected = OrderedSet([
-				{ siapath: 'test4' },
+				{ senpath: 'test4' },
 			])
 			const expectedSelection = [
-				{ siapath: 'test4' },
-				{ siapath: 'test3' },
-				{ siapath: 'test2' },
+				{ senpath: 'test4' },
+				{ senpath: 'test3' },
+				{ senpath: 'test2' },
 			]
-			expect(rangeSelect({ siapath: 'test2' }, testFiles, selected).toArray()).to.deep.equal(expectedSelection)
+			expect(rangeSelect({ senpath: 'test2' }, testFiles, selected).toArray()).to.deep.equal(expectedSelection)
 		})
 		it('adds selections correctly given subsequent shift clicks top -> bottom', () => {
 			let selected = OrderedSet([
-				{ siapath: 'test1' },
+				{ senpath: 'test1' },
 			])
 			let expectedSelection = [
-				{ siapath: 'test1' },
-				{ siapath: 'test2' },
-				{ siapath: 'test3' },
+				{ senpath: 'test1' },
+				{ senpath: 'test2' },
+				{ senpath: 'test3' },
 			]
-			expect(rangeSelect({ siapath: 'test3' }, testFiles, selected).toArray()).to.deep.equal(expectedSelection)
+			expect(rangeSelect({ senpath: 'test3' }, testFiles, selected).toArray()).to.deep.equal(expectedSelection)
 			selected = OrderedSet(expectedSelection)
 			expectedSelection = [
-				{ siapath: 'test1' },
-				{ siapath: 'test2' },
+				{ senpath: 'test1' },
+				{ senpath: 'test2' },
 			]
-			expect(rangeSelect({ siapath: 'test2' }, testFiles, selected).toArray()).to.deep.equal(expectedSelection)
+			expect(rangeSelect({ senpath: 'test2' }, testFiles, selected).toArray()).to.deep.equal(expectedSelection)
 		})
 		it('adds selections correctly given subsequent shift clicks bottom -> top', () => {
 			let selected = OrderedSet([
-				{ siapath: 'test5' },
+				{ senpath: 'test5' },
 			])
 			let expectedSelection = [
-				{ siapath: 'test5' },
-				{ siapath: 'test4' },
-				{ siapath: 'test3' },
+				{ senpath: 'test5' },
+				{ senpath: 'test4' },
+				{ senpath: 'test3' },
 			]
-			expect(rangeSelect({ siapath: 'test3' }, testFiles, selected).toArray()).to.deep.equal(expectedSelection)
+			expect(rangeSelect({ senpath: 'test3' }, testFiles, selected).toArray()).to.deep.equal(expectedSelection)
 			selected = OrderedSet(expectedSelection)
 			expectedSelection = [
-				{ siapath: 'test5' },
-				{ siapath: 'test4' },
+				{ senpath: 'test5' },
+				{ senpath: 'test4' },
 			]
-			expect(rangeSelect({ siapath: 'test4' }, testFiles, selected).toArray()).to.deep.equal(expectedSelection)
+			expect(rangeSelect({ senpath: 'test4' }, testFiles, selected).toArray()).to.deep.equal(expectedSelection)
 		})
 	})
 	describe('ls helper function', () => {
@@ -142,65 +142,65 @@ describe('files plugin helper functions', () => {
 			'path': Path.win32,
 		}).ls
 		it('should ls a file list correctly', () => {
-			const siapathInputs = List([
-				{ filesize: 1337, siapath: 'folder/file.jpg', siaUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 50 },
-				{ filesize: 13117, siapath: 'folder/file2.jpg', siaUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 100 },
-				{ filesize: 1237, siapath: 'rare_pepe.png', siaUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 100 },
-				{ filesize: 1317, siapath: 'memes/waddup.png', siaUIFolder: false, redundancy: 2.5, available: true, uploadprogress: 10 },
-				{ filesize: 1337, siapath: 'memes/itsdatboi.mov', siaUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 20 },
-				{ filesize: 1337, siapath: 'memes/rares/lordkek.gif', siaUIFolder: false, redundancy: 1.6, available: true, uploadprogress: 30 },
-				{ filesize: 13117, siapath: 'sibyl_system.avi', siaUIFolder: false, redundancy: 1.0, available: true, uploadprogress: 75 },
-				{ filesize: 13117, siapath: 'test_0bytes.avi', siaUIFolder: false, redundancy: -1, available: true, uploadprogress: 100 },
-				{ filesize: 1331, siapath: 'doggos/borkborkdoggo.png', siaUIFolder: false, redundancy: 1.5, available: true, uploadprogress: 100 },
-				{ filesize: 1333, siapath: 'doggos/snip_snip_doggo_not_bork_bork_kind.jpg', siaUiFolder: false, redundancy: 1.0, available: true, uploadprogress: 100 },
+			const senpathInputs = List([
+				{ filesize: 1337, senpath: 'folder/file.jpg', senUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 50 },
+				{ filesize: 13117, senpath: 'folder/file2.jpg', senUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 100 },
+				{ filesize: 1237, senpath: 'rare_pepe.png', senUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 100 },
+				{ filesize: 1317, senpath: 'memes/waddup.png', senUIFolder: false, redundancy: 2.5, available: true, uploadprogress: 10 },
+				{ filesize: 1337, senpath: 'memes/itsdatboi.mov', senUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 20 },
+				{ filesize: 1337, senpath: 'memes/rares/lordkek.gif', senUIFolder: false, redundancy: 1.6, available: true, uploadprogress: 30 },
+				{ filesize: 13117, senpath: 'sibyl_system.avi', senUIFolder: false, redundancy: 1.0, available: true, uploadprogress: 75 },
+				{ filesize: 13117, senpath: 'test_0bytes.avi', senUIFolder: false, redundancy: -1, available: true, uploadprogress: 100 },
+				{ filesize: 1331, senpath: 'doggos/borkborkdoggo.png', senUIFolder: false, redundancy: 1.5, available: true, uploadprogress: 100 },
+				{ filesize: 1333, senpath: 'doggos/snip_snip_doggo_not_bork_bork_kind.jpg', senUiFolder: false, redundancy: 1.0, available: true, uploadprogress: 100 },
 			])
 			const expectedOutputs = {
 				'': List([
-					{ size: readableFilesize(1331+1333), name: 'doggos', siapath: 'doggos/', redundancy: 1.0, available: true, siaUIFolder: false, uploadprogress: 100, type: 'directory' },
-					{ size: readableFilesize(1337+13117), name: 'folder', siapath: 'folder/', redundancy: 2.0, available: true, siaUIFolder: false, uploadprogress: 50, type: 'directory' },
-					{ size: readableFilesize(1317+1337+1337), name: 'memes', siapath: 'memes/', redundancy: 1.6, available: true, siaUIFolder: false, uploadprogress: 10, type: 'directory' },
-					{ size: readableFilesize(1237), name: 'rare_pepe.png', siapath: 'rare_pepe.png', redundancy: 2.0, available: true, siaUIFolder: false, uploadprogress: 100, type: 'file' },
-					{ size: readableFilesize(13117), name: 'sibyl_system.avi', siapath: 'sibyl_system.avi', redundancy: 1.0, available: true, siaUIFolder: false, uploadprogress: 75, type: 'file' },
-					{ size: readableFilesize(13117), name: 'test_0bytes.avi', siapath: 'test_0bytes.avi', redundancy: -1.0, available: true, siaUIFolder: false, uploadprogress: 100, type: 'file'},
+					{ size: readableFilesize(1331+1333), name: 'doggos', senpath: 'doggos/', redundancy: 1.0, available: true, senUIFolder: false, uploadprogress: 100, type: 'directory' },
+					{ size: readableFilesize(1337+13117), name: 'folder', senpath: 'folder/', redundancy: 2.0, available: true, senUIFolder: false, uploadprogress: 50, type: 'directory' },
+					{ size: readableFilesize(1317+1337+1337), name: 'memes', senpath: 'memes/', redundancy: 1.6, available: true, senUIFolder: false, uploadprogress: 10, type: 'directory' },
+					{ size: readableFilesize(1237), name: 'rare_pepe.png', senpath: 'rare_pepe.png', redundancy: 2.0, available: true, senUIFolder: false, uploadprogress: 100, type: 'file' },
+					{ size: readableFilesize(13117), name: 'sibyl_system.avi', senpath: 'sibyl_system.avi', redundancy: 1.0, available: true, senUIFolder: false, uploadprogress: 75, type: 'file' },
+					{ size: readableFilesize(13117), name: 'test_0bytes.avi', senpath: 'test_0bytes.avi', redundancy: -1.0, available: true, senUIFolder: false, uploadprogress: 100, type: 'file'},
 				]),
 				'doggos/': List([
-					{ size: readableFilesize(1331), name: 'borkborkdoggo.png', siapath: 'doggos/borkborkdoggo.png', redundancy: 1.5, available: true, siaUIFolder: false, uploadprogress: 100, type: 'file' },
-					{ size: readableFilesize(1333), name: 'snip_snip_doggo_not_bork_bork_kind.jpg', redundancy: 1.0, siapath: 'doggos/snip_snip_doggo_not_bork_bork_kind.jpg', available: true, siaUIFolder: false, uploadprogress: 100, type: 'file' },
+					{ size: readableFilesize(1331), name: 'borkborkdoggo.png', senpath: 'doggos/borkborkdoggo.png', redundancy: 1.5, available: true, senUIFolder: false, uploadprogress: 100, type: 'file' },
+					{ size: readableFilesize(1333), name: 'snip_snip_doggo_not_bork_bork_kind.jpg', redundancy: 1.0, senpath: 'doggos/snip_snip_doggo_not_bork_bork_kind.jpg', available: true, senUIFolder: false, uploadprogress: 100, type: 'file' },
 				]),
 				'memes/': List([
-					{ size: readableFilesize(1337), name: 'rares', siapath: 'memes/rares/', available: true, siaUIFolder: false,  redundancy: 1.6, uploadprogress: 30, type: 'directory' },
-					{ size: readableFilesize(1337), name: 'itsdatboi.mov', siapath: 'memes/itsdatboi.mov', redundancy: 2.0, siaUIFolder: false, available: true, uploadprogress: 20, type: 'file' },
-					{ size: readableFilesize(1317), name: 'waddup.png', siapath: 'memes/waddup.png', available: true, siaUIFolder: false, redundancy: 2.5, uploadprogress: 10, type: 'file' },
+					{ size: readableFilesize(1337), name: 'rares', senpath: 'memes/rares/', available: true, senUIFolder: false,  redundancy: 1.6, uploadprogress: 30, type: 'directory' },
+					{ size: readableFilesize(1337), name: 'itsdatboi.mov', senpath: 'memes/itsdatboi.mov', redundancy: 2.0, senUIFolder: false, available: true, uploadprogress: 20, type: 'file' },
+					{ size: readableFilesize(1317), name: 'waddup.png', senpath: 'memes/waddup.png', available: true, senUIFolder: false, redundancy: 2.5, uploadprogress: 10, type: 'file' },
 				]),
 			}
 			for (const path in expectedOutputs) {
-				const output = ls(siapathInputs, path)
-				const outputWin32 = lsWin32(siapathInputs, path)
+				const output = ls(senpathInputs, path)
+				const outputWin32 = lsWin32(senpathInputs, path)
 				expect(output).to.deep.equal(outputWin32)
 				expect(output.size).to.equal(expectedOutputs[path].size)
 				expect(output.toObject()).to.deep.equal(expectedOutputs[path].toObject())
 			}
 		})
-		it('should work with siapaths that have a folder or file ending in ..', () => {
-			const siapathInputs = List([
-				{ filesize: 1000, siapath: 'test/test/..test.png', siaUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 100 },
-				{ filesize: 1000, siapath: 'test/test../test.png', siaUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 100},
+		it('should work with senpaths that have a folder or file ending in ..', () => {
+			const senpathInputs = List([
+				{ filesize: 1000, senpath: 'test/test/..test.png', senUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 100 },
+				{ filesize: 1000, senpath: 'test/test../test.png', senUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 100},
 			])
 			const expectedOutputs = {
 				'': List([
-					{ size: readableFilesize(1000+1000), name: 'test', siapath: 'test/', siaUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 100, type: 'directory' },
+					{ size: readableFilesize(1000+1000), name: 'test', senpath: 'test/', senUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 100, type: 'directory' },
 				]),
 				'test': List([
-					{ size: readableFilesize(1000), name: 'test', siapath: 'test/test/', siaUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 100, type: 'directory' },
-					{ size: readableFilesize(1000), name: 'test..', siapath: 'test/test../', redundancy: 2.0, siaUIFolder: false, available: true, uploadprogress: 100, type: 'directory' },
+					{ size: readableFilesize(1000), name: 'test', senpath: 'test/test/', senUIFolder: false, redundancy: 2.0, available: true, uploadprogress: 100, type: 'directory' },
+					{ size: readableFilesize(1000), name: 'test..', senpath: 'test/test../', redundancy: 2.0, senUIFolder: false, available: true, uploadprogress: 100, type: 'directory' },
 				]),
 				'test/test': List([
-					{ size: readableFilesize(1000), name: '..test.png', siapath: 'test/test/..test.png', redundancy: 2.0, siaUIFolder: false, available: true, uploadprogress: 100, type: 'file' },
+					{ size: readableFilesize(1000), name: '..test.png', senpath: 'test/test/..test.png', redundancy: 2.0, senUIFolder: false, available: true, uploadprogress: 100, type: 'file' },
 				]),
 			}
 			for (const path in expectedOutputs) {
-				const output = ls(siapathInputs, path)
-				const outputWin32 = lsWin32(siapathInputs, path)
+				const output = ls(senpathInputs, path)
+				const outputWin32 = lsWin32(senpathInputs, path)
 				expect(output).to.deep.equal(outputWin32)
 				expect(output.size).to.equal(expectedOutputs[path].size)
 				expect(output.toObject()).to.deep.equal(expectedOutputs[path].toObject())
@@ -232,39 +232,39 @@ describe('files plugin helper functions', () => {
 	describe('buildTransferTimes', () => {
 		it('correctly appends new transfers to a set of previous transfer times', () => {
 			const previousTransferTimes = Map({
-				'siapath1': { timestamps: [1, 2], bytes: [10, 20] },
-				'siapath2': { timestamps: [1, 2, 3, 4, 5], bytes: [10, 20, 30, 40, 50] },
+				'senpath1': { timestamps: [1, 2], bytes: [10, 20] },
+				'senpath2': { timestamps: [1, 2, 3, 4, 5], bytes: [10, 20, 30, 40, 50] },
 			})
 			const transfers = List([
-				{ siapath: 'siapath1', bytestransferred: 60 },
-				{ siapath: 'siapath2', bytestransferred: 70 },
-				{ siapath: 'siapath3', bytestransferred: 80 },
+				{ senpath: 'senpath1', bytestransferred: 60 },
+				{ senpath: 'senpath2', bytestransferred: 70 },
+				{ senpath: 'senpath3', bytestransferred: 80 },
 			])
 			const transferTimes = buildTransferTimes(previousTransferTimes, transfers)
-			expect(transferTimes.get('siapath1').timestamps.length).to.equal(3)
-			expect(transferTimes.get('siapath1').bytes.length).to.equal(3)
-			expect(transferTimes.get('siapath1').bytes[2]).to.equal(60)
-			expect(transferTimes.get('siapath2').timestamps.length).to.equal(5)
-			expect(transferTimes.get('siapath2').bytes.length).to.equal(5)
-			expect(transferTimes.get('siapath2').timestamps[0]).to.equal(2)
-			expect(transferTimes.get('siapath2').bytes[0]).to.equal(20)
-			expect(transferTimes.get('siapath2').bytes[4]).to.equal(70)
-			expect(transferTimes.get('siapath3').timestamps.length).to.equal(1)
-			expect(transferTimes.get('siapath3').bytes.length).to.equal(1)
-			expect(transferTimes.get('siapath3').bytes[0]).to.equal(80)
+			expect(transferTimes.get('senpath1').timestamps.length).to.equal(3)
+			expect(transferTimes.get('senpath1').bytes.length).to.equal(3)
+			expect(transferTimes.get('senpath1').bytes[2]).to.equal(60)
+			expect(transferTimes.get('senpath2').timestamps.length).to.equal(5)
+			expect(transferTimes.get('senpath2').bytes.length).to.equal(5)
+			expect(transferTimes.get('senpath2').timestamps[0]).to.equal(2)
+			expect(transferTimes.get('senpath2').bytes[0]).to.equal(20)
+			expect(transferTimes.get('senpath2').bytes[4]).to.equal(70)
+			expect(transferTimes.get('senpath3').timestamps.length).to.equal(1)
+			expect(transferTimes.get('senpath3').bytes.length).to.equal(1)
+			expect(transferTimes.get('senpath3').bytes[0]).to.equal(80)
 		})
 	})
 	describe('addTransferSpeeds', () => {
 		it('correctly appends speeds to a set of previous transfer times', () => {
 			const transferTimes = Map({
-				'siapath1': { timestamps: [1, 2000], bytes: [10, 4000000] },
-				'siapath2': { timestamps: [1, 2, 3, 4, 5000], bytes: [10, 20, 30, 40, 10000] },
-				'siapath3': { timestamps: [1000, 2000], bytes: [50, 60] },
+				'senpath1': { timestamps: [1, 2000], bytes: [10, 4000000] },
+				'senpath2': { timestamps: [1, 2, 3, 4, 5000], bytes: [10, 20, 30, 40, 10000] },
+				'senpath3': { timestamps: [1000, 2000], bytes: [50, 60] },
 			})
 			const untimedTransfers = List([
-				{ siapath: 'siapath1', bytestransferred: 4000000 },
-				{ siapath: 'siapath2', bytestransferred: 10000 },
-				{ siapath: 'siapath3', bytestransferred: 60 },
+				{ senpath: 'senpath1', bytestransferred: 4000000 },
+				{ senpath: 'senpath2', bytestransferred: 10000 },
+				{ senpath: 'senpath3', bytestransferred: 60 },
 			])
 			const timedTransfers = addTransferSpeeds(untimedTransfers, transferTimes)
 			expect(timedTransfers.get(0).speed).to.equal('2 MB/s')
@@ -275,12 +275,12 @@ describe('files plugin helper functions', () => {
 	describe('searchFiles', () => {
 		it('parses a file tree and returns expected search results', () => {
 			const files = List([
-				{ siapath: 'test/test1/testfile' },
-				{ siapath: 'test/test1/testaaa' },
-				{ siapath: 'test/test2/testfile2' },
-				{ siapath: 'test/test3/testfile3' },
-				{ siapath: 'test2/asdf.mov' },
-				{ siapath: 'test/testuifolder', siaUIFolder: true},
+				{ senpath: 'test/test1/testfile' },
+				{ senpath: 'test/test1/testaaa' },
+				{ senpath: 'test/test2/testfile2' },
+				{ senpath: 'test/test3/testfile3' },
+				{ senpath: 'test2/asdf.mov' },
+				{ senpath: 'test/testuifolder', senUIFolder: true},
 			])
 
 			expect(searchFiles(files, '', 'test/testuifolder').size).to.equal(0)

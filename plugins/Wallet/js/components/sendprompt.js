@@ -19,7 +19,7 @@ const SendPrompt = ({currencytype, sendAddress, sendAmount, feeEstimate, sendErr
 		<div className="modal">
 			<div className="sendprompt">
 				<div className="sendamount">
-					<h3>Send Amount {currencytype === 'siacoins' ? '(SC)' : '(SF)'} </h3>
+					<h3>Send Amount {currencytype === 'sen' ? '(SC)' : '(SF)'} </h3>
 					<input onChange={handleSendAmountChange} value={sendAmount} />
 				</div>
 				<div className="sendaddress">
@@ -31,7 +31,7 @@ const SendPrompt = ({currencytype, sendAddress, sendAmount, feeEstimate, sendErr
 				</div>
 				<span className="send-error">{sendError}</span>
 				<div className="send-prompt-buttons">
-					<button className="send-siacoin-button" onClick={handleSendClick}>Send</button>
+					<button className="send-sen-button" onClick={handleSendClick}>Send</button>
 					<button className="cancel-send-button" onClick={handleCancelClick}>Cancel</button>
 				</div>
 			</div>

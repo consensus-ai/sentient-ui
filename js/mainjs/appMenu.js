@@ -5,11 +5,11 @@ export default function(window) {
 	// Selectors call the main app's NSApplication methods.
 	const menutemplate = [
 		{
-			label: 'Sia',
+			label: 'Sentient',
 			submenu: [
-				{ label: 'About Sia', selector: 'orderFrontStandardAboutPanel:' },
+				{ label: 'About Sentient', selector: 'orderFrontStandardAboutPanel:' },
 				{ type: 'separator' },
-				{ label: 'Hide Sia', accelerator: 'CmdOrCtrl+H', selector: 'hide:'},
+				{ label: 'Hide Sentient', accelerator: 'CmdOrCtrl+H', selector: 'hide:'},
 				{ type: 'separator' },
 				{ label: 'Quit', accelerator: 'CmdOrCtrl+Q', click: () => window.webContents.send('quit') },
 			],

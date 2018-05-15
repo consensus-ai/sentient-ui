@@ -2,14 +2,14 @@ import { expect } from 'chai'
 import { spy, stub, match } from 'sinon'
 import { mount } from 'enzyme'
 import { initWallet } from '../plugins/Wallet/js/main.js'
-import * as Siad from 'sentient.js'
-import siaConfig from '../js/mainjs/config.js'
+import * as Sentientd from 'sentient.js'
+import senConfig from '../js/mainjs/config.js'
 
-const mockSiaAPI = {
+const mockSentientAPI = {
 	call: stub(),
-	config: siaConfig(''),
-	hastingsToSiacoins: Siad.hastingsToSiacoins,
-	siacoinsToHastings: Siad.siacoinsToHastings,
+	config: senConfig(''),
+	hastingsToSen: Sentientd.hastingsToSen,
+	senToHastings: Sentientd.senToHastings,
 	openFile: () => spy(),
 	saveFile: () => spy(),
 	showMessage: () => spy(),
@@ -19,7 +19,7 @@ const mockSiaAPI = {
 const testSeed = 'this is a seed used for testing env'
 
 const setMockLockState = (lockstate) => {
-	SiaAPI.call.withArgs('/wallet').callsArgWith(1, null, lockstate)
+	SentientAPI.call.withArgs('/wallet').callsArgWith(1, null, lockstate)
 }
 
 // This is a sinon matcher function used to set up separate mocks for
@@ -35,47 +35,47 @@ const callHasPassword = (call, password) => {
 }
 
 const setMockWalletPassword = (password) => {
-	SiaAPI.call.withArgs(match((call) => callHasPassword(call, password))).callsArgWith(1, null)
+	SentientAPI.call.withArgs(match((call) => callHasPassword(call, password))).callsArgWith(1, null)
 }
 
 const setMockIncorrectWalletPassword = (password) => {
-	SiaAPI.call.withArgs(match((call) => callHasPassword(call, password))).callsArgWith(1, {message: 'incorrect password'})
+	SentientAPI.call.withArgs(match((call) => callHasPassword(call, password))).callsArgWith(1, {message: 'incorrect password'})
 }
 
 const setMockReceiveAddress = (address) => {
-	SiaAPI.call.withArgs('/wallet/address').callsArgWith(1, null, {
+	SentientAPI.call.withArgs('/wallet/address').callsArgWith(1, null, {
 		address,
 	})
 }
 const setMockAddresses = (addresses) => {
-	SiaAPI.call.withArgs('/wallet/addresses').callsArgWith(1, null, {
+	SentientAPI.call.withArgs('/wallet/addresses').callsArgWith(1, null, {
 		addresses: addresses,
 	})
 }
 
-const mockSendSiacoin = () => {
-	SiaAPI.call.withArgs(match.has('url', '/wallet/siacoins')).callsArgWith(1, null)
+const mockSendSen = () => {
+	SentientAPI.call.withArgs(match.has('url', '/wallet/sen')).callsArgWith(1, null)
 }
 const mockCreateWallet = (primaryseed) => {
-	SiaAPI.call.withArgs(match.has('url', '/wallet/init')).callsArgWith(1, null, {primaryseed: primaryseed})
+	SentientAPI.call.withArgs(match.has('url', '/wallet/init')).callsArgWith(1, null, {primaryseed: primaryseed})
 }
 const mockChangePassword = (password, wrongpassword) => {
-	SiaAPI.call.withArgs(match((call) => callHasPassword(call, password))).callsArgWith(1, null)
-	SiaAPI.call.withArgs(match((call) => callHasPassword(call, wrongpassword))).callsArgWith(1,  {message: 'incorrect password'})
+	SentientAPI.call.withArgs(match((call) => callHasPassword(call, password))).callsArgWith(1, null)
+	SentientAPI.call.withArgs(match((call) => callHasPassword(call, wrongpassword))).callsArgWith(1,  {message: 'incorrect password'})
 }
 
-// Set up default siad call mocks for the wallet.
-// Currently, wallet lock state, login, and send siacoin calls are mocked.
+// Set up default sentientd call mocks for the wallet.
+// Currently, wallet lock state, login, and send sen calls are mocked.
 const setupMockCalls = () => {
-	SiaAPI.call.withArgs(match({
+	SentientAPI.call.withArgs(match({
 		url: '/wallet/lock',
 		method: 'POST',
 	})).callsArgWith(1, null)
-	SiaAPI.call.withArgs('/wallet/seeds').callsArgWith(1, null, { 'primaryseed': testSeed })
+	SentientAPI.call.withArgs('/wallet/seeds').callsArgWith(1, null, { 'primaryseed': testSeed })
 	setMockLockState({unlocked: false, encrypted: true})
 	setMockWalletPassword('testpass')
 	setMockIncorrectWalletPassword('wrongpass')
-	mockSendSiacoin()
+	mockSendSen()
 }
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -83,7 +83,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 describe('wallet change password functionality', () => {
 	let walletComponent
 	before(() => {
-		global.SiaAPI = mockSiaAPI
+		global.SentientAPI = mockSentientAPI
 		// Set NODE_ENV to production to suppress react warnings
 		// caused by externally triggering events on mounted components
 		process.env.NODE_ENV = 'production'
@@ -151,7 +151,7 @@ describe('wallet change password functionality', () => {
 
 describe('wallet creation', () => {
 	before(() => {
-		global.SiaAPI = mockSiaAPI
+		global.SentientAPI = mockSentientAPI
 		// Set NODE_ENV to production to suppress react warnings
 		// caused by externally triggering events on mounted components
 		process.env.NODE_ENV = 'production'
@@ -282,7 +282,7 @@ describe('wallet creation', () => {
 describe('wallet plugin integration tests', () => {
 	let walletComponent
 	before(() => {
-		global.SiaAPI = mockSiaAPI
+		global.SentientAPI = mockSentientAPI
 		// Set NODE_ENV to production to suppress react warnings
 		// caused by externally triggering events on mounted components
 		process.env.NODE_ENV = 'production'
@@ -316,7 +316,7 @@ describe('wallet plugin integration tests', () => {
 	})
 
 	describe('receive prompt', () => {
-		it('shows a new wallet address when receive siacoins is clicked initially', async () => {
+		it('shows a new wallet address when receive sen is clicked initially', async () => {
 			setMockReceiveAddress('testaddress')
 			setMockAddresses(['testaddress'])
 			expect(walletComponent.find('.receive-prompt')).to.have.length(0)
@@ -369,16 +369,16 @@ describe('wallet plugin integration tests', () => {
 			walletComponent.find('.send-button').first().simulate('click')
 			expect(walletComponent.find('.sendprompt')).to.have.length(1)
 		})
-		it('sends the correct amount of siacoins to the correct address', () => {
+		it('sends the correct amount of sen to the correct address', () => {
 			walletComponent.find('.sendamount input').simulate('change', { target: { value: '100' }})
 			walletComponent.find('.sendaddress input').simulate('change', { target: { value: 'testaddress'}})
-			walletComponent.find('.send-siacoin-button').simulate('click')
-			expect(SiaAPI.call.lastCall.args[0]).to.deep.equal({
-				url: '/wallet/siacoins',
+			walletComponent.find('.send-sen-button').simulate('click')
+			expect(SentientAPI.call.lastCall.args[0]).to.deep.equal({
+				url: '/wallet/sen',
 				method: 'POST',
 				qs: {
 					destination: 'testaddress',
-					amount: SiaAPI.siacoinsToHastings('100').toString(),
+					amount: SentientAPI.senToHastings('100').toString(),
 				},
 			})
 		})

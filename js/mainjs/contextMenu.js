@@ -78,7 +78,7 @@ const template = [
 		label: 'Help',
 		role: 'help',
 		submenu: [
-			{ label: 'Learn More', click: () => shell.openExternal('http://sia.tech/') },
+			{ label: 'Learn More', click: () => shell.openExternal('https://consensus.ai/') },
 		],
 	},
 ]

@@ -7,10 +7,10 @@ set -e
 # linux, and windows. It takes 5 arguments, the first two arguments are the
 # private and public key used to sign the release archives. The last three
 # arguments are semver strings, the first of which being the ui version, second
-# being the Sia version, and third being the electron version.
+# being the Sentient version, and third being the electron version.
 
 if [[ -z $1 || -z $2 ]]; then
-	echo "Usage: $0 privatekey publickey uiversion siaversion electronversion"
+	echo "Usage: $0 privatekey publickey uiversion senversion electronversion"
 	exit 1
 fi
 
@@ -35,9 +35,9 @@ electronOSX="https://github.com/electron/electron/releases/download/${electronVe
 electronLinux="https://github.com/electron/electron/releases/download/${electronVersion}/electron-${electronVersion}-linux-x64.zip"
 electronWindows="https://github.com/electron/electron/releases/download/${electronVersion}/electron-${electronVersion}-win32-x64.zip"
 
-siaOSX="/Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/Sia-${siaVersion}-darwin-amd64.zip"
-siaLinux="/Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/Sia-${siaVersion}-linux-amd64.zip"
-siaWindows="/Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/Sia-${siaVersion}-windows-amd64.zip"
+siaOSX="/Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/Sentient-${siaVersion}-darwin-amd64.zip"
+siaLinux="/Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/Sentient-${siaVersion}-linux-amd64.zip"
+siaWindows="/Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/Sentient-${siaVersion}-windows-amd64.zip"
 
 rm -rf release/
 mkdir -p release/{osx,linux,win32}
@@ -66,9 +66,9 @@ buildOSX() {
 	(
 		cd Sentient-UI.app/Contents/Resources/app
 		cp $siaOSX .
-		unzip ./Sia-*
-		rm ./Sia*.zip
-		mv ./Sia-* ./Sia
+		unzip ./Sentient-*
+		rm ./Sentient*.zip
+		mv ./Sentient-* ./Sentient
 	)
 	package "../../" "Sentient-UI.app/Contents/Resources/app"
 	rm -r electron*.zip
@@ -85,9 +85,9 @@ buildLinux() {
 	(
 		cd resources/app
 		cp $siaLinux .
-		unzip ./Sia-*
-		rm ./Sia*.zip
-		mv ./Sia-* ./Sia
+		unzip ./Sentient-*
+		rm ./Sentient*.zip
+		mv ./Sentient-* ./Sentient
 	)
 	package "../../" "resources/app"
 	rm -r electron*.zip
@@ -107,9 +107,9 @@ buildWindows() {
 	(
 		cd resources/app
 		cp $siaWindows .
-		unzip ./Sia-*
-		rm ./Sia*.zip
-		mv ./Sia-* ./Sia
+		unzip ./Sentient-*
+		rm ./Sentient*.zip
+		mv ./Sentient-* ./Sentient
 	)
 	package "../../" "resources/app"
 	rm -r electron*.zip

@@ -15,7 +15,7 @@ import BackupButton from '../containers/backupbutton.js'
 import BackupPrompt from '../containers/backupprompt.js'
 import BalanceInfo from '../containers/balanceinfo.js'
 
-const Wallet = ({showBackupPrompt, siafundbalance, showReceivePrompt, showChangePasswordDialog, showSendPrompt, showNewWalletDialog, showRecoveryDialog, actions }) => {
+const Wallet = ({showBackupPrompt, senfundbalance, showReceivePrompt, showChangePasswordDialog, showSendPrompt, showNewWalletDialog, showRecoveryDialog, actions }) => {
 	const onSendClick = (currencytype) => () => actions.startSendPrompt(currencytype)
 	return (
 		<div className="wallet">
@@ -25,8 +25,8 @@ const Wallet = ({showBackupPrompt, siafundbalance, showReceivePrompt, showChange
 				<ChangePasswordButton />
 				<LockButton />
 				<RecoverButton />
-				{siafundbalance !== '0' ? <SendButton currencytype="Siafund" onClick={onSendClick('siafunds')} />: null}
-				<SendButton currencytype="Siacoin" onClick={onSendClick('siacoins')} />
+				{senfundbalance !== '0' ? <SendButton currencytype="Senfund" onClick={onSendClick('senfunds')} />: null}
+				<SendButton currencytype="Sen" onClick={onSendClick('sen')} />
 				<ReceiveButton />
 			</div>
 			{showNewWalletDialog ? <NewWalletDialog /> : null}
@@ -41,7 +41,7 @@ const Wallet = ({showBackupPrompt, siafundbalance, showReceivePrompt, showChange
 }
 
 Wallet.propTypes = {
-	siafundbalance: PropTypes.string.isRequired,
+	senfundbalance: PropTypes.string.isRequired,
 	showNewWalletDialog: PropTypes.bool,
 	showSendPrompt: PropTypes.bool,
 	showReceivePrompt: PropTypes.bool,

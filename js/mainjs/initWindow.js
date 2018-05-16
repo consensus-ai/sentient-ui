@@ -19,14 +19,14 @@ export default function(config) {
 	const iconPath = Path.join(__dirname, '../', 'assets', 'icon.png')
 	const mainWindow = new BrowserWindow({
 		icon:   iconPath,
-		title:  'Sia-UI',
+		title:  'Sentient-UI',
 	})
 	// Set mainWindow's closeToTray flag from config.
 	// This should be used in the renderer to cancel close() events using window.onbeforeunload
 	mainWindow.closeToTray = config.closeToTray
 
 	mainWindow.tray = new Tray(Path.join(app.getAppPath(), 'assets', 'tray.png'))
-	mainWindow.tray.setToolTip('Sia - The Collaborative Cloud.')
+	mainWindow.tray.setToolTip('Sentient')
 	mainWindow.tray.setContextMenu(appTray(mainWindow))
 
 	// Load the window's size and position
@@ -45,7 +45,7 @@ export default function(config) {
 
 		// Set the about panel's properties
 		app.setAboutPanelOptions({
-			applicationName: 'Sia-UI',
+			applicationName: 'Sentient-UI',
 			applicationVersion: version,
 			copyright: 'Nebulous Inc.',
 			version: releaseName,

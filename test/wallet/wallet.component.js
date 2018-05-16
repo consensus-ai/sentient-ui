@@ -18,50 +18,50 @@ describe('wallet component', () => {
 	afterEach(() => {
 		testActions.startSendPrompt.reset()
 	})
-	it('renders siacoin send button when siafund balance is zero', () => {
-		const walletComponent = shallow(<Wallet synced confirmedbalance="10" unconfirmedbalance="1" siafundbalance="0" />)
+	it('renders sen send button when senfund balance is zero', () => {
+		const walletComponent = shallow(<Wallet synced confirmedbalance="10" unconfirmedbalance="1" senfundbalance="0" />)
 		expect(walletComponent.find('SendButton')).to.have.length(1)
 	})
-	it('renders start send prompt with siacoins when send siacoin button is clicked', () => {
-		const walletComponent = shallow(<Wallet synced confirmedbalance="10" unconfirmedbalance="1" siafundbalance="0" actions={testActions} />)
+	it('renders start send prompt with sen when send sen button is clicked', () => {
+		const walletComponent = shallow(<Wallet synced confirmedbalance="10" unconfirmedbalance="1" senfundbalance="0" actions={testActions} />)
 		walletComponent.find('SendButton').first().simulate('click')
-		expect(testActions.startSendPrompt.calledWith('siacoins')).to.be.true
+		expect(testActions.startSendPrompt.calledWith('sen')).to.be.true
 	})
-	it('renders start send prompt with siafunds when send siafunds button is clicked', () => {
-		const walletComponent = shallow(<Wallet synced confirmedbalance="10" unconfirmedbalance="1" siafundbalance="1" actions={testActions} />)
-		walletComponent.find('SendButton [currencytype="Siafund"]').first().simulate('click')
-		expect(testActions.startSendPrompt.calledWith('siafunds')).to.be.true
+	it('renders start send prompt with senfunds when send senfunds button is clicked', () => {
+		const walletComponent = shallow(<Wallet synced confirmedbalance="10" unconfirmedbalance="1" senfundbalance="1" actions={testActions} />)
+		walletComponent.find('SendButton [currencytype="Senfund"]').first().simulate('click')
+		expect(testActions.startSendPrompt.calledWith('senfunds')).to.be.true
 	})
 	it('renders a transaction list', () => {
-		const walletComponent = shallow(<Wallet synced confirmedbalance="10" unconfirmedbalance="1" siafundbalance="0" actions={testActions} />)
+		const walletComponent = shallow(<Wallet synced confirmedbalance="10" unconfirmedbalance="1" senfundbalance="0" actions={testActions} />)
 		expect(walletComponent.contains(<TransactionList />)).to.be.true
 	})
 	it('renders a receive button', () => {
-		const walletComponent = shallow(<Wallet synced confirmedbalance="10" unconfirmedbalance="1" siafundbalance="0" actions={testActions} />)
+		const walletComponent = shallow(<Wallet synced confirmedbalance="10" unconfirmedbalance="1" senfundbalance="0" actions={testActions} />)
 		expect(walletComponent.contains(<ReceiveButton />)).to.be.true
 	})
 	it('does not render show new wallet dialog unless showNewWalletDialog', () => {
-		const walletComponent = shallow(<Wallet synced showNewWalletDialog={false} confirmedbalance="10" unconfirmedbalance="1" siafundbalance="0" actions={testActions} />)
+		const walletComponent = shallow(<Wallet synced showNewWalletDialog={false} confirmedbalance="10" unconfirmedbalance="1" senfundbalance="0" actions={testActions} />)
 		expect(walletComponent.contains(<NewWalletDialog />)).to.be.false
 	})
 	it('renders show new wallet dialog when showNewWalletDialog', () => {
-		const walletComponent = shallow(<Wallet synced showNewWalletDialog confirmedbalance="10" unconfirmedbalance="1" siafundbalance="0" actions={testActions} />)
+		const walletComponent = shallow(<Wallet synced showNewWalletDialog confirmedbalance="10" unconfirmedbalance="1" senfundbalance="0" actions={testActions} />)
 		expect(walletComponent.contains(<NewWalletDialog />)).to.be.true
 	})
 	it('does not render show send prompt unless showSendPrompt', () => {
-		const walletComponent = shallow(<Wallet synced showSendPrompt={false} confirmedbalance="10" unconfirmedbalance="1" siafundbalance="0" actions={testActions} />)
+		const walletComponent = shallow(<Wallet synced showSendPrompt={false} confirmedbalance="10" unconfirmedbalance="1" senfundbalance="0" actions={testActions} />)
 		expect(walletComponent.contains(<SendPrompt />)).to.be.false
 	})
 	it('renders show send prompt when showSendPrompt', () => {
-		const walletComponent = shallow(<Wallet synced showSendPrompt confirmedbalance="10" unconfirmedbalance="1" siafundbalance="0" actions={testActions} />)
+		const walletComponent = shallow(<Wallet synced showSendPrompt confirmedbalance="10" unconfirmedbalance="1" senfundbalance="0" actions={testActions} />)
 		expect(walletComponent.contains(<SendPrompt />)).to.be.true
 	})
 	it('does not render show receive prompt unless showReceivePrompt', () => {
-		const walletComponent = shallow(<Wallet synced showReceivePrompt={false} confirmedbalance="10" unconfirmedbalance="1" siafundbalance="0" actions={testActions} />)
+		const walletComponent = shallow(<Wallet synced showReceivePrompt={false} confirmedbalance="10" unconfirmedbalance="1" senfundbalance="0" actions={testActions} />)
 		expect(walletComponent.contains(<ReceivePrompt />)).to.be.false
 	})
 	it('renders show receive prompt when showReceivePrompt', () => {
-		const walletComponent = shallow(<Wallet synced showReceivePrompt confirmedbalance="10" unconfirmedbalance="1" siafundbalance="0" actions={testActions} />)
+		const walletComponent = shallow(<Wallet synced showReceivePrompt confirmedbalance="10" unconfirmedbalance="1" senfundbalance="0" actions={testActions} />)
 		expect(walletComponent.contains(<ReceivePrompt />)).to.be.true
 	})
 })

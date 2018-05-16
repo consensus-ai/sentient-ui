@@ -2,22 +2,23 @@ import { Application } from 'spectron'
 import { spawn } from 'child_process'
 import { expect } from 'chai'
 import psTree from 'ps-tree'
-import * as Siad from 'sentient.js'
+import * as Sentientd from 'sentient.js'
 import fs from 'fs'
+import senConfig from '../js/mainjs/config.js'
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-// getSiadChild takes an input pid and looks at all the child process of that
+// getSentientdChild takes an input pid and looks at all the child process of that
 // pid, returning an object with the fields {exists, pid}, where exists is true
-// if the input pid has a 'siad' child, and the pid is the process id of the
+// if the input pid has a 'sentientd' child, and the pid is the process id of the
 // child.
-const getSiadChild = (pid) => new Promise((resolve, reject) => {
+const getSentientdChild = (pid) => new Promise((resolve, reject) => {
 	psTree(pid, (err, children) => {
 		if (err) {
 			reject(err)
 		}
 		children.forEach((child) => {
-			if (child.COMMAND === 'siad' || child.COMMAND === 'siad.exe') {
+			if (child.COMM.endsWith('sentientd') || child.COMM.endsWith('sentientd.exe')) {
 				resolve({exists: true, pid: child.PID})
 			}
 		})
@@ -25,15 +26,15 @@ const getSiadChild = (pid) => new Promise((resolve, reject) => {
 	})
 })
 
-// pkillSiad kills all siad processes running on the machine, used in these
+// pkillSentientd kills all sentientd processes running on the machine, used in these
 // tests to ensure a clean env
-const pkillSiad = () => new Promise((resolve, reject) => {
+const pkillSentientd = () => new Promise((resolve, reject) => {
 	psTree(process.pid, (err, children) => {
 		if (err) {
 			reject(err)
 		}
 		children.forEach((child) => {
-			if (child.COMMAND === 'siad' || child.COMMAND === 'siad.exe') {
+			if (child.COMM.endsWith('sentientd') || child.COMM.endsWith('sentientd.exe')) {
 				if (process.platform === 'win32') {
 					spawn('taskkill', ['/pid', child.PID, '/f', '/t'])
 				} else {
@@ -57,20 +58,27 @@ const isProcessRunning = (pid) => {
 	}
 }
 
-const electronBinary = process.platform === 'win32' ? 'node_modules\\electron\\dist\\electron.exe' : './node_modules/electron/dist/electron'
+let electronBinary
+if (process.platform === 'win32') {
+	electronBinary = 'node_modules\\electron\\dist\\electron.exe'
+} else if (process.platform === 'darwin') {
+	electronBinary = './node_modules/electron/dist/Electron.app/Contents/MacOS/Electron'
+} else {
+	electronBinary = './node_modules/electron/dist/electron'
+}
 
 // we need functions for mocha's `this` for setting timeouts.
 /* eslint-disable no-invalid-this */
 /* eslint-disable no-unused-expressions */
 describe('startup and shutdown behaviour', () => {
 	after(async () => {
-		// never leave a dangling siad
-		await pkillSiad()
+		// never leave a dangling sentientd
+		await pkillSentientd()
 	})
 	describe('window closing behaviour', function() {
 		this.timeout(200000)
 		let app
-		let siadProcess
+		let sentientdProcess
 		beforeEach(async () => {
 			app = new Application({
 				path: electronBinary,
@@ -86,8 +94,8 @@ describe('startup and shutdown behaviour', () => {
 		})
 		afterEach(async () => {
 			try {
-				await pkillSiad()
-				while (isProcessRunning(siadProcess.pid)) {
+				await pkillSentientd()
+				while (isProcessRunning(sentientdProcess.pid)) {
 					await sleep(10)
 				}
 				app.webContents.send('quit')
@@ -98,45 +106,45 @@ describe('startup and shutdown behaviour', () => {
 		})
 		it('hides the window and persists in tray if closeToTray = true', async () => {
 			const pid = await app.mainProcess.pid()
-			siadProcess = await getSiadChild(pid)
+			sentientdProcess = await getSentientdChild(pid)
 			app.webContents.executeJavaScript('window.closeToTray = true')
 			app.browserWindow.close()
 			await sleep(1000)
 			expect(await app.browserWindow.isDestroyed()).to.be.false
 			expect(await app.browserWindow.isVisible()).to.be.false
-			expect(isProcessRunning(siadProcess.pid)).to.be.true
+			expect(isProcessRunning(sentientdProcess.pid)).to.be.true
 		})
 		it('quits gracefully on close if closeToTray = false', async () => {
 			app.webContents.executeJavaScript('window.closeToTray = false')
 			const pid = await app.mainProcess.pid()
-			expect(siadProcess.exists).to.be.true
+			expect(sentientdProcess.exists).to.be.true
 
 			app.browserWindow.close()
 			while (isProcessRunning(pid)) {
 				await sleep(10)
 			}
-			expect(isProcessRunning(siadProcess.pid)).to.be.false
+			expect(isProcessRunning(sentientdProcess.pid)).to.be.false
 		})
 		it('quits gracefully on close if already minimized and closed again', async () => {
 			const pid = await app.mainProcess.pid()
-			siadProcess = await getSiadChild(pid)
+			sentientdProcess = await getSentientdChild(pid)
 			app.webContents.executeJavaScript('window.closeToTray = true')
 			app.browserWindow.close()
 			await sleep(1000)
 			expect(await app.browserWindow.isDestroyed()).to.be.false
 			expect(await app.browserWindow.isVisible()).to.be.false
-			expect(isProcessRunning(siadProcess.pid)).to.be.true
+			expect(isProcessRunning(sentientdProcess.pid)).to.be.true
 			app.browserWindow.close()
 			while (isProcessRunning(pid)) {
 				await sleep(10)
 			}
-			expect(isProcessRunning(siadProcess.pid)).to.be.false
+			expect(isProcessRunning(sentientdProcess.pid)).to.be.false
 		})
 	})
-	describe('startup with no siad currently running', function() {
+	describe('startup with no sentientd currently running', function() {
 		this.timeout(120000)
 		let app
-		let siadProcess
+		let sentientdProcess
 		before(async () => {
 			app = new Application({
 				path: electronBinary,
@@ -151,8 +159,8 @@ describe('startup and shutdown behaviour', () => {
 			}
 		})
 		after(async () => {
-			await pkillSiad()
-			while (isProcessRunning(siadProcess.pid)) {
+			await pkillSentientd()
+			while (isProcessRunning(sentientdProcess.pid)) {
 				await sleep(10)
 			}
 			if (app.isRunning()) {
@@ -160,39 +168,45 @@ describe('startup and shutdown behaviour', () => {
 				app.stop()
 			}
 		})
-		it('starts siad and loads correctly on launch', async () => {
+		it('starts sentientd and loads correctly on launch', async () => {
 			const pid = await app.mainProcess.pid()
 			await app.client.waitUntilWindowLoaded()
-			siadProcess = await getSiadChild(pid)
-			expect(siadProcess.exists).to.be.true
+			sentientdProcess = await getSentientdChild(pid)
+			expect(sentientdProcess.exists).to.be.true
 		})
-		it('gracefully exits siad on quit', async () => {
+		it('gracefully exits sentientd on quit', async () => {
 			const pid = await app.mainProcess.pid()
 			app.webContents.send('quit')
 			while (await app.client.isVisible('#overlay-text') === false) {
 				await sleep(10)
 			}
-			while (await app.client.getText('#overlay-text') !== 'Quitting Sia...') {
+			while (await app.client.getText('#overlay-text') !== 'Quitting Sentient...') {
 				await sleep(10)
 			}
 			while (isProcessRunning(pid)) {
 				await sleep(10)
 			}
-			expect(isProcessRunning(siadProcess.pid)).to.be.false
+			expect(isProcessRunning(sentientdProcess.pid)).to.be.false
 		})
 	})
-	describe('startup with a siad already running', function() {
+	describe('startup with a sentientd already running', function() {
 		this.timeout(120000)
 		let app
-		let siadProcess
+		let sentientdProcess
+		let sentientdConfig
 		before(async () => {
-			if (!fs.existsSync('sia-testing')) {
-				fs.mkdirSync('sia-testing')
+			if (!fs.existsSync('sen-testing')) {
+				fs.mkdirSync('sen-testing')
 			}
-			siadProcess = Siad.launch(process.platform === 'win32' ? 'Sia\\siad.exe' : './Sia/siad', {
-				'sia-directory': 'sia-testing',
+			sentientdConfig = senConfig('sen-testing/config.json').sentientd
+			sentientdProcess = Sentientd.launch(sentientdConfig.path, {
+				'sen-directory': 'sen-testing',
+				'rpc-addr': sentientdConfig.rpcaddr,
+				'api-addr': sentientdConfig.address,
+				'genesis-file': sentientdConfig.genesisfile,
+				'modules': 'gctmw',
 			})
-			while (await Siad.isRunning('localhost:9980') === false) {
+			while (await Sentientd.isRunning(sentientdConfig.address) === false) {
 				await sleep(10)
 			}
 			app = new Application({
@@ -208,29 +222,29 @@ describe('startup and shutdown behaviour', () => {
 			}
 		})
 		after(async () => {
-			await pkillSiad()
+			await pkillSentientd()
 			if (app.isRunning()) {
 				app.webContents.send('quit')
 				app.stop()
 			}
-			while (isProcessRunning(siadProcess.pid)) {
+			while (isProcessRunning(sentientdProcess.pid)) {
 				await sleep(10)
 			}
 		})
-		it('connects and loads correctly to the running siad', async () => {
+		it('connects and loads correctly to the running sentientd', async () => {
 			const pid = await app.mainProcess.pid()
 			await app.client.waitUntilWindowLoaded()
-			const childSiad = await getSiadChild(pid)
-			expect(childSiad.exists).to.be.false
+			const childSentientd = await getSentientdChild(pid)
+			expect(childSentientd.exists).to.be.false
 		})
-		it('doesnt quit siad on exit', async () => {
+		it('doesnt quit sentientd on exit', async () => {
 			const pid = await app.mainProcess.pid()
 			app.webContents.send('quit')
 			while (isProcessRunning(pid)) {
 				await sleep(200)
 			}
-			expect(isProcessRunning(siadProcess.pid)).to.be.true
-			siadProcess.kill('SIGKILL')
+			expect(isProcessRunning(sentientdProcess.pid)).to.be.true
+			sentientdProcess.kill('SIGKILL')
 		})
 	})
 })

@@ -1,6 +1,6 @@
 # Testing
 
-Testing Sia-UI is fairly immature and needs many more tests written to aide
+Testing Sentient-UI is fairly immature and needs many more tests written to aide
 development.
 
 ## Technologies
@@ -24,7 +24,7 @@ useful and a great source of examples for testing and working with Javascript
 Promises in general.
 
 ### [Mocha](https://mochajs.org/)
-This is a popular choice for running series of tests within a node environment. 
+This is a popular choice for running series of tests within a node environment.
 
 #### [Electron-mocha](https://github.com/jprichardson/electron-mocha)
 This module enables electron modules to be `require()`ed in js test files ran

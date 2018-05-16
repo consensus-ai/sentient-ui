@@ -4,16 +4,17 @@ import { app } from 'electron'
 import { version } from '../../package.json'
 import semver from 'semver'
 
-const defaultSiadPath = process.env.SIAD_PATH || Path.join(__dirname, '../Sia/' + (process.platform === 'win32' ? 'siad.exe' : 'siad'))
+const defaultSentientdPath = process.env.SENTIENTD_PATH || Path.join(__dirname, '../Sentient/' + (process.platform === 'win32' ? 'sentientd.exe' : 'sentientd'))
 
 // The default settings
 const defaultConfig = {
-	siad: {
-		path: defaultSiadPath,
-		datadir: process.env.SIAD_DATA_DIR || Path.join(app.getPath('userData'), './sia'),
-		rpcaddr: process.env.SIAD_RPC_ADDR || ':9911',
+	sentientd: {
+		path: defaultSentientdPath,
+		datadir: process.env.SENTIENTD_DATA_DIR || Path.join(app.getPath('userData'), './sentient'),
+		rpcaddr: process.env.SENTIENTD_RPC_ADDR || ':9911',
 		detached: false,
-		address: process.env.SIAD_API_ADDR || '127.0.0.1:9910',
+		address: process.env.SENTIENTD_API_ADDR || '127.0.0.1:9910',
+		genesisfile: process.env.SENTIENTD_GENESIS_FILE || Path.join(app.getPath('userData'), './sentient/genesis.json'),
 	},
 	closeToTray: process.platform === 'win32' || process.platform === 'darwin' ? true : false,
 	width:	   1024,
@@ -37,13 +38,13 @@ export default function configManager(filepath) {
 		config = defaultConfig
 	}
 
-	// always use the default siad path after an upgrade
+	// always use the default sentientd path after an upgrade
 	if (typeof config.version === 'undefined') {
 		config.version = version
-		config.siad.path = defaultSiadPath
+		config.sentientd.path = defaultSentientdPath
 	} else if (semver.lt(config.version, version)) {
 		config.version = version
-		config.siad.path = defaultSiadPath
+		config.sentientd.path = defaultSentientdPath
 	}
 
 	// fill out default values if config is incomplete
@@ -79,8 +80,8 @@ export default function configManager(filepath) {
 		config = configManager(filepath)
 	}
 
-	// expose the default siad path
-	config.defaultSiadPath = defaultSiadPath
+	// expose the default sentientd path
+	config.defaultSentientdPath = defaultSentientdPath
 
 	// Save to disk immediately when loaded
 	try {

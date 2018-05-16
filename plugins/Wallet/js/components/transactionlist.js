@@ -41,20 +41,20 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 			if (!filter) {
 				return true
 			}
-			return txn.transactionsums.totalSiacoin.abs().gt(0) || txn.transactionsums.totalSiafund.abs().gt(0) || txn.transactionsums.totalMiner.abs().gt(0)
+			return txn.transactionsums.totalSen.abs().gt(0) || txn.transactionsums.totalSenfund.abs().gt(0) || txn.transactionsums.totalMiner.abs().gt(0)
 		})
 		.map((txn, key) => {
 			let valueData = ''
-			if (txn.transactionsums.totalSiacoin.abs().gt(0)) {
+			if (txn.transactionsums.totalSen.abs().gt(0)) {
 				valueData +=
-					txn.transactionsums.totalSiacoin
+					txn.transactionsums.totalSen
 						.round(4)
 						.toNumber()
-						.toLocaleString() + ' SC '
+						.toLocaleString() + ' SEN '
 			}
-			if (txn.transactionsums.totalSiafund.abs().gt(0)) {
+			if (txn.transactionsums.totalSenfund.abs().gt(0)) {
 				valueData +=
-					txn.transactionsums.totalSiafund
+					txn.transactionsums.totalSenfund
 						.round(4)
 						.toNumber()
 						.toLocaleString() + ' SF '
@@ -62,10 +62,10 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 			if (txn.transactionsums.totalMiner.abs().gt(0)) {
 				valueData +=
 					txn.transactionsums.totalMiner.round(4).toNumber().toLocaleString() +
-					' SC (miner) '
+					' SEN (miner) '
 			}
 			if (valueData === '') {
-				valueData = '0 SC'
+				valueData = '0 SEN'
 			}
 			return (
 				<tr key={key}>
@@ -91,7 +91,7 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 			<div className="transaction-header">
 				<h2> Recent Transactions </h2>
 				<div className="filter-toggle">
-					<input type="checkbox" onClick={onToggleFilter} checked={filter} />Hide 0SC Transactions
+					<input type="checkbox" onClick={onToggleFilter} checked={filter} />Hide 0SEN Transactions
 				</div>
 			</div>
 			<table className="pure-table transaction-table">

@@ -24,8 +24,8 @@ const mock = {
 			getGlobal: (name) => {
 				if (name === 'config') {
 					return {
-						siad: {
-							path: 'testpath/siad',
+						sentientd: {
+							path: 'testpath/sentientd',
 							datadir: 'testpath/datadir',
 							detached: false,
 						},
@@ -47,10 +47,10 @@ const mock = {
 proxyquire('../js/rendererjs/pluginapi.js', mock)
 
 describe('plugin API', () => {
-	it('creates a SiaAPI window object', () => {
-		expect(window.SiaAPI).to.exist
+	it('creates a SentientAPI window object', () => {
+		expect(window.SentientAPI).to.exist
 	})
-	it('does not mount disabled plugin component if siad is running', function(done) {
+	it('does not mount disabled plugin component if sentientd is running', function(done) {
 		running = true
 		this.timeout(10000)
 		const poll = setInterval(() => {
@@ -60,7 +60,7 @@ describe('plugin API', () => {
 			}
 		}, 50)
 	})
-	it('mounts disabled plugin if siad is not running', function(done) {
+	it('mounts disabled plugin if sentientd is not running', function(done) {
 		running = false
 		this.timeout(10000)
 		const poll = setInterval(() => {
@@ -71,8 +71,8 @@ describe('plugin API', () => {
 		}, 50)
 	})
 	describe('DisabledPlugin component', () => {
-		it('calls siajs.launch on click', () => {
-			const component = shallow(<DisabledPlugin startSiad={mock['sentient.js'].launch} />)
+		it('calls senjs.launch on click', () => {
+			const component = shallow(<DisabledPlugin startSentientd={mock['sentient.js'].launch} />)
 			component.find('button').first().simulate('click')
 			expect(mock['sentient.js'].launch.called).to.be.true
 		})

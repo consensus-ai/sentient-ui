@@ -78,13 +78,13 @@ const template = [
 		label: 'Help',
 		role: 'help',
 		submenu: [
-			{ label: 'Learn More', click: () => shell.openExternal('http://sia.tech/') },
+			{ label: 'Learn More', click: () => shell.openExternal('https://consensus.ai/') },
 		],
 	},
 ]
 
 if (process.platform ==='darwin') {
-	const appName = 'Sia-UI'
+	const appName = 'Sentient-UI'
 	template.unshift({
 		label: appName,
 		submenu: [

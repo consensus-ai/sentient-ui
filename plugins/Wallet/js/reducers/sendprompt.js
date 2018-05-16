@@ -4,8 +4,8 @@ import { SET_SEND_ERROR, SET_FEE_ESTIMATE, SET_SEND_AMOUNT, SET_SEND_ADDRESS, ST
 const initialState = Map({
 	sendaddress: '',
 	sendamount: '',
-	currencytype: 'siacoins',
-	feeEstimate: '0 SC/KB',
+	currencytype: 'sen',
+	feeEstimate: '0 SEN/KB',
 	error: '',
 })
 export default function sendPromptReducer(state = initialState, action) {

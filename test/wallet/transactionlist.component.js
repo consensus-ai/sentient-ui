@@ -10,8 +10,8 @@ const testTxns = List([
 	{
 		confirmed: true,
 		transactionsums: {
-			totalSiacoin: new BigNumber(10),
-			totalSiafund: new BigNumber(0),
+			totalSen: new BigNumber(10),
+			totalSenfund: new BigNumber(0),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid',
@@ -20,8 +20,8 @@ const testTxns = List([
 	{
 		confirmed: true,
 		transactionsums: {
-			totalSiacoin: new BigNumber(0),
-			totalSiafund: new BigNumber(10),
+			totalSen: new BigNumber(0),
+			totalSenfund: new BigNumber(10),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid1',
@@ -30,8 +30,8 @@ const testTxns = List([
 	{
 		confirmed: true,
 		transactionsums: {
-			totalSiacoin: new BigNumber(0),
-			totalSiafund: new BigNumber(0),
+			totalSen: new BigNumber(0),
+			totalSenfund: new BigNumber(0),
 			totalMiner: new BigNumber(10),
 		},
 		transactionid: 'testid2',
@@ -40,8 +40,8 @@ const testTxns = List([
 	{
 		confirmed: true,
 		transactionsums: {
-			totalSiacoin: new BigNumber(-10),
-			totalSiafund: new BigNumber(0),
+			totalSen: new BigNumber(-10),
+			totalSenfund: new BigNumber(0),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid3',
@@ -50,8 +50,8 @@ const testTxns = List([
 	{
 		confirmed: true,
 		transactionsums: {
-			totalSiacoin: new BigNumber(0),
-			totalSiafund: new BigNumber(-10),
+			totalSen: new BigNumber(0),
+			totalSenfund: new BigNumber(-10),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid4',
@@ -60,8 +60,8 @@ const testTxns = List([
 	{
 		confirmed: true,
 		transactionsums: {
-			totalSiacoin: new BigNumber(0),
-			totalSiafund: new BigNumber(0),
+			totalSen: new BigNumber(0),
+			totalSenfund: new BigNumber(0),
 			totalMiner: new BigNumber(-10),
 		},
 		transactionid: 'testid5',
@@ -70,8 +70,8 @@ const testTxns = List([
 	{
 		confirmed: false,
 		transactionsums: {
-			totalSiacoin: new BigNumber(1),
-			totalSiafund: new BigNumber(0),
+			totalSen: new BigNumber(1),
+			totalSenfund: new BigNumber(0),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid6',
@@ -80,8 +80,8 @@ const testTxns = List([
 	{
 		confirmed: false,
 		transactionsums: {
-			totalSiacoin: new BigNumber(10),
-			totalSiafund: new BigNumber(-5),
+			totalSen: new BigNumber(10),
+			totalSenfund: new BigNumber(-5),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid7',
@@ -90,8 +90,8 @@ const testTxns = List([
 	{
 		confirmed: false,
 		transactionsums: {
-			totalSiacoin: new BigNumber(10),
-			totalSiafund: new BigNumber(1),
+			totalSen: new BigNumber(10),
+			totalSenfund: new BigNumber(1),
 			totalMiner: new BigNumber(1),
 		},
 		transactionid: 'testid8',
@@ -100,8 +100,8 @@ const testTxns = List([
 	{
 		confirmed: false,
 		transactionsums: {
-			totalSiacoin: new BigNumber(0),
-			totalSiafund: new BigNumber(0),
+			totalSen: new BigNumber(0),
+			totalSenfund: new BigNumber(0),
 			totalMiner: new BigNumber(0),
 		},
 		transactionid: 'testid9',
@@ -110,16 +110,16 @@ const testTxns = List([
 ])
 
 const expectedValues = List([
-	'10 SC ',
+	'10 SEN ',
 	'10 SF ',
-	'10 SC (miner) ',
-	'-10 SC ',
+	'10 SEN (miner) ',
+	'-10 SEN ',
 	'-10 SF ',
-	'-10 SC (miner) ',
-	'1 SC ',
-	'10 SC -5 SF ',
-	'10 SC 1 SF 1 SC (miner) ',
-	'0 SC',
+	'-10 SEN (miner) ',
+	'1 SEN ',
+	'10 SEN -5 SF ',
+	'10 SEN 1 SF 1 SEN (miner) ',
+	'0 SEN',
 ])
 
 const testActions = {
@@ -134,11 +134,11 @@ describe('wallet transaction list component', () => {
 		expect(emptytxnlist.find('.transaction-list').children()).to.have.length(1)
 		expect(emptytxnlist.find('.transaction-list h3').first().text()).to.contain('No recent transactions')
 	})
-	it('filters 0 SC transactions properly', () => {
+	it('filters 0 SEN transactions properly', () => {
 		const filteredTxnList = shallow(<TransactionList transactions={testTxns} ntransactions={testTxns.size} filter />)
 		const filteredNodes = filteredTxnList.find('.transaction-table tbody').children()
 		for (let nodeindex = 0; nodeindex < filteredNodes.length; nodeindex++) {
-			expect(filteredNodes.at(nodeindex).find('td').at(1).text()).to.not.equal('0 SC')
+			expect(filteredNodes.at(nodeindex).find('td').at(1).text()).to.not.equal('0 SEN')
 		}
 	})
 	it('renders a table with the correct length', () => {
@@ -173,8 +173,8 @@ describe('wallet transaction list component', () => {
 		const txns = List(timestamps.map((timestamp) => ({
 			confirmed: true,
 			transactionsums: {
-				totalSiacoin: new BigNumber(0),
-				totalSiafund: new BigNumber(0),
+				totalSen: new BigNumber(0),
+				totalSenfund: new BigNumber(0),
 				totalMiner: new BigNumber(0),
 			},
 			transactionid: 'testid',

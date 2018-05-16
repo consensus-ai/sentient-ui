@@ -3,11 +3,11 @@ release
 node_modules
 npm-debug.log
 config.json
-Sia
-doc/Sia-UI
+Sentient
+doc/Sentient-UI
 errors.log
 dist
-sia-testing
+sen-testing
 
 #VSCode
 .vscode

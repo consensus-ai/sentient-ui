@@ -1,9 +1,9 @@
 # [![Sia Logo](http://sia.tech/img/svg/sia-green-logo.svg)](http://sia.tech/) User Interface
 
-[![Build Status](https://travis-ci.org/NebulousLabs/Sia-UI.svg?branch=master)](https://travis-ci.org/NebulousLabs/Sia-UI)
-[![devDependency Status](https://david-dm.org/NebulousLabs/Sia-UI/dev-status.svg)](https://david-dm.org/NebulousLabs/Sia-UI#info=devDependencies)
-[![dependencies Status](https://david-dm.org/NebulousLabs/Sia-UI.svg)](https://david-dm.org/NebulousLabs/Sia-UI#info=dependencies)
-[![Known Vulnerabilities](https://snyk.io/test/github/NebulousLabs/Sia-UI/badge.svg)](https://snyk.io/test/github/NebulousLabs/Sia-UI)
+[![Build Status](https://travis-ci.org/NebulousLabs/Sentient-UI.svg?branch=master)](https://travis-ci.org/NebulousLabs/Sentient-UI)
+[![devDependency Status](https://david-dm.org/NebulousLabs/Sentient-UI/dev-status.svg)](https://david-dm.org/NebulousLabs/Sentient-UI#info=devDependencies)
+[![dependencies Status](https://david-dm.org/NebulousLabs/Sentient-UI.svg)](https://david-dm.org/NebulousLabs/Sentient-UI#info=dependencies)
+[![Known Vulnerabilities](https://snyk.io/test/github/NebulousLabs/Sentient-UI/badge.svg)](https://snyk.io/test/github/NebulousLabs/Sentient-UI)
 [![license:mit](https://img.shields.io/badge/license-mit-blue.svg)](https://opensource.org/licenses/MIT)
 
 # A Highly Efficient Decentralized Storage Network
@@ -24,7 +24,7 @@ Earlier node versions may work, but they do not have guaranteed support.
 
 ## Running
 
-[Download your OS's release archive and unzip it](https://github.com/NebulousLabs/Sia-UI/releases)
+[Download your OS's release archive and unzip it](https://github.com/NebulousLabs/Sentient-UI/releases)
 
 ### OR
 
@@ -39,7 +39,7 @@ Run from source
 
 Read the document linked above to learn more about the application and its technologies.
 
-Take a look at our [issues page](https://github.com/NebulousLabs/Sia-UI/issues)
+Take a look at our [issues page](https://github.com/NebulousLabs/Sentient-UI/issues)
 for a high level view of what objectives we're working on.
 
 If you're the type to jump right into code, simply search through the project

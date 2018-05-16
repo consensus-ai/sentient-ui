@@ -49,7 +49,7 @@
     "redux": "^3.7.2",
     "redux-saga": "^0.15.6",
     "semver": "^5.4.1",
-    "sentient.js": "^0.0.1"
+    "sentient.js": "file:/Users/vladimirli/Developer/consensus/sentient-nodejs-bindings"
   },
   "scripts": {
     "start": "webpack && electron .",
@@ -57,7 +57,7 @@
     "build-production": "webpack --config ./webpack.production.config.js",
     "build": "webpack",
     "watch": "webpack --watch",
-    "clean": "rm -rf release doc/Sia-UI node_modules Sia config.json **/*.swp npm-debug.log",
+    "clean": "rm -rf release doc/Sentient-UI node_modules Sentient config.json **/*.swp npm-debug.log",
     "fresh": "npm run clean && npm install && npm start",
     "test-args": "BABEL_ENV=test mocha --require babel-polyfill --require test/dom.setup.js --compilers js:babel-register --recursive ./test",
     "test": "npm run lint && npm run build && npm run test-args",

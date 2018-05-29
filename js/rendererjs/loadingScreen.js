@@ -54,11 +54,24 @@ const startUI = (welcomeMsg, initUI) => {
 	})
 }
 
-// checkSentientPath validates config's Sentient path.  returns a promise that is
+// sentientdExists validates config's Sentient path.  returns a promise that is
 // resolved with `true` if sentientdConfig.path exists or `false` if it does not
 // exist.
-const checkSentientPath = () => new Promise((resolve) => {
+const sentientdExists = () => new Promise((resolve) => {
 	fs.stat(sentientdConfig.path, (err) => {
+		if (!err) {
+			resolve(true)
+		} else {
+			resolve(false)
+		}
+	})
+})
+
+// genesisFileExists validates config's Sentient path.  returns a promise that is
+// resolved with `true` if sentientdConfig.path exists or `false` if it does not
+// exist.
+const genesisFileExists = () => new Promise((resolve) => {
+	fs.stat(sentientdConfig.genesisfile, (err) => {
 		if (!err) {
 			resolve(true)
 		} else {
@@ -97,12 +110,12 @@ export default async function loadingScreen(initUI) {
 
 	// check sentientdConfig.path, if it doesn't exist optimistically set it to the
 	// default path
-	if (!await checkSentientPath()) {
+	if (!await sentientdExists()) {
 		sentientdConfig.path = config.defaultSentientdPath
 	}
 
 	// check sentientdConfig.path, and ask for a new path if sentientd doesn't exist.
-	if (!await checkSentientPath()) {
+	if (!await sentientdExists()) {
 		// config.path doesn't exist.  Prompt the user for sentientd's location
 		dialog.showErrorBox('Sentientd not found', 'Sentient-UI couldn\'t locate sentientd.  Please navigate to sentientd.')
 		const sentientdPath = dialog.showOpenDialog({
@@ -116,6 +129,29 @@ export default async function loadingScreen(initUI) {
 			app.quit()
 		}
 		sentientdConfig.path = sentientdPath[0]
+	}
+
+	// check sentientdConfig.genesisfile, if it doesn't exist optimistically set it to the
+	// default genesisfile
+	if (!await genesisFileExists()) {
+		sentientdConfig.genesisfile = config.defaultGenesisFile
+	}
+
+	// check sentientdConfig.genesisfile, and ask for a new genesisfile if it doesn't exist.
+	if (!await genesisFileExists()) {
+		// config.genesisfile doesn't exist. Prompt the user for location
+		dialog.showErrorBox('Genesis file not found', 'Sentient-UI couldn\'t locate the genesis file.  Please navigate to it.')
+		const genesisFilePaths = dialog.showOpenDialog({
+			title: 'Please locate the genesis file.',
+			properties: ['openFile'],
+			defaultPath: Path.join('..', sentientdConfig.genesisfile),
+			filters: [{ extensions: ['json'] }],
+		})
+		if (typeof genesisFilePaths === 'undefined') {
+			// The user didn't choose sentientd, we should just close.
+			app.quit()
+		}
+		sentientdConfig.genesisfile = genesisFilePaths[0]
 	}
 
 	// Launch the new Sentientd process

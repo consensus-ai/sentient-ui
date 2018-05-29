@@ -4,9 +4,8 @@ import { app } from 'electron'
 import { version } from '../../package.json'
 import semver from 'semver'
 
-
 const defaultSentientdPath = Path.join(__dirname, '../sentient-network', (process.platform === 'win32' ? 'sentientd.exe' : 'sentientd'))
-const defaultGenesisPath = Path.join(__dirname, '../sentient-network', 'config', 'genesis.json')
+const defaultGenesisFile = Path.join(__dirname, '../sentient-network', 'config', 'genesis.json')
 const defaultDataDir = Path.join(app.getPath('userData'), 'data')
 
 // The default settings
@@ -14,7 +13,7 @@ const defaultConfig = {
 	sentientd: {
 		path: process.env.SENTIENTD_PATH || defaultSentientdPath,
 		datadir: process.env.SENTIENTD_DATA_DIR || defaultDataDir,
-		genesisfile: process.env.SENTIENTD_GENESIS_FILE || defaultGenesisPath,
+		genesisfile: process.env.SENTIENTD_GENESIS_FILE || defaultGenesisFile,
 		address: process.env.SENTIENTD_API_ADDR || '127.0.0.1:9910',
 		rpcaddr: process.env.SENTIENTD_RPC_ADDR || ':9911',
 		detached: false,
@@ -85,6 +84,7 @@ export default function configManager(filepath) {
 
 	// expose the default sentientd path
 	config.defaultSentientdPath = defaultSentientdPath
+	config.defaultGenesisFile = defaultGenesisFile
 
 	// Save to disk immediately when loaded
 	try {

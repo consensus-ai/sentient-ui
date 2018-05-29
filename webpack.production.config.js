@@ -13,8 +13,8 @@ cfg.forEach((config) => config.plugins.push(
 	new webpack.LoaderOptionsPlugin({
 		minimize: true,
 		debug: false,
-	}),
-	new UglifyJSPlugin()
+	})
+	// new UglifyJSPlugin()
 ))
 
 module.exports = cfg

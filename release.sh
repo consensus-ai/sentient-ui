@@ -10,7 +10,7 @@ set -e
 # being the Sentient version, and third being the electron version.
 
 if [[ -z $1 || -z $2 ]]; then
-	echo "Usage: $0 privatekey publickey uiversion senversion electronversion"
+	echo "Usage: $0 PRIVATE_KEY PUBLIC_KEY [UI_VERSION] [SENTIENT-NETWORK_VERSION] [ELECTRON_VERSION]"
 	exit 1
 fi
 
@@ -22,25 +22,45 @@ npm install
 rm -rf ./dist
 npm run build-production
 
-uiVersion=${3:-v1.3.2}
-siaVersion=${4:-v1.3.2}
-electronVersion=${5:-v1.6.4}
-
-# fourth argument is the public key file path.
-keyFile=`readlink -f $1`
-pubkeyFile=`readlink -f $2`
-
+keyFile=$1
+pubkeyFile=$2
+uiVersion=${3:-v0.0.1}
+senVersion=${4:-v0.0.1}
+electronVersion=${5:-v1.8.7}
 
 electronOSX="https://github.com/electron/electron/releases/download/${electronVersion}/electron-${electronVersion}-darwin-x64.zip"
 electronLinux="https://github.com/electron/electron/releases/download/${electronVersion}/electron-${electronVersion}-linux-x64.zip"
 electronWindows="https://github.com/electron/electron/releases/download/${electronVersion}/electron-${electronVersion}-win32-x64.zip"
 
-siaOSX="/Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/Sentient-${siaVersion}-darwin-amd64.zip"
-siaLinux="/Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/Sentient-${siaVersion}-linux-amd64.zip"
-siaWindows="/Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/Sentient-${siaVersion}-windows-amd64.zip"
+senOSXFileName="sentient-network-${senVersion}-darwin-amd64.zip"
+senLinuxFileName="sentient-network-${senVersion}-linux-amd64.zip"
+senWindowsFileName="sentient-network-${senVersion}-windows-amd64.zip"
 
-rm -rf release/
-mkdir -p release/{osx,linux,win32}
+rm -rf release/*
+
+installSentientNetwork() {
+	platform=$1
+
+	if [ $platform = 'osx' ]; then
+		releaseFileName=$senOSXFileName
+		appDir="Sentient-UI.app/Contents/Resources/app/"
+	elif [ $platform = 'linux' ]; then
+		releaseFileName=$senLinuxFileName
+		appDir="resources/app/"
+	elif [ $platform = 'windows' ]; then
+		releaseFileName=$senWindowsFileName
+		appDir="resources/app/"
+	fi
+
+	# get the release
+	cp /Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/$releaseFileName .
+	unzip ./$releaseFileName
+	rm $releaseFileName
+
+	# install into app dir
+	mv sentient-network-v* $appDir/sentient-network
+	mv $appDir/sentient-network/config/genesis* $appDir/sentient-network/config/genesis.json
+}
 
 # package copies all the required javascript, html, and assets into an electron package.
 package() {
@@ -50,70 +70,76 @@ package() {
 }
 
 buildOSX() {
-	cd release/osx
+	mkdir release/darwin
+	cd release/darwin
+
+	# get electron
 	wget $electronOSX
 	unzip ./electron*
+	rm electron*.zip
+
+	# set up electron app
 	mv Electron.app Sentient-UI.app
 	mv Sentient-UI.app/Contents/MacOS/Electron Sentient-UI.app/Contents/MacOS/Sentient-UI
-	# NOTE: this only works with GNU sed, other platforms (like OSX) may fail here
+
+	# NOTE: this only works with GNU sed
+	# if you have OSX, please run "brew install gnu-sed --with-default-names"
+	# or see https://stackoverflow.com/questions/30003570/how-to-use-gnu-sed-on-mac-os-x
 	sed -i 's/>Electron</>Sentient-UI</' Sentient-UI.app/Contents/Info.plist
-	sed -i 's/>'"${electronVersion:1}"'</>'"${siaVersion:1}"'</' Sentient-UI.app/Contents/Info.plist
-	sed -i 's/>com.github.electron\</>com.nebulouslabs.siaui</' Sentient-UI.app/Contents/Info.plist
+	sed -i 's/>'"${electronVersion:1}"'</>'"${senVersion:1}"'</' Sentient-UI.app/Contents/Info.plist
+	sed -i 's/>com.github.electron\</>com.consensusai.sentientui</' Sentient-UI.app/Contents/Info.plist
 	sed -i 's/>electron.icns</>icon.icns</' Sentient-UI.app/Contents/Info.plist
 	cp ../../assets/icon.icns Sentient-UI.app/Contents/Resources/
 	rm -r Sentient-UI.app/Contents/Resources/default_app.asar
 	mkdir Sentient-UI.app/Contents/Resources/app
-	(
-		cd Sentient-UI.app/Contents/Resources/app
-		cp $siaOSX .
-		unzip ./Sentient-*
-		rm ./Sentient*.zip
-		mv ./Sentient-* ./Sentient
-	)
 	package "../../" "Sentient-UI.app/Contents/Resources/app"
-	rm -r electron*.zip
 	cp ../../LICENSE .
+
+	# install sentient-network
+	installSentientNetwork "osx"
 }
 
 buildLinux() {
+	mkdir release/linux
 	cd release/linux
+
+	# get electron
 	wget $electronLinux
 	unzip ./electron*
+	rm electron*.zip
+
+	# set up electron app
 	mv electron Sentient-UI
 	rm -r resources/default_app.asar
 	mkdir resources/app
-	(
-		cd resources/app
-		cp $siaLinux .
-		unzip ./Sentient-*
-		rm ./Sentient*.zip
-		mv ./Sentient-* ./Sentient
-	)
 	package "../../" "resources/app"
-	rm -r electron*.zip
 	cp ../../LICENSE .
+
+	# install sentient-network
+	installSentientNetwork "linux"
 }
 
 buildWindows() {
-	cd release/win32
+	mkdir release/windows
+	cd release/windows
+
+	# get electron
 	wget $electronWindows
 	unzip ./electron*
+	rm electron*.zip
+
+	# set up electron app
 	mv electron.exe Sentient-UI.exe
 	wget https://github.com/electron/rcedit/releases/download/v0.1.0/rcedit.exe
 	wine rcedit.exe Sentient-UI.exe --set-icon '../../assets/icon.ico'
 	rm -f rcedit.exe
 	rm resources/default_app.asar
 	mkdir resources/app
-	(
-		cd resources/app
-		cp $siaWindows .
-		unzip ./Sentient-*
-		rm ./Sentient*.zip
-		mv ./Sentient-* ./Sentient
-	)
 	package "../../" "resources/app"
-	rm -r electron*.zip
 	cp ../../LICENSE .
+
+	# install sentient-network
+	installSentientNetwork "windows"
 }
 
 # make osx release
@@ -126,16 +152,17 @@ buildWindows() {
 ( buildWindows )
 
 # make signed zip archives for each release
-for os in win32 linux osx; do
+for os in darwin linux windows; do
 	(
+		zipFileName="sentient-ui-$uiVersion-$os-amd64.zip"
+
 		cd release/${os}
-		zip -r ../Sentient-UI-${uiVersion}-${os}-x64.zip .
+		zip -r ../$zipFileName .
 		cd ..
-		openssl dgst -sha256 -sign $keyFile -out Sentient-UI-${uiVersion}-${os}-x64.zip.sig Sentient-UI-${uiVersion}-${os}-x64.zip
+		openssl dgst -sha256 -sign $keyFile -out $zipFileName.sig $zipFileName
 		if [[ -n $pubkeyFile ]]; then
-			openssl dgst -sha256 -verify $pubkeyFile -signature Sentient-UI-${uiVersion}-${os}-x64.zip.sig Sentient-UI-${uiVersion}-${os}-x64.zip
+			openssl dgst -sha256 -verify $pubkeyFile -signature $zipFileName.sig $zipFileName
 		fi
-		rm -rf release/${os}
 	)
 done
 

@@ -49,7 +49,7 @@
     "redux": "^3.7.2",
     "redux-saga": "^0.15.6",
     "semver": "^5.4.1",
-    "sentient.js": "file:/Users/vladimirli/Developer/consensus/sentient-nodejs-bindings"
+    "sentient.js": "file:../sentient-nodejs-bindings"
   },
   "scripts": {
     "start": "webpack && electron .",

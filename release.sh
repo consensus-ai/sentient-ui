@@ -70,7 +70,7 @@ package() {
 }
 
 buildOSX() {
-	mkdir release/darwin
+	mkdir -p release/darwin
 	cd release/darwin
 
 	# get electron
@@ -100,7 +100,7 @@ buildOSX() {
 }
 
 buildLinux() {
-	mkdir release/linux
+	mkdir -p release/linux
 	cd release/linux
 
 	# get electron
@@ -120,7 +120,7 @@ buildLinux() {
 }
 
 buildWindows() {
-	mkdir release/windows
+	mkdir -p release/windows
 	cd release/windows
 
 	# get electron

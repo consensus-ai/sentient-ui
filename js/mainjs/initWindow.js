@@ -25,7 +25,11 @@ export default function(config) {
 	// This should be used in the renderer to cancel close() events using window.onbeforeunload
 	mainWindow.closeToTray = config.closeToTray
 
-	mainWindow.tray = new Tray(Path.join(app.getAppPath(), 'assets', 'tray.png'))
+	if (process.platform === 'darwin') {
+		mainWindow.tray = new Tray(Path.join(app.getAppPath(), 'assets', 'tray@2x.png'))
+	} else {
+		mainWindow.tray = new Tray(Path.join(app.getAppPath(), 'assets', 'tray.png'))
+	}
 	mainWindow.tray.setToolTip('Sentient')
 	mainWindow.tray.setContextMenu(appTray(mainWindow))
 

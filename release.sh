@@ -26,7 +26,7 @@ keyFile=$1
 pubkeyFile=$2
 uiVersion=${3:-v0.0.1}
 senVersion=${4:-v0.0.1}
-electronVersion=${5:-v1.8.7}
+electronVersion=${5:-v2.0.2}
 
 electronOSX="https://github.com/electron/electron/releases/download/${electronVersion}/electron-${electronVersion}-darwin-x64.zip"
 electronLinux="https://github.com/electron/electron/releases/download/${electronVersion}/electron-${electronVersion}-linux-x64.zip"

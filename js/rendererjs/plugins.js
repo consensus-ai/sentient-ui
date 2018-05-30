@@ -72,13 +72,8 @@ export const setCurrentPlugin = (pluginName) => {
 }
 
 // Construct a plugin button element from an icon path and title
-const createPluginButtonElement = (iconPath, title) => {
-	const elem = document.createElement('div')
-	elem.id = title + '-button'
-	elem.className = 'pure-u-1-1 button'
-	elem.appendChild(createButtonIconElement(iconPath))
-	elem.appendChild(createButtonTextElement(title))
-	// On click, set all other buttons and plugins to non-current except this one.
+const hookUpPluginButton = (title) => {
+	const elem = document.getElementById(title+'-button')
 	elem.onclick = () => setCurrentPlugin(title)
 	return elem
 }
@@ -92,10 +87,9 @@ export const getPluginName = (pluginPath) => Path.basename(pluginPath)
 export const loadPlugin = (pluginPath, hidden = false, shortcut) => {
 	const name = getPluginName(pluginPath)
 	const markupPath = Path.join(pluginPath, 'index.html')
-	const iconPath = Path.join(pluginPath, 'assets', 'button.png')
 
 	const viewElement = createPluginElement(markupPath, name)
-	const buttonElement = createPluginButtonElement(iconPath, name)
+	const buttonElement = hookUpPluginButton(name)
 
 	if (typeof shortcut !== 'undefined') {
 		registerLocalShortcut(shortcut, () => {
@@ -118,41 +112,13 @@ export const unloadPlugins = () => {
 	sidebar.parentNode.removeChild(sidebar)
 }
 
-// Scan a folder at `path` for plugins.
-// Return a list of folder paths that have a valid plugin structure.
-export const scanFolder = (path) => {
-	let pluginFolders = List(fs.readdirSync(path))
-	pluginFolders = pluginFolders.map((folder) => Path.join(path, folder))
-	pluginFolders = pluginFolders.filter((pluginPath) => {
-		const markupPath = Path.join(pluginPath, 'index.html')
-		try {
-			fs.statSync(markupPath)
-			return true
-		} catch (e) {
-			console.error('plugin ' + pluginPath + ' has an invalid structure')
-		}
-		return false
-	})
-	return pluginFolders
-}
-
-// pushToBottom pushes a plugin to the bottom of a plugin list
-export const pushToBottom = (plugins, target) =>
-	plugins.sort((p) => getPluginName(p) === target ? 1 : 0)
-
-// pushToTop pushes a plugin to the top of a plugin list
-export const pushToTop = (plugins, target) =>
-	plugins.sort((p) => getPluginName(p) === target ? -1 : 0)
-
 // Scan a folder at path and return an ordered list of plugins.
 // The plugin specified by `homePlugin` is always moved to the top of the list,
 // if it exists.
 export const getOrderedPlugins = (path, homePlugin) => {
-	let plugins = scanFolder(path)
-
-	// Push the home plugin to the top
-	plugins = pushToTop(plugins, homePlugin)
-
-	return plugins
+	return List([
+		Path.join(path,"Wallet"),
+		Path.join(path, "About")
+	])
 }
 

@@ -34,12 +34,13 @@
     "spectron": "^3.6.0",
     "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony-v2.8.22",
     "uglifyjs-webpack-plugin": "^0.4.3",
-    "webpack": "^2.5.1"
+    "webpack": "^2.5.1",
+    "electron-debug": "^2.0.0"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "bignumber.js": "^4.1.0",
-    "electron": "^1.7.11",
+    "electron": "^2.0.0",
     "graceful-fs": "^4.1.11",
     "immutable": "^3.8.1",
     "mkdirp": "^0.5.1",

@@ -4,6 +4,8 @@ import appTray from './trayMenu.js'
 import Path from 'path'
 import { version, releaseName } from '../../package.json'
 
+require('electron-debug')();
+
 // Save window position and bounds every time the window is moved or resized.
 const onBoundsChange = (mainWindow, config) => () => {
 	const bounds = mainWindow.getBounds()

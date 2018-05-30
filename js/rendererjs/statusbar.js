@@ -5,9 +5,9 @@ import React from 'react'
 
 // currentEstimatedHeight returns the estimated block height for the current time.
 const currentEstimatedHeight = () => {
-	const knownBlockHeight = 100e3
-	const knownBlockTime = new Date(1492126189*1000) // timestamp for block 100000
-	const blockTime = 9 //minutes
+	const knownBlockHeight = 4454
+	const knownBlockTime = new Date(1527715302*1000) // timestamp for block 100000
+	const blockTime = 2 //minutes
 	const diffMinutes = Math.abs(new Date() - knownBlockTime) / 1000 / 60
 
 	const estimatedHeight = knownBlockHeight + (diffMinutes / blockTime)
@@ -23,79 +23,75 @@ const estimatedProgress = (currentHeight) =>
 // -- components --
 
 const StatusBar = ({synced, blockheight, peers}) => {
-
-	const progress = estimatedProgress(blockheight)
+	const progress = estimatedProgress(blockheight) || 0
 
 	const redColor = '#E0000B'
-	const greenColor = '#00CBA0'
-	const yellowColor = '#E7D414'
+	const blueColor = '#0043A4'
+	const grayColor = 'rgba(61,75,102,0.4)'
 
-	const syncStyle = {
-		color: redColor,
+	let progressBarContainerStyle = {
+		display: 'inline-block',
+		backgroundColor: '#F5F7FA',
+		height: '4px',
+		width: '100%',
+		borderRadius: '2px',
 	}
 
-	const syncProgressStyle = {
+	let progressBarStyle = {
 		width: progress.toString() + '%',
-		height: '20px',
+		height: '4px',
 		transition: 'width 200ms',
-		backgroundColor: '#00CBA0',
+		backgroundColor: blueColor,
 		margin: '0',
+		borderRadius: '2px',
 	}
 
-	const syncProgressContainerStyle = {
+	let statusTextStyle = {
 		display: 'inline-block',
-		backgroundColor: '#eee',
-		height: '20px',
-		width: '150px',
+		color: grayColor,
+		fontSize: '14px',
 	}
 
-	const syncProgressInfoStyle = {
+	let percentTextStyle = {
 		display: 'inline-block',
+		color: grayColor,
+		fontSize: '14px',
 		position: 'absolute',
-		fontSize: '12px',
-		height: '25px',
-		marginTop: '5px',
+		right: '17px',
+		bottom: '3px',
 	}
 
-	let status
+	let statusText
+	let progressText = Math.round(progress) + "%"
 	if (!synced && peers === 0) {
-		syncStyle.color = redColor
-		status = 'Not Synchronizing'
-	} else if (!synced && peers > 0) {
-		syncStyle.color = yellowColor
-		status = 'Synchronizing'
+		statusTextStyle.color = redColor
+		statusText = 'Not Synchronizing'
 	} else if (synced && peers === 0) {
-		syncStyle.color = redColor
-		status = 'No Peers'
+		statusTextStyle.color = redColor
+		statusText = 'No Peers'
+	} else if (!synced && peers > 0) {
+		statusText = 'Synchronizing'
 	} else if (synced) {
-		syncStyle.color = greenColor
-		status = 'Synchronized'
-	}
-
-	let syncStatus = (
-		<div className="status-bar-blockheight">Block Height: {blockheight}</div>
-	)
-
-	if (!synced && progress < 99.9) {
-		syncStatus = (
-			<div>
-				<div style={syncProgressContainerStyle}>
-					<div style={syncProgressStyle} />
-				</div>
-				<div style={syncProgressInfoStyle}>
-					{Math.floor(progress * 10) / 10}%
-				</div>
-			</div>
-		)
+		statusText = 'Synchronized'
+		progressText = 'blocks: ' + blockheight
 	}
 
 	return (
-		<div className="status-bar">
-			<div style={syncStyle}>
-				<i className="fa fa-globe fa-2x" />
-				{status}
+		<div className="status-container">
+			<div className="progress-container">
+				<div style={progressBarContainerStyle}>
+					<div style={progressBarStyle}>
+					</div>
+				</div>
 			</div>
-			{syncStatus}
+
+			<div style={statusTextStyle}>
+				{statusText}
+			</div>
+
+			<div style={percentTextStyle}>
+				{progressText}
+			</div>
 		</div>
 	)
 }

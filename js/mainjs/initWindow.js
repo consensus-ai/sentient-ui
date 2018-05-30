@@ -51,7 +51,7 @@ export default function(config) {
 		app.setAboutPanelOptions({
 			applicationName: 'Sentient-UI',
 			applicationVersion: version,
-			copyright: 'Nebulous Inc.',
+			copyright: 'Consensus Foundation.',
 			version: releaseName,
 		})
 	}

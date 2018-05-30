@@ -15,12 +15,7 @@ SentientAPI.call('/daemon/version', (err, result) => {
 })
 
 function genDownloadLink(version, thePlatform) {
-	let plat = thePlatform
-	if (plat === 'darwin') {
-		plat = 'osx'
-	}
-
-	return `https://github.com/NebulousLabs/Sentient-UI/releases/download/v${version}/Sentient-UI-v${version}-${plat}-x64.zip`
+	return `https://github.com/consensus-ai/sentient-ui/releases/download/v${version}/sentient-ui-${version}-${thePlatform}-amd64.zip`
 }
 
 function updateCheck() {

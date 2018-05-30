@@ -44,7 +44,10 @@ html,body {
 	height: 100%;
 
 	-webkit-box-sizing:border-box;
-	border-right: 1px solid #B5B5B5;
+	box-shadow: 1px 1px 20px rgba(0,0,0,.04)
+}
+.sidebar {
+	margin-top: 6px;
 }
 .logo-container {
 	padding: 30px 0;
@@ -65,25 +68,49 @@ html,body {
 	position: relative;
 	height: 56px;
 
-	transition: all .25s;
-	-webkit-animation: fadein .4s;
 	-webkit-box-sizing:border-box;
 
 	color: #3D4B66;
+	margin-left: 3px;
+	padding-left: 16px;
 }
 .button:hover {
 	cursor: pointer;
 }
 .button:active {
-	background-color: ;
 }
 .button.current {
-	transition: all .25s;
 	cursor: default;
 	border-left: 3px solid #0043A4;
+	margin-left: 0;
 }
-.button.current .icon, .button:hover .icon {
-	-webkit-filter: invert(100%);
+
+.plugin-button-image {
+	background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: #fff;
+  padding-left: 16px;
+}
+.wallet-button-image {
+	background-image: url('../plugins/Wallet/assets/button-inactive.png');
+	width: 55px;
+  height: 21px;
+}
+.about-button-image {
+	background-image: url('../plugins/About/assets/button-inactive.png');
+	width: 55px;
+  height: 21px;
+}
+.button.current .wallet-button-image, .button:hover .wallet-button-image {
+	background-image: url('../plugins/Wallet/assets/button-active.png');
+	width: 55px;
+  height: 55px;
+}
+.button.current .about-button-image, .button:hover .about-button-image {
+	background-image: url('../plugins/About/assets/button-active.png');
+	width: 55px;
+  height: 55px;
 }
 @keyframes fadeout {
 	from { opacity: default; }
@@ -99,7 +126,6 @@ html,body {
 }
 .button .text {
 	padding: 4px;
-	padding-left: 8px;
 }
 
 /* Mainbar */

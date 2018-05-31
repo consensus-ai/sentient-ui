@@ -7,10 +7,17 @@ const BalanceInfo = ({synced, confirmedbalance, unconfirmedbalance, senfundbalan
 
 	// format to 123,456,789.00
 	let formattedConfirmedBalance = confirmedbalance.replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+	let formattedUnconfirmedBalance = unconfirmedbalance.replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+
+	// prep tooltips
+	let statusTooltipText = synced ? "" : "Your wallet is not synced, balances are not final"
+	let balanceTooltipText = formattedUnconfirmedBalance + " SEN pending"
+
 	return (
 		<div className="balance-info">
-			<div className={walletIconClassName}></div>
-			<div className="balance-info-amount-container">
+			<div className={walletIconClassName} title={statusTooltipText}></div>
+
+			<div className="balance-info-amount-container" title={balanceTooltipText}>
 				<span className="balance-info-amount">{formattedConfirmedBalance}</span>
 				<span className="balance-info-currency">SEN</span>
 			</div>

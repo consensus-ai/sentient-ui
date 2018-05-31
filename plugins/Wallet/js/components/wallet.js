@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import TransactionList from '../containers/transactionlist.js'
-import SendButton from './sendbutton.js'
+import SendButton from '../containers/sendbutton.js'
 import SendPrompt from '../containers/sendprompt.js'
 import ReceiveButton from '../containers/receivebutton.js'
 import ReceivePrompt from '../containers/receiveprompt.js'
@@ -16,27 +16,25 @@ import BackupPrompt from '../containers/backupprompt.js'
 import BalanceInfo from '../containers/balanceinfo.js'
 
 const Wallet = ({showBackupPrompt, senfundbalance, showReceivePrompt, showChangePasswordDialog, showSendPrompt, showNewWalletDialog, showRecoveryDialog, actions }) => {
-	const onSendClick = (currencytype) => () => actions.startSendPrompt(currencytype)
 	return (
 		<div className="wallet">
 			<div className="balance-info-container">
 				<BalanceInfo />
 			</div>
+
 			<div className="wallet-toolbar">
-				<BackupButton />
-				<ChangePasswordButton />
-				<LockButton />
-				<RecoverButton />
-				{senfundbalance !== '0' ? <SendButton currencytype="Senfund" onClick={onSendClick('senfunds')} />: null}
-				<SendButton currencytype="Sen" onClick={onSendClick('sen')} />
 				<ReceiveButton />
+				<SendButton />
+				<LockButton />
 			</div>
+
 			{showNewWalletDialog ? <NewWalletDialog /> : null}
 			{showSendPrompt ? <SendPrompt /> : null}
 			{showReceivePrompt ? <ReceivePrompt /> : null}
 			{showRecoveryDialog ? <RecoveryDialog /> : null}
 			{showChangePasswordDialog ? <ChangePasswordDialog /> : null}
 			{showBackupPrompt ? <BackupPrompt /> : null}
+
 			<TransactionList />
 		</div>
 	)

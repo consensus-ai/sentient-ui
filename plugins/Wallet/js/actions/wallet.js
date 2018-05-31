@@ -50,9 +50,8 @@ export const setTransactions = (transactions) => ({
 	type: constants.SET_TRANSACTIONS,
 	transactions,
 })
-export const startSendPrompt = (currencytype) => ({
+export const startSendPrompt = () => ({
 	type: constants.START_SEND_PROMPT,
-	currencytype,
 })
 export const closeSendPrompt = () => ({
 	type: constants.CLOSE_SEND_PROMPT,

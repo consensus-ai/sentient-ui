@@ -19,8 +19,10 @@ const Wallet = ({showBackupPrompt, senfundbalance, showReceivePrompt, showChange
 	const onSendClick = (currencytype) => () => actions.startSendPrompt(currencytype)
 	return (
 		<div className="wallet">
-			<div className="wallet-toolbar">
+			<div className="balance-info-container">
 				<BalanceInfo />
+			</div>
+			<div className="wallet-toolbar">
 				<BackupButton />
 				<ChangePasswordButton />
 				<LockButton />

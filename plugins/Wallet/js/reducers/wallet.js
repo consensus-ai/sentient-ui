@@ -77,6 +77,7 @@ export default function walletReducer(state = initialState, action) {
 		return state.set('synced', action.synced)
 	case constants.SET_BALANCE:
 		return state
+			.set('synced', action.synced)
 			.set('confirmedbalance', action.confirmed)
 			.set('unconfirmedbalance', action.unconfirmed)
 			.set('senfundbalance', action.senfunds)

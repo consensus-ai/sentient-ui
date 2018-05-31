@@ -129,7 +129,10 @@ function* getBalanceSaga() {
 		const unconfirmedIncoming = SentientAPI.hastingsToSen(response.unconfirmedincomingsen)
 		const unconfirmedOutgoing = SentientAPI.hastingsToSen(response.unconfirmedoutgoingsen)
 		const unconfirmed = unconfirmedIncoming.minus(unconfirmedOutgoing)
-		yield put(actions.setBalance(confirmed.round(2).toString(), unconfirmed.round(2).toString(), response.senfundbalance, senclaimbalance.round(2).toString()))
+
+		const consensusResponse = yield sentientdCall('/consensus')
+		const synced = consensusResponse.synced
+		yield put(actions.setBalance(synced, confirmed.round(2).toString(), unconfirmed.round(2).toString(), response.senfundbalance, senclaimbalance.round(2).toString()))
 	} catch (e) {
 		console.error('error fetching balance: ' + e.toString())
 	}

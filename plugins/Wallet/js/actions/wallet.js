@@ -35,8 +35,9 @@ export const createNewWallet = (password, seed) => ({
 export const getBalance = () => ({
 	type: constants.GET_BALANCE,
 })
-export const setBalance = (confirmed, unconfirmed, senfunds, senclaimbalance) => ({
+export const setBalance = (synced, confirmed, unconfirmed, senfunds, senclaimbalance) => ({
 	type: constants.SET_BALANCE,
+	synced,
 	confirmed,
 	unconfirmed,
 	senfunds,

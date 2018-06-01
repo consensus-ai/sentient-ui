@@ -2,9 +2,10 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import TransactionList from '../containers/transactionlist.js'
 import SendButton from '../containers/sendbutton.js'
-import SendPrompt from '../containers/sendprompt.js'
+import SendView from '../containers/sendview.js'
+import TransactionsButton from '../containers/transactionsbutton.js'
 import ReceiveButton from '../containers/receivebutton.js'
-import ReceivePrompt from '../containers/receiveprompt.js'
+import ReceiveView from '../containers/receiveview.js'
 import NewWalletDialog from '../containers/newwalletdialog.js'
 import LockButton from '../containers/lockbutton.js'
 import RecoverButton from '../containers/recoverbutton.js'
@@ -14,8 +15,9 @@ import ChangePasswordDialog from '../containers/changepassworddialog.js'
 import BackupButton from '../containers/backupbutton.js'
 import BackupPrompt from '../containers/backupprompt.js'
 import BalanceInfo from '../containers/balanceinfo.js'
+import LockScreen from '../containers/lockscreen.js'
 
-const Wallet = ({showBackupPrompt, senfundbalance, showReceivePrompt, showChangePasswordDialog, showSendPrompt, showNewWalletDialog, showRecoveryDialog, actions }) => {
+const Wallet = ({showBackupPrompt, senfundbalance, showTransactionListView, showReceiveView, showChangePasswordDialog, showSendView, showNewWalletDialog, showRecoveryDialog, unlocked, actions }) => {
 	return (
 		<div className="wallet">
 			<div className="balance-info-container">
@@ -23,19 +25,18 @@ const Wallet = ({showBackupPrompt, senfundbalance, showReceivePrompt, showChange
 			</div>
 
 			<div className="wallet-toolbar">
+				<TransactionsButton />
 				<ReceiveButton />
 				<SendButton />
 				<LockButton />
 			</div>
 
-			{showNewWalletDialog ? <NewWalletDialog /> : null}
-			{showSendPrompt ? <SendPrompt /> : null}
-			{showReceivePrompt ? <ReceivePrompt /> : null}
-			{showRecoveryDialog ? <RecoveryDialog /> : null}
-			{showChangePasswordDialog ? <ChangePasswordDialog /> : null}
-			{showBackupPrompt ? <BackupPrompt /> : null}
-
-			<TransactionList />
+			<div className="main-view-container">
+				{unlocked && showTransactionListView ? <TransactionList /> : null}
+				{unlocked && showReceiveView ? <ReceiveView /> : null}
+				{unlocked && showSendView ? <SendView /> : null}
+				{unlocked ? null : <LockScreen />}
+			</div>
 		</div>
 	)
 }
@@ -43,10 +44,12 @@ const Wallet = ({showBackupPrompt, senfundbalance, showReceivePrompt, showChange
 Wallet.propTypes = {
 	senfundbalance: PropTypes.string.isRequired,
 	showNewWalletDialog: PropTypes.bool,
-	showSendPrompt: PropTypes.bool,
-	showReceivePrompt: PropTypes.bool,
+	showTransactionListView: PropTypes.bool,
+	showSendView: PropTypes.bool,
+	showReceiveView: PropTypes.bool,
 	showChangePasswordDialog: PropTypes.bool,
 	showBackupPrompt: PropTypes.bool,
+	unlocked: PropTypes.bool,
 }
 
 export default Wallet

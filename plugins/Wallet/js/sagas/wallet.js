@@ -55,6 +55,7 @@ function* walletUnlockSaga(action) {
 		yield put(actions.setEncrypted())
 		yield put(actions.setUnlocked())
 		yield put(actions.handlePasswordChange(''))
+		yield put(actions.showTransactionListView())
 	} catch (e) {
 		yield put(actions.handlePasswordChange(''))
 		yield put(walletUnlockError(e.message))
@@ -149,7 +150,18 @@ function* getTransactionsSaga() {
 	}
 }
 
-function* showReceivePromptSaga() {
+
+function* showTransactionListViewSaga() {
+	try {
+		const response = yield sentientdCall('/wallet/transactions?startheight=0&endheight=0')
+		const transactions = parseRawTransactions(response)
+		yield put(actions.setTransactions(transactions))
+	} catch (e) {
+		console.error('error fetching transactions: ' + e.toString())
+	}
+}
+
+function* showReceiveViewSaga() {
 	try {
 		const cachedAddrs = List(SentientAPI.config.attr('receiveAddresses'))
 		// validate the addresses. if this node has no record of an address, prune
@@ -238,7 +250,7 @@ function* sendCurrencySaga(action) {
 				amount: sendAmount,
 			},
 		})
-		yield put(actions.closeSendPrompt())
+		yield put(actions.closeSendView())
 		yield put(actions.getBalance())
 		yield put(actions.getTransactions())
 		yield put(actions.setSendAmount(''))
@@ -268,7 +280,7 @@ function* changePasswordSaga(action) {
 }
 
 
-function *startSendPromptSaga() {
+function *showSendViewSaga() {
 	try {
 		const response = yield sentientdCall('/tpool/fee')
 		const feeEstimate = SentientAPI.hastingsToSen(response.maximum).times(1e3).round(8).toString() + ' SEN/KB'
@@ -318,8 +330,8 @@ export function* dataFetcher() {
 		})
 	}
 }
-export function* watchStartSendPrompt() {
-	yield *takeEvery(constants.START_SEND_PROMPT, startSendPromptSaga)
+export function* watchStartSendView() {
+	yield *takeEvery(constants.SHOW_SEND_VIEW, showSendViewSaga)
 }
 export function* watchCreateNewWallet() {
 	yield* takeEvery(constants.CREATE_NEW_WALLET, createWalletSaga)
@@ -342,8 +354,11 @@ export function* watchGetBalance() {
 export function* watchGetTransactions() {
 	yield* takeEvery(constants.GET_TRANSACTIONS, getTransactionsSaga)
 }
-export function* watchShowReceivePromptSaga() {
-	yield* takeEvery(constants.SHOW_RECEIVE_PROMPT, showReceivePromptSaga)
+export function* watchShowTransactionListViewSaga() {
+	yield* takeEvery(constants.SHOW_TRANSACTION_LIST_VIEW, showTransactionListViewSaga)
+}
+export function* watchShowReceiveViewSaga() {
+	yield* takeEvery(constants.SHOW_RECEIVE_VIEW, showReceiveViewSaga)
 }
 export function* watchSendCurrency() {
 	yield* takeEvery(constants.SEND_CURRENCY, sendCurrencySaga)

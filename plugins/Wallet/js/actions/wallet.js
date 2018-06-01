@@ -50,11 +50,11 @@ export const setTransactions = (transactions) => ({
 	type: constants.SET_TRANSACTIONS,
 	transactions,
 })
-export const startSendPrompt = () => ({
-	type: constants.START_SEND_PROMPT,
+export const showSendView = () => ({
+	type: constants.SHOW_SEND_VIEW,
 })
-export const closeSendPrompt = () => ({
-	type: constants.CLOSE_SEND_PROMPT,
+export const closeSendView = () => ({
+	type: constants.CLOSE_SEND_VIEW,
 })
 export const setSendAddress = (address) => ({
 	type: constants.SET_SEND_ADDRESS,
@@ -64,11 +64,20 @@ export const setSendAmount = (amount) => ({
 	type: constants.SET_SEND_AMOUNT,
 	amount,
 })
-export const showReceivePrompt = () => ({
-	type: constants.SHOW_RECEIVE_PROMPT,
+export const hideAllViews = () => ({
+	type: constants.HIDE_ALL_VIEWS,
 })
-export const hideReceivePrompt = () => ({
-	type: constants.HIDE_RECEIVE_PROMPT,
+export const showTransactionListView = () => ({
+	type: constants.SHOW_TRANSACTION_LIST_VIEW,
+})
+export const hideTransactionListView = () => ({
+	type: constants.HIDE_TRANSACTION_LIST_VIEW,
+})
+export const showReceiveView = () => ({
+	type: constants.SHOW_RECEIVE_VIEW,
+})
+export const hideReceiveView = () => ({
+	type: constants.HIDE_RECEIVE_VIEW,
 })
 export const getNewReceiveAddress = () => ({
 	type: constants.GET_NEW_RECEIVE_ADDRESS,

@@ -8,7 +8,7 @@ const initialState = Map({
 	feeEstimate: '0 SEN/KB',
 	error: '',
 })
-export default function sendPromptReducer(state = initialState, action) {
+export default function sendViewReducer(state = initialState, action) {
 	switch (action.type) {
 	case SET_FEE_ESTIMATE:
 		return state.set('feeEstimate', action.estimate)

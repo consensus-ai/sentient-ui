@@ -329,10 +329,10 @@ describe('wallet plugin integration tests', () => {
 
 			setMockReceiveAddress('testaddress')
 			setMockAddresses(['testaddress'])
-			expect(walletComponent.find('.receive-prompt')).to.have.length(0)
+			expect(walletComponent.find('.receive-view')).to.have.length(0)
 			walletComponent.find('.receive-button').first().simulate('click')
 			await sleep(10)
-			expect(walletComponent.find('.receive-prompt')).to.have.length(1)
+			expect(walletComponent.find('.receive-view')).to.have.length(1)
 			expect(walletComponent.find('.receive-address').props().value).to.equal('testaddress')
 			expect(walletComponent.find('.prior-address')).to.have.length(0)
 		})
@@ -375,9 +375,9 @@ describe('wallet plugin integration tests', () => {
 
 	describe('wallet send prompt', () => {
 		it('shows a send prompt when send button is clicked', () => {
-			expect(walletComponent.find('.sendprompt')).to.have.length(0)
+			expect(walletComponent.find('.sendview')).to.have.length(0)
 			walletComponent.find('.send-button').first().simulate('click')
-			expect(walletComponent.find('.sendprompt')).to.have.length(1)
+			expect(walletComponent.find('.sendview')).to.have.length(1)
 		})
 		it('sends the correct amount of sen to the correct address', () => {
 			walletComponent.find('.sendamount input').simulate('change', { target: { value: '100' }})
@@ -394,7 +394,7 @@ describe('wallet plugin integration tests', () => {
 		})
 		it('closes the send prompt after sending', (done) => {
 			const poll = setInterval(() => {
-				if (walletComponent.find('.sendprompt').length === 0) {
+				if (walletComponent.find('.sendview').length === 0) {
 					clearInterval(poll)
 					done()
 				}

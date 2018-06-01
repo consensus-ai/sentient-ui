@@ -28,6 +28,13 @@
 	background-color: #FFFFFF;
 	background-repeat: no-repeat;
 	padding: 40px;
+
+	height: auto;
+	position: absolute;
+	bottom: 0;
+	top: 0;
+	left: 0;
+	right: 0;
 }
 .balance-info-container {
 	width: 100%;
@@ -108,43 +115,127 @@
 	width: 50%;
 	margin-bottom: 5px;
 }
-.transaction-list, .transaction-list table {
+
+.transaction-list {
+	display: flex;
+	flex-flow: column nowrap;
+	flex: 1 1 auto;
+	font-size: 14px;
+	color: #5C7099;
+}
+
+.transaction-row {
+	display: flex;
+  flex-flow: row nowrap;
+  height: 64px;
+  align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  padding: 0 35px;
+  flex-shrink: 0;
+}
+
+.transaction-items {
+	display: flex;
+	flex-flow: column nowrap;
+	flex: 1 1 auto;
+	overflow: scroll;
+}
+.transaction-row.row-header {
+	color: #3D4B66;
+}
+
+.transaction-col {
+	display: flex;
+	flex-flow: row nowrap;
+	flex-grow: 1;
+	flex-basis: 0;
+	word-break: break-all;
+	margin: 0 14px;
+}
+
+.transaction-col.col-direction {
+	flex-grow: 0;
+	flex-basis: auto;
+	width: 18px;
+	height: 20px;
+	margin: 0 25px 0 4px;
+}
+
+.transaction-col.col-amount {
+	flex-basis: auto;
+	flex-grow: 0;
+	width: 115px;
+	margin-right: 37px;
+}
+
+.transaction-col.col-txn-id {
+	margin-right: 55px;
+}
+
+.transaction-col.col-txn-id.small-text {
+	font-size: 12px;
+}
+
+.transaction-col.col-date {
+	flex-basis: auto;
+	flex-grow: 0;
+	width: 100px;
+}
+
+.transaction-col.col-time {
+	flex-basis: auto;
+	flex-grow: 0;
+	width: 80px;
+}
+
+.transaction-col.col-status {
+	flex-basis: auto;
+	flex-grow: 0;
+	width: 45px;
+	margin: 0;
+}
+
+.transaction-col.col-status span{
 	width: 100%;
 	text-align: center;
-	overflow-y: auto;
 }
-.transaction-list table td {
-	font-size: 11px;
+
+.col-status.confirmed {
+	background-image: url('../assets/txn-status-confirmed-icon.png');
+	background-size: 18px 20px;
+	background-position: center center;
+	background-color: #FFFFFF;
+	background-repeat: no-repeat;
+	height: 45px;
+	width: 45px;
 }
-.txid {
-	font-family: monospace;
+
+.col-status.unconfirmed {
+	background-image: url('../assets/txn-status-unconfirmed-icon.png');
+	background-size: 18px 20px;
+	background-position: center center;
+	background-color: #FFFFFF;
+	background-repeat: no-repeat;
+	height: 45px;
+	width: 45px;
 }
-.transaction-list table th {
-	font-size: 14px;
-	text-align: center;
+
+.col-direction.direction-inbound {
+	background-image: url('../assets/direction-inbound-icon.png');
+	background-size: cover;
+	background-position: center center;
+	background-color: #FFFFFF;
+	background-repeat: no-repeat;
 }
-.transaction-header {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	background-color: #C5C5C5;
-	margin: 0;
-	padding: 10px;
+
+.col-direction.direction-outbound {
+	background-image: url('../assets/direction-outbound-icon.png');
+	background-size: cover;
+	background-position: center center;
+	background-color: #FFFFFF;
+	background-repeat: no-repeat;
 }
-.transaction-header > h2 {
-	margin-top: 3px;
-	margin-bottom: 3px;
-}
-.filter-toggle > input {
-	margin-right: 5px;
-}
-.unconfirmed-icon {
-	color: #DC0025;
-}
-.confirmed-icon {
-	color: #00CBA0;
-}
+
 .wallet-address {
 	display: block;
 	height: 20px;
@@ -152,7 +243,7 @@
 	margin-top: 10px;
 	font-size: 11px;
 }
-.receive-prompt {
+.receive-view {
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -169,7 +260,7 @@
 	width: 100%;
 	display: flex;
 	align-items: center;
-	min-height: 60px;
+	margin-bottom: 30px;
 }
 
 
@@ -187,6 +278,34 @@
 
   box-shadow: 0 2px 8px rgba(61,75,102,0.53);
   border-radius: 4px;
+
+  cursor: pointer;
+}
+
+.wallet-toolbar .wallet-button:hover {
+	background-color: #396AB0;
+}
+
+.wallet-toolbar .wallet-button.active {
+	background-color: #396AB0;
+}
+
+.wallet-toolbar .wallet-button.disabled {
+	background-color: #9FA8B5;
+	cursor: not-allowed;
+}
+
+.wallet-toolbar .transactions-button-icon {
+	display: inline-block;
+	width: 26px;
+	height: 18px;
+	vertical-align: middle;
+	margin-right: 10px;
+	background-size: cover;
+	background-position: center center;
+	background-color: rgba(0,0,0,0);
+	background-repeat: no-repeat;
+	background-image: url('../assets/transactions-button-icon.png');
 }
 
 .wallet-toolbar .receive-button-icon {
@@ -195,24 +314,28 @@
 	height: 18px;
 	vertical-align: middle;
 	margin-right: 10px;
-	background-size: 15px 18px;
+	background-size: cover;
 	background-position: center center;
 	background-color: rgba(0,0,0,0);
 	background-repeat: no-repeat;
 	background-image: url('../assets/receive-button-icon.png');
 }
 
+.wallet-toolbar .receive-button {
+	margin-left: 20px;
+}
+
 .wallet-toolbar .send-button {
 	margin-left: 20px;
 }
+
 .wallet-toolbar .send-button-icon {
 	display: inline-block;
 	width: 24px;
 	height: 18px;
 	vertical-align: middle;
 	margin-right: 10px;
-
-	background-size: 24px 18px;
+	background-size: cover;
 	background-position: center center;
 	background-color: rgba(0,0,0,0);
 	background-repeat: no-repeat;
@@ -222,6 +345,11 @@
 .wallet-toolbar .lock-button {
 	margin-left: auto;
 	display: flex;
+	cursor: pointer;
+}
+
+.wallet-toolbar .lock-button:hover {
+	opacity: 0.8;
 }
 
 .wallet-toolbar .lock-button-icon {
@@ -237,8 +365,15 @@
 	background-image: url('../assets/lock-button-icon.png');
 }
 
-
-
+.main-view-container {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	border: 0.5px solid rgba(0,0,0,0.07);
+	border-radius: 6px;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+	background: white;
+}
 
 @keyframes modal-fadein {
 	from {opacity: 0}
@@ -272,7 +407,7 @@
 	border-radius: 5px;
 }
 
-.sendprompt {
+.send-view {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -300,10 +435,10 @@
 .backupprompt > h4 {
 	margin-bottom: 5px;
 }
-.sendprompt .fee-estimation {
+.send-view .fee-estimation {
 	margin-top: 6px;
 }
-.sendprompt button {
+.send-view button {
 	margin-left: 5px;
 	margin-right: 5px;
 	margin-top: 15px;
@@ -530,11 +665,11 @@
 	margin-left: 10px;
 	cursor: pointer;
 }
-.receive-prompt > .footnote {
+.receive-view > .footnote {
 	font-size: 11px;
 	margin-top: 5px;
 }
-.receiveprompt-dismissbtn {
+.receiveview-dismissbtn {
 	margin-top: 20px;
 }
 .receive-form {

@@ -10,31 +10,25 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 			</div>
 		)
 	}
-	const prettyTimestamp = (timestamp) => {
-		const pad = (n) => String('0' + n).slice(-2)
 
-		const yesterday = new Date()
-		yesterday.setHours(yesterday.getHours() - 24)
-		if (timestamp > yesterday) {
-			return (
-				'Today at ' +
-				pad(timestamp.getHours()) +
-				':' +
-				pad(timestamp.getMinutes())
-			)
-		}
-		return (
-			timestamp.getFullYear() +
-			'-' +
-			pad(timestamp.getMonth() + 1) +
-			'-' +
-			pad(timestamp.getDate()) +
-			' ' +
-			pad(timestamp.getHours()) +
-			':' +
-			pad(timestamp.getMinutes())
-		)
+	const toCurrencyString = (amount) => {
+		return amount.round(2).toString().replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
 	}
+
+	const toFormattedDate = (date) => {
+		if (date == "Invalid Date") {
+			return "pending"
+		}
+		return date.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+	}
+
+	const toFormattedTime = (date) => {
+		if (date == "Invalid Date") {
+			return "pending"
+		}
+		return date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+	}
+
 	const transactionComponents = transactions
 		.take(ntransactions)
 		.filter((txn) => {
@@ -44,79 +38,40 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 			return txn.transactionsums.totalSen.abs().gt(0) || txn.transactionsums.totalSenfund.abs().gt(0) || txn.transactionsums.totalMiner.abs().gt(0)
 		})
 		.map((txn, key) => {
-			let valueData = ''
-			if (txn.transactionsums.totalSen.abs().gt(0)) {
-				valueData +=
-					txn.transactionsums.totalSen
-						.round(4)
-						.toNumber()
-						.toLocaleString() + ' SEN '
-			}
-			if (txn.transactionsums.totalSenfund.abs().gt(0)) {
-				valueData +=
-					txn.transactionsums.totalSenfund
-						.round(4)
-						.toNumber()
-						.toLocaleString() + ' SF '
-			}
-			if (txn.transactionsums.totalMiner.abs().gt(0)) {
-				valueData +=
-					txn.transactionsums.totalMiner.round(4).toNumber().toLocaleString() +
-					' SEN (miner) '
-			}
-			if (valueData === '') {
-				valueData = '0 SEN'
-			}
+			let amount = txn.transactionsums.totalSen
+			let directionClass = amount.gt(0) ? "direction-inbound" : "direction-outbound"
+			let confirmedClass = txn.confirmed ? "confirmed" : "unconfirmed"
 			return (
-				<tr key={key}>
-					<td>
-						{txn.confirmed
-							? prettyTimestamp(txn.confirmationtimestamp)
-							: 'Not Confirmed'}
-					</td>
-					<td>{valueData}</td>
-					<td className="txid">{txn.transactionid}</td>
-					<td>
-						{txn.confirmed
-							? <i className="fa fa-check-square confirmed-icon"> Confirmed </i>
-							: <i className="fa fa-clock-o unconfirmed-icon"> Unconfirmed </i>}
-					</td>
-				</tr>
+				<div className="transaction-row" key={key}>
+					<div className={"transaction-col col-direction " + directionClass}></div>
+					<div className="transaction-col col-amount">{toCurrencyString(amount)}</div>
+					<div className="transaction-col col-txn-id small-text">{txn.transactionid}</div>
+					<div className="transaction-col col-date">{toFormattedDate(txn.confirmationtimestamp)}</div>
+					<div className="transaction-col col-time">{toFormattedTime(txn.confirmationtimestamp)}</div>
+					<div className={"transaction-col col-status " + confirmedClass}></div>
+				</div>
 			)
 		})
-	const onMoreClick = () => actions.showMoreTransactions()
-	const onToggleFilter = () => actions.toggleFilter()
+
 	return (
 		<div className="transaction-list">
-			<div className="transaction-header">
-				<h2> Recent Transactions </h2>
-				<div className="filter-toggle">
-					<input type="checkbox" onClick={onToggleFilter} checked={filter} />Hide 0SEN Transactions
-				</div>
+			<div className="transaction-row row-header">
+				<div className="transaction-col col-direction"></div>
+				<div className="transaction-col col-amount">Quantity</div>
+				<div className="transaction-col col-txn-id">Transaction ID</div>
+				<div className="transaction-col col-date">Date</div>
+				<div className="transaction-col col-time">Time</div>
+				<div className="transaction-col col-status"><span>Status</span></div>
 			</div>
-			<table className="pure-table transaction-table">
-				<thead>
-					<tr>
-						<th>Date</th>
-						<th>Net Value</th>
-						<th>Transaction ID</th>
-						<th>Confirmation Status</th>
-					</tr>
-				</thead>
-				<tbody>
-					{transactionComponents}
-				</tbody>
-			</table>
-			{transactions.size > ntransactions
-				? <div className="load-more">
-					<button className="load-more-button" onClick={onMoreClick}>
-						More Transactions
-					</button>
-				</div>
-				: null}
+			<div className="transaction-items">
+				{transactionComponents}
+			</div>
 		</div>
 	)
+
 }
+
+
 
 TransactionList.propTypes = {
 	transactions: PropTypes.instanceOf(List).isRequired,

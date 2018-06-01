@@ -6,7 +6,7 @@ const initialState = Map({
 	description: '',
 	addresses: List([]),
 })
-export default function receivePromptReducer(state = initialState, action) {
+export default function receiveViewReducer(state = initialState, action) {
 	switch (action.type) {
 	case SET_RECEIVE_ADDRESSES:
 		return state.set('addresses', action.addresses)

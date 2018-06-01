@@ -16,8 +16,9 @@ const initialState = Map({
 	transactions: List(),
 	ntransactions: 30,
 	filter: true,
-	showSendPrompt: false,
-	showReceivePrompt: false,
+	showSendView: false,
+	showTransactionListView: true,
+	showReceiveView: false,
 	showNewWalletDialog: false,
 	showNewWalletForm: false,
 	showChangePasswordDialog: false,
@@ -53,14 +54,22 @@ export default function walletReducer(state = initialState, action) {
 		return state.set('showNewWalletForm', true)
 	case constants.HIDE_NEW_WALLET_FORM:
 		return state.set('showNewWalletForm', false)
-	case constants.SHOW_RECEIVE_PROMPT:
-		return state.set('showReceivePrompt', true)
-	case constants.HIDE_RECEIVE_PROMPT:
-		return state.set('showReceivePrompt', false)
-	case constants.START_SEND_PROMPT:
-		return state.set('showSendPrompt', true)
-	case constants.CLOSE_SEND_PROMPT:
-		return state.set('showSendPrompt', false)
+	case constants.HIDE_ALL_VIEWS:
+		return state.set('showTransactionListView', false)
+								.set('showReceiveView', false)
+								.set('showSendView', false)
+	case constants.SHOW_TRANSACTION_LIST_VIEW:
+		return state.set('showTransactionListView', true)
+	case constants.HIDE_TRANSACTION_LIST_VIEW:
+		return state.set('showTransactionListView', false)
+	case constants.SHOW_RECEIVE_VIEW:
+		return state.set('showReceiveView', true)
+	case constants.HIDE_RECEIVE_VIEW:
+		return state.set('showReceiveView', false)
+	case constants.SHOW_SEND_VIEW:
+		return state.set('showSendView', true)
+	case constants.CLOSE_SEND_VIEW:
+		return state.set('showSendView', false)
 	case constants.UNLOCK_WALLET:
 		return state.set('unlocking', true)
 	case WALLET_UNLOCK_ERROR:

@@ -1,6 +1,6 @@
 import ReceiveViewView from '../components/receiveview.js'
 import { connect } from 'react-redux'
-import { hideReceiveView, setAddressDescription, getNewReceiveAddress, saveAddress } from '../actions/wallet.js'
+import { hideReceiveView, setAddressDescription, getNewReceiveAddress, saveAddress, updateAddressDescription } from '../actions/wallet.js'
 import { bindActionCreators } from 'redux'
 
 const mapStateToProps = (state) => ({
@@ -9,7 +9,7 @@ const mapStateToProps = (state) => ({
 	description: state.receiveview.get('description'),
 })
 const mapDispatchToProps = (dispatch) => ({
-	actions: bindActionCreators({ hideReceiveView, getNewReceiveAddress, saveAddress, setAddressDescription}, dispatch),
+	actions: bindActionCreators({ hideReceiveView, getNewReceiveAddress, saveAddress, setAddressDescription, updateAddressDescription}, dispatch),
 })
 
 const ReceiveView = connect(mapStateToProps, mapDispatchToProps)(ReceiveViewView)

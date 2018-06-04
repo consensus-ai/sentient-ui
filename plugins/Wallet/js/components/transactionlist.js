@@ -5,7 +5,7 @@ import { List } from 'immutable'
 const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 	if (transactions.size === 0) {
 		return (
-			<div className="transaction-list">
+			<div className="transaction-list-view">
 				<h3> No recent transactions </h3>
 			</div>
 		)
@@ -40,21 +40,27 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 		.map((txn, key) => {
 			let amount = txn.transactionsums.totalSen
 			let directionClass = amount.gt(0) ? "direction-inbound" : "direction-outbound"
+			let directionTooltipText = amount.gt(0) ? "In" : "Out"
 			let confirmedClass = txn.confirmed ? "confirmed" : "unconfirmed"
+			let statusTooltipText = txn.confirmed ? "Confirmed" : "Pending"
+
+			let amountStr = toCurrencyString(amount)
+			amountStr = amount.gt(0) ? "+" + amountStr : amountStr
+
 			return (
 				<div className="transaction-row" key={key}>
-					<div className={"transaction-col col-direction " + directionClass}></div>
-					<div className="transaction-col col-amount">{toCurrencyString(amount)}</div>
+					<div className={"transaction-col col-direction " + directionClass} title={directionTooltipText}></div>
+					<div className="transaction-col col-amount">{amountStr}</div>
 					<div className="transaction-col col-txn-id small-text">{txn.transactionid}</div>
 					<div className="transaction-col col-date">{toFormattedDate(txn.confirmationtimestamp)}</div>
 					<div className="transaction-col col-time">{toFormattedTime(txn.confirmationtimestamp)}</div>
-					<div className={"transaction-col col-status " + confirmedClass}></div>
+					<div className={"transaction-col col-status " + confirmedClass} title={statusTooltipText}></div>
 				</div>
 			)
 		})
 
 	return (
-		<div className="transaction-list">
+		<div className="transaction-list-view">
 			<div className="transaction-row row-header">
 				<div className="transaction-col col-direction"></div>
 				<div className="transaction-col col-amount">Quantity</div>

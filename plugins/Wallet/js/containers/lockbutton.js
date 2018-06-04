@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { hideAllViews, lockWallet } from '../actions/wallet.js'
 
 const mapStateToProps = (state) => ({
-  isActive: !state.wallet.get('unlocked'),
+  isLocked: !state.wallet.get('unlocked'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

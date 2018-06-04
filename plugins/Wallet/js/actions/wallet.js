@@ -212,6 +212,10 @@ export const saveAddress = (address) => ({
 	type: constants.SAVE_ADDRESS,
 	address,
 })
+export const updateAddressDescription = (address) => ({
+	type: constants.UPDATE_ADDRESS_DESCRIPTION,
+	address,
+})
 export const setReceiveAddresses = (addresses) => ({
 	type: constants.SET_RECEIVE_ADDRESSES,
 	addresses,

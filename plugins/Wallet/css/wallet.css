@@ -116,7 +116,7 @@
 	margin-bottom: 5px;
 }
 
-.transaction-list {
+.transaction-list-view {
 	display: flex;
 	flex-flow: column nowrap;
 	flex: 1 1 auto;
@@ -235,6 +235,162 @@
 	background-color: #FFFFFF;
 	background-repeat: no-repeat;
 }
+
+
+
+
+
+
+
+
+
+
+
+.address-list-view {
+	display: flex;
+	flex-flow: column nowrap;
+	flex: 1 1 auto;
+	font-size: 14px;
+	color: #5C7099;
+}
+
+.address-list-view .address-row {
+	display: flex;
+  flex-flow: row nowrap;
+  height: 64px;
+  align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  padding: 0 35px;
+  flex-shrink: 0;
+}
+
+.address-list-view .address-items {
+	display: flex;
+	flex-flow: column nowrap;
+	flex: 1 1 auto;
+	overflow: scroll;
+}
+.address-list-view .address-row.row-header {
+	color: #0043A4;
+}
+
+.address-list-view .address-col {
+	display: flex;
+	flex-flow: row nowrap;
+	flex-grow: 1;
+	flex-basis: 0;
+	word-break: break-all;
+	margin: 0 14px;
+}
+
+.address-list-view .address-col.col-index {
+	flex-grow: 0;
+	flex-basis: auto;
+	width: 18px;
+	height: 20px;
+	margin: 0 25px 0 4px;
+
+	color: #C7C9CD;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 21px;
+	text-align: center;
+	display: inline;
+}
+
+.address-list-view .address-col.col-index.index-bg {
+	width: 18px;
+	height: 20px;
+	background-image: url('../assets/address-index-border.png');
+	background-size: cover;
+	background-position: center center;
+	background-color: #FFFFFF;
+	background-repeat: no-repeat;
+}
+
+.address-list-view .address-col.col-description {
+	margin-right: 40px;
+	flex-grow: 0.5;
+}
+
+.address-list-view .description-input {
+	border: none;
+	color: #5C7099;
+	font-size: 14px;
+	width: 100%;
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.address-list-view .description-input:focus {
+	border: none;
+	box-shadow: none;
+}
+
+.address-list-view .address-col.col-address {
+	margin-right: 55px;
+}
+
+.address-list-view .address-col.col-address .generate-icon {
+	display: inline-block;
+	width: 40px;
+	height: 41px;
+	background-image: url('../assets/generate-new-address-icon.png');
+	background-size: cover;
+	background-position: center center;
+	background-color: #FFFFFF;
+	background-repeat: no-repeat;
+	margin-left: -12px;
+	margin-right: 5px;
+}
+
+.address-list-view .address-col.col-address .generate-btn {
+	cursor: pointer;
+	display: flex;
+}
+
+.address-list-view .address-col.col-address span {
+	line-height: 41px;
+}
+
+.address-list-view .address-col.col-address.small-text {
+	font-size: 12px;
+}
+
+.address-list-view .address-col.col-copy {
+	flex-basis: auto;
+	flex-grow: 0;
+}
+
+.address-list-view .address-col.col-copy.copy-icon {
+	display: inline-block;
+	width: 14px;
+	height: 16px;
+	background-image: url('../assets/copy-icon.png');
+	background-size: cover;
+	background-position: center center;
+	background-color: #FFFFFF;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+
+.address-list-view .address-col.col-copy.copy-icon:hover {
+	background-image: url('../assets/copy-icon-hover.png');
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 .wallet-address {
 	display: block;

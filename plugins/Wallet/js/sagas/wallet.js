@@ -178,6 +178,25 @@ function* showReceiveViewSaga() {
 	}
 }
 
+// updateAddressDescriptionSaga handles UPDATE_ADDRESS_DESCRIPTION actions, updating
+// the the address object in the config
+function* updateAddressDescriptionSaga(action) {
+	let addrs = List(SentientAPI.config.attr('receiveAddresses'))
+
+	addrs.forEach((addr) => {
+		if (addr.address == action.address.address) {
+			addr.description = action.address.description
+			try {
+				SentientAPI.config.save()
+			} catch (e) {
+				console.error(`error saving config: ${e.toString()}`)
+			}
+		}
+	})
+
+	yield put(actions.setReceiveAddresses(addrs))
+}
+
 // saveAddressSaga handles SAVE_ADDRESS actions, adding the address object to
 // the collection of stored Sentient-UI addresses and dispatching any necessary
 // resulting actions.
@@ -377,4 +396,7 @@ export function* watchGetNewReceiveAddress() {
 }
 export function* watchSaveAddress() {
 	yield *takeEvery(constants.SAVE_ADDRESS, saveAddressSaga)
+}
+export function* watchUpdateAddressDescription() {
+	yield *takeEvery(constants.UPDATE_ADDRESS_DESCRIPTION, updateAddressDescriptionSaga)
 }

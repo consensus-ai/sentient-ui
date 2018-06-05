@@ -37,7 +37,7 @@ const ReceiveView = ({addresses, address, description, actions}) => {
 								 onChange={handleDescriptionChange}
 								 data-address={oldAddress.address} />
 				</div>
-				<div className="address-col col-address">{oldAddress.address}</div>
+				<div className="address-col col-address small-text">{oldAddress.address}</div>
 				<div className="address-col col-copy copy-icon"
 						 title="Copy"
 						 onClick={handleCopyToClipboard}

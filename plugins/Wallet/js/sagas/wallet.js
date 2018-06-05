@@ -261,6 +261,7 @@ function* sendCurrencySaga(action) {
 			throw { message: 'Invalid currency type!' }
 		}
 		const sendAmount = action.currencytype === 'sen' ? SentientAPI.senToHastings(action.amount).toString() : action.amount
+
 		yield sentientdCall({
 			url: '/wallet/' + action.currencytype,
 			method: 'POST',
@@ -269,11 +270,13 @@ function* sendCurrencySaga(action) {
 				amount: sendAmount,
 			},
 		})
-		yield put(actions.closeSendView())
+
 		yield put(actions.getBalance())
 		yield put(actions.getTransactions())
 		yield put(actions.setSendAmount(''))
 		yield put(actions.setSendAddress(''))
+		yield put(actions.hideAllViews())
+		yield put(actions.showTransactionListView())
 	} catch (e) {
 		yield put(actions.setSendError(e.message))
 	}

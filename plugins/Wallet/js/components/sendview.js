@@ -3,35 +3,68 @@ import React from 'react'
 import BigNumber from 'bignumber.js'
 
 const SendView = ({currencytype, sendAddress, sendAmount, feeEstimate, sendError, actions}) => {
-	const handleSendAddressChange = (e) => actions.setSendAddress(e.target.value)
-	const handleSendAmountChange = (e) => actions.setSendAmount(e.target.value)
-	const handleSendClick = () => {
+	const isValidNumber = (num) => {
 		try {
 			new BigNumber(sendAmount)
-			actions.setSendError('')
-			actions.sendCurrency(sendAddress, sendAmount, currencytype)
+			return true
 		} catch (e) {
-			actions.setSendError('could not parse send amount')
+			return false
 		}
 	}
-	const handleCancelClick = () => actions.closeSendView()
+
+	const isValidAddress = (addr) => {
+		return addr && addr.length == 76
+	}
+
+	const handleSendAddressChange = (e) => {
+		actions.setSendAddress(e.target.value)
+	}
+
+	const handleSendAmountChange = (e) => {
+		actions.setSendAmount(e.target.value)
+	}
+
+	const handleSendClick = () => {
+		if (!isValidNumber(sendAmount)) {
+			actions.setSendError('invalid send amount')
+			return false
+		}
+
+		if (!isValidAddress(sendAddress)) {
+			actions.setSendError('invalid address')
+			return false
+		}
+
+		actions.setSendError('')
+		actions.sendCurrency(sendAddress, sendAmount, currencytype)
+	}
+
+	const getSendBtnActiveClass = () => {
+		if (isValidAddress(sendAddress) && isValidNumber(sendAmount)) {
+			return "active"
+		}
+		return ""
+	}
+
 	return (
 		<div className="send-view">
-			<div className="sendamount">
-				<h3>Send Amount {currencytype === 'sen' ? '(SEN)' : '(SF)'} </h3>
-				<input onChange={handleSendAmountChange} value={sendAmount} />
+			<div className="send-address">
+				<label>To address</label>
+				<input onChange={handleSendAddressChange} value={sendAddress} placeholder="e.g. 6022468945eb9d3eecfed9806fac7953884150a39ace5985dd7564695fc098723ad99e8907c3" />
 			</div>
-			<div className="sendaddress">
-				<h3> To Address </h3>
-				<input onChange={handleSendAddressChange} value={sendAddress} />
+
+			<div className="send-amount">
+				<label>Amount to send</label>
+				<input onChange={handleSendAmountChange} value={sendAmount} placeholder="Amount of SEN" />
 			</div>
-			<div className="fee-estimation">
-				Estimated fee: {feeEstimate}
+
+			<div className="fee-estimate">
+				Estimated fee: <b>{feeEstimate}</b>
 			</div>
-			<span className="send-error">{sendError}</span>
-			<div className="send-view-buttons">
-				<button className="send-sen-button" onClick={handleSendClick}>Send</button>
-				<button className="cancel-send-button" onClick={handleCancelClick}>Cancel</button>
+			<div className="send-error">{sendError}</div>
+			<div className={"send-button-container " + getSendBtnActiveClass()} onClick={handleSendClick}>
+				<div className="send-button-icon"></div>
+				<div className="send-button-label">Send</div>
 			</div>
 		</div>
 	)

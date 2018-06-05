@@ -1,15 +1,3 @@
-/*  Style Guide:
- *    Transparent: 70% Opacity
- *
- *    White:      #FFFFFF
- *    Grey-White: #F5F5F5
- *    Faint-Grey: #ECECEC
- *    Light-Grey: #DDDDDD
- *    Grey:       #C5C5C5
- *    Grey-Black: #4A4A4A
- *    Black:      #000000
- *    Neon-Green: #00CBA0
- */
  .app {
  	position: absolute;
  	top: 0;
@@ -36,6 +24,13 @@
 	left: 0;
 	right: 0;
 }
+
+.main-view-container {
+	display: flex;
+	width: 100%;
+	height: 100%;
+}
+
 .balance-info-container {
 	width: 100%;
 	height: 75px;
@@ -115,13 +110,22 @@
 	width: 50%;
 	margin-bottom: 5px;
 }
-
+/*
+ *
+ * TRANSACTIONS TAB VIEW
+ *
+ */
 .transaction-list-view {
 	display: flex;
 	flex-flow: column nowrap;
 	flex: 1 1 auto;
 	font-size: 14px;
 	color: #5C7099;
+
+	border: 0.5px solid rgba(0,0,0,0.07);
+	border-radius: 6px;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+	background: white;
 }
 
 .transaction-row {
@@ -140,6 +144,7 @@
 	flex: 1 1 auto;
 	overflow: scroll;
 }
+
 .transaction-row.row-header {
 	color: #3D4B66;
 }
@@ -235,23 +240,27 @@
 	background-color: #FFFFFF;
 	background-repeat: no-repeat;
 }
+/*
+ * END TRANSACTIONS VIEW
+ */
 
 
-
-
-
-
-
-
-
-
-
+/*
+ *
+ * RECEIVE (aka ADDRESSES) TAB VIEW
+ *
+ */
 .address-list-view {
 	display: flex;
 	flex-flow: column nowrap;
 	flex: 1 1 auto;
 	font-size: 14px;
 	color: #5C7099;
+
+	border: 0.5px solid rgba(0,0,0,0.07);
+	border-radius: 6px;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+	background: white;
 }
 
 .address-list-view .address-row {
@@ -329,6 +338,10 @@
 	box-shadow: none;
 }
 
+.address-list-view .description-input::-webkit-input-placeholder {
+  color: #C7C9CD;
+}
+
 .address-list-view .address-col.col-address {
 	margin-right: 55px;
 }
@@ -379,18 +392,113 @@
 .address-list-view .address-col.col-copy.copy-icon:hover {
 	background-image: url('../assets/copy-icon-hover.png');
 }
+/*
+ * END RECEIVE VIEW
+ */
 
 
+/*
+ *
+ * SEND TAB VIEW
+ *
+ */
+.send-view {
+	width: 100%;
+	padding: 70px 70px 0px 70px;
+	overflow: scroll;
+}
 
+.send-view label {
+	color: #3D4B66;
+	margin-left: 14px;
+}
 
+.send-view input {
+	box-sizing: border-box;
+	width: 100%;
+	height: 40px;
+	padding: 0 15px;
+	margin-top: 5px;
 
+	line-height: 40px;
+	font-size: 14px;
+	color: #5C7099;
 
+	border: 0.5px solid rgba(0,0,0,0.07);
+	box-shadow: 0 1px 2px 0 rgba(0,0,0,0.04);
+	border-radius: 6px;
 
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
 
+.send-view input:placeholder {
+	color: rgba(61,75,102,0.40);
+}
 
+.send-view .send-address {
+	margin-bottom: 40px;
+}
 
+.send-view .send-amount {
+	margin-bottom: 50px;
+}
 
+.send-view .fee-estimate {
+	color: #3D4B66;
+	margin-left: 14px;
+	margin-bottom: 40px;
+}
+.send-view .send-error {
+	color: red;
+	margin-left: 14px;
+	margin-bottom: 40px;
+}
 
+.send-view .send-button-container {
+	background: #C7C9CD;
+	box-shadow: 0 2px 8px 0 rgba(61,75,102,0.53);
+	border-radius: 4px;
+
+	width: 247px;
+	height: 44px;
+
+	margin: 0 auto;
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
+
+	cursor: not-allowed;
+}
+.send-view .send-button-container.active {
+	background: #0043A4;
+	cursor: pointer;
+}
+
+.send-view .send-button-container .send-button-icon {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
+
+	background-image: url('../assets/send-submit-icon.png');
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.send-view .send-button-container .send-button-label {
+	display: inline-block;
+	font-size: 14px;
+	color: rgba(255,255,255,0.87);
+	letter-spacing: 0;
+	line-height: 44px;
+}
+/*
+ * END SEND VIEW
+ */
 
 .wallet-address {
 	display: block;
@@ -521,16 +629,6 @@
 	background-image: url('../assets/lock-button-icon.png');
 }
 
-.main-view-container {
-	display: flex;
-	width: 100%;
-	height: 100%;
-	border: 0.5px solid rgba(0,0,0,0.07);
-	border-radius: 6px;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-	background: white;
-}
-
 @keyframes modal-fadein {
 	from {opacity: 0}
 	to {opacity: 1}
@@ -563,16 +661,6 @@
 	border-radius: 5px;
 }
 
-.send-view {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	background-color: #ECECEC;
-	width: 400px;
-	height: 300px;
-}
-
 .backupprompt {
 	display: flex;
 	flex-direction: column;
@@ -590,26 +678,6 @@
 }
 .backupprompt > h4 {
 	margin-bottom: 5px;
-}
-.send-view .fee-estimation {
-	margin-top: 6px;
-}
-.send-view button {
-	margin-left: 5px;
-	margin-right: 5px;
-	margin-top: 15px;
-}
-.sendamount, .sendaddress {
-	text-align: center;
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-.sendamount h3, .sendaddress h3 {
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-.sendamount input, .sendaddress input {
-	width: 250px;
 }
 
 .newwallet-dialog {
@@ -803,11 +871,6 @@
 .aux-seeds {
 	height: 180px;
 	overflow-y: scroll;
-}
-.send-error {
-	color: red;
-	margin-top: 10px;
-	width: 75%;
 }
 .generate-address-button {
 	display: flex;

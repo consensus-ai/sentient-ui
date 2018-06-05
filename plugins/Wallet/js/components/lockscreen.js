@@ -27,7 +27,7 @@ const LockScreen = ({unlocked, unlocking, encrypted, rescanning}) => {
 		)
 	}
 	return (
-		<div className="lockscreen">
+		<div className="lockscreen-view">
 			{lockscreenContents}
 		</div>
 	)

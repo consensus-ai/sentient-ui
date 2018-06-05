@@ -31,6 +31,12 @@
 	height: 100%;
 }
 
+
+/*
+ *
+ * BALANCE INFO VIEW
+ *
+ */
 .balance-info-container {
 	width: 100%;
 	height: 75px;
@@ -74,42 +80,128 @@
 .balance-info-currency {
 	font-weight: normal;
 }
-.load-more-button {
-	margin-top: 10px;
-	margin-bottom: 10px;
-}
-.lockscreen {
-	z-index: 1;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	width: 50%;
-	height: 50%;
-	font-size: 18px;
-	background-color: #ECECEC;
-}
-.lockscreen span {
-	text-align: center;
-}
-.password-prompt {
-	margin-top: 5px;
-	margin-bottom: 8px;
-}
-.password-prompt i {
-	color: #00CBA0;
-}
-.password-prompt {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
+/*
+ * END BALANCE INFO VIEW
+ */
+
+
+/*
+ *
+ * WALLET TOOLBAR VIEW
+ *
+ */
+.wallet-toolbar {
 	width: 100%;
+	display: flex;
+	align-items: center;
+	margin-bottom: 30px;
 }
-.password-prompt input {
-	width: 50%;
-	margin-bottom: 5px;
+
+.wallet-toolbar .wallet-button {
+	font-size: 14px;
+	color: rgba(255,255,255,0.87);
+	background-color: #0043A4;
+
+	height: 34px;
+	padding: 1px 15px;
+
+	display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-shadow: 0 2px 8px rgba(61,75,102,0.53);
+  border-radius: 4px;
+
+  cursor: pointer;
 }
+
+.wallet-toolbar .wallet-button:hover {
+	background-color: #396AB0;
+}
+
+.wallet-toolbar .wallet-button.active {
+	background-color: #396AB0;
+}
+
+.wallet-toolbar .wallet-button.disabled {
+	background-color: #9FA8B5;
+	cursor: not-allowed;
+}
+
+.wallet-toolbar .transactions-button-icon {
+	display: inline-block;
+	width: 26px;
+	height: 18px;
+	vertical-align: middle;
+	margin-right: 10px;
+	background-size: cover;
+	background-position: center center;
+	background-color: rgba(0,0,0,0);
+	background-repeat: no-repeat;
+	background-image: url('../assets/transactions-button-icon.png');
+}
+
+.wallet-toolbar .receive-button-icon {
+	display: inline-block;
+	width: 15px;
+	height: 18px;
+	vertical-align: middle;
+	margin-right: 10px;
+	background-size: cover;
+	background-position: center center;
+	background-color: rgba(0,0,0,0);
+	background-repeat: no-repeat;
+	background-image: url('../assets/receive-button-icon.png');
+}
+
+.wallet-toolbar .receive-button {
+	margin-left: 20px;
+}
+
+.wallet-toolbar .send-button {
+	margin-left: 20px;
+}
+
+.wallet-toolbar .send-button-icon {
+	display: inline-block;
+	width: 24px;
+	height: 18px;
+	vertical-align: middle;
+	margin-right: 10px;
+	background-size: cover;
+	background-position: center center;
+	background-color: rgba(0,0,0,0);
+	background-repeat: no-repeat;
+	background-image: url('../assets/send-button-icon.png');
+}
+
+.wallet-toolbar .lock-button {
+	margin-left: auto;
+	display: flex;
+	cursor: pointer;
+}
+
+.wallet-toolbar .lock-button:hover {
+	opacity: 0.8;
+}
+
+.wallet-toolbar .lock-button-icon {
+	display: inline-block;
+	width: 47px;
+	height: 50px;
+	vertical-align: middle;
+
+	background-size: cover;
+	background-position: center center;
+	background-color: rgba(0,0,0,0);
+	background-repeat: no-repeat;
+	background-image: url('../assets/lock-button-icon.png');
+}
+/*
+ * END WALLET TOOLBAR VIEW
+ */
+
+
 /*
  *
  * TRANSACTIONS TAB VIEW
@@ -500,134 +592,114 @@
  * END SEND VIEW
  */
 
-.wallet-address {
-	display: block;
-	height: 20px;
-	margin-bottom: 10px;
-	margin-top: 10px;
-	font-size: 11px;
-}
-.receive-view {
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: flex-start;
-	flex-direction: column;
-	width: 700px;
-	height: 400px;
-	background-color: #ECECEC;
-	padding-top: 50px;
+
+/*
+ *
+ * LOCK SCREEN VIEW
+ *
+ */
+.lockscreen-view {
+	width: 100%;
+	padding: 70px 70px 0px 70px;
+
+	border: 0.5px solid rgba(0,0,0,0.07);
+	border-radius: 6px;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+	background: white;
 }
 
-
-.wallet-toolbar {
+.password-prompt {
 	width: 100%;
 	display: flex;
-	align-items: center;
-	margin-bottom: 30px;
-}
+	flex-direction: column;
 
-
-.wallet-toolbar .wallet-button {
 	font-size: 14px;
-	color: rgba(255,255,255,0.87);
-	background-color: #0043A4;
+	color: #3D4B66;
+}
 
-	height: 34px;
-	padding: 1px 15px;
+.password-prompt label {
+	margin-left: 10px;
+}
 
+.password-prompt input {
+	box-sizing: border-box;
+	width: 100%;
+	height: 40px;
+	padding: 0 15px;
+	margin-top: 5px;
+	margin-bottom: 40px;
+
+	line-height: 40px;
+	font-size: 14px;
+	color: #5C7099;
+
+	border: 0.5px solid rgba(0,0,0,0.07);
+	box-shadow: 0 1px 2px 0 rgba(0,0,0,0.04);
+	border-radius: 6px;
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.password-prompt input:placeholder {
+	color: rgba(61,75,102,0.40);
+}
+
+.password-prompt .unlock-button-container {
+	background: #C7C9CD;
+	box-shadow: 0 2px 8px 0 rgba(61,75,102,0.53);
+	border-radius: 4px;
+
+	width: 166px;
+	height: 44px;
+
+	margin: 0 auto;
 	display: flex;
-  justify-content: center;
-  align-items: center;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
 
-  box-shadow: 0 2px 8px rgba(61,75,102,0.53);
-  border-radius: 4px;
-
-  cursor: pointer;
-}
-
-.wallet-toolbar .wallet-button:hover {
-	background-color: #396AB0;
-}
-
-.wallet-toolbar .wallet-button.active {
-	background-color: #396AB0;
-}
-
-.wallet-toolbar .wallet-button.disabled {
-	background-color: #9FA8B5;
 	cursor: not-allowed;
 }
 
-.wallet-toolbar .transactions-button-icon {
-	display: inline-block;
-	width: 26px;
-	height: 18px;
-	vertical-align: middle;
-	margin-right: 10px;
-	background-size: cover;
-	background-position: center center;
-	background-color: rgba(0,0,0,0);
-	background-repeat: no-repeat;
-	background-image: url('../assets/transactions-button-icon.png');
-}
-
-.wallet-toolbar .receive-button-icon {
-	display: inline-block;
-	width: 15px;
-	height: 18px;
-	vertical-align: middle;
-	margin-right: 10px;
-	background-size: cover;
-	background-position: center center;
-	background-color: rgba(0,0,0,0);
-	background-repeat: no-repeat;
-	background-image: url('../assets/receive-button-icon.png');
-}
-
-.wallet-toolbar .receive-button {
-	margin-left: 20px;
-}
-
-.wallet-toolbar .send-button {
-	margin-left: 20px;
-}
-
-.wallet-toolbar .send-button-icon {
-	display: inline-block;
-	width: 24px;
-	height: 18px;
-	vertical-align: middle;
-	margin-right: 10px;
-	background-size: cover;
-	background-position: center center;
-	background-color: rgba(0,0,0,0);
-	background-repeat: no-repeat;
-	background-image: url('../assets/send-button-icon.png');
-}
-
-.wallet-toolbar .lock-button {
-	margin-left: auto;
-	display: flex;
+.password-prompt .unlock-button-container.active {
+	background: #0043A4;
 	cursor: pointer;
 }
 
-.wallet-toolbar .lock-button:hover {
-	opacity: 0.8;
-}
-
-.wallet-toolbar .lock-button-icon {
+.password-prompt .unlock-button-container .unlock-button-icon {
 	display: inline-block;
-	width: 47px;
-	height: 50px;
-	vertical-align: middle;
+	width: 14px;
+	height: 14px;
+	margin-right: 10px;
 
+	background-image: url('../assets/unlock-icon.png');
 	background-size: cover;
 	background-position: center center;
-	background-color: rgba(0,0,0,0);
 	background-repeat: no-repeat;
-	background-image: url('../assets/lock-button-icon.png');
 }
+
+.password-prompt .unlock-button-container .unlock-button-label {
+	display: inline-block;
+	font-size: 14px;
+	color: rgba(255,255,255,0.87);
+	letter-spacing: 0;
+	line-height: 44px;
+}
+
+.password-prompt .password-error {
+	color: red;
+	margin-left: 10px;
+	margin-bottom: 40px;
+}
+/*
+ *
+ * END LOCK SCREEN VIEW
+ *
+ */
+
+
 
 @keyframes modal-fadein {
 	from {opacity: 0}

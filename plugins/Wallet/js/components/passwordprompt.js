@@ -3,20 +3,36 @@ import React from 'react'
 
 const PasswordPrompt = ({password, error, unlocking, actions}) => {
 	const onPasswordChange = (e) => actions.handlePasswordChange(e.target.value)
-	const onUnlockClick = () => actions.unlockWallet(password)
+	const onUnlockClick = () => {
+		if (password && password.length > 0) {
+			actions.unlockWallet(password)
+		}
+	}
+
+	const getUnlockBtnActiveClass = () => {
+		if (password && password.length > 0) {
+			return "active"
+		}
+		return ""
+	}
+
 	if (unlocking) {
 		return (
-			<span className="unlock-status"> Unlocking your wallet, this may take a while (up to several minutes)... </span>
+			<div className="password-prompt">
+				<span className="unlock-status">Unlocking your wallet, this may take up to several minutes...</span>
+			</div>
 		)
 	}
+
 	return (
 		<div className="password-prompt">
-			<h2> Wallet Locked </h2>
-			<span> Enter your wallet password to unlock the wallet. </span>
-			<i className="fa fa-lock fa-4x" />
-			<input type="password" value={password} className="password-input" onChange={onPasswordChange} />
-			<button className="unlock-button" onClick={onUnlockClick}>Unlock</button>
-			<div className="password-prompt-error">{error}</div>
+			<label>Enter your wallet password to unlock the wallet</label>
+			<input type="password" value={password} className="password-input" onChange={onPasswordChange} placeholder="password" />
+			<div className="password-error">{error}</div>
+			<div className={"unlock-button-container " + getUnlockBtnActiveClass()} onClick={onUnlockClick}>
+				<div className="unlock-button-icon"></div>
+				<div className="unlock-button-label">Unlock wallet</div>
+			</div>
 		</div>
 	)
 }

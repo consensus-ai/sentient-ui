@@ -122,6 +122,52 @@ function* createWalletSaga(action) {
 	}
 }
 
+// Call /wallet/init to create a new wallet, show the user the seed view,
+// wait for user to close the view, then unlock the wallet with the password,
+// and show the transactions view
+function* initNewWalletSaga(action) {
+	try {
+		let response
+		const seedProvided = !!action.seed
+
+		if (seedProvided) {
+			yield put(actions.hideInitWalletView())
+			yield put(actions.showInitializingSeedView())
+			response = yield sentientdCall({
+				url: '/wallet/init/seed',
+				method: 'POST',
+				timeout: 1.7e8, // two days
+				qs: {
+					dictionary: 'english',
+					encryptionpassword: action.password,
+					seed: action.seed,
+				},
+			})
+			yield put(actions.hideInitializingSeedView())
+		} else {
+			response = yield sentientdCall({
+				url: '/wallet/init',
+				method: 'POST',
+				qs: {
+					dictionary: 'english',
+					encryptionpassword: action.password,
+				},
+			})
+			yield put(actions.hideInitWalletView())
+		}
+
+		const actualSeed = seedProvided ? action.seed : response.primaryseed
+		yield put(actions.showInitBackupWalletView(action.password, actualSeed))
+	} catch (e) {
+		yield put(actions.hideInitializingSeedView())
+		yield put(actions.hideInitBackupWalletView())
+		yield put(actions.showInitWalletView())
+
+		let errorContent = typeof e.message !== 'undefined' ? e.message : e.toString()
+		yield put(actions.setInitWalletError(errorContent))
+	}
+}
+
 // call /wallet and compute the confirmed balance as well as the unconfirmed delta.
 function* getBalanceSaga() {
 	try {
@@ -358,6 +404,9 @@ export function* watchStartSendView() {
 }
 export function* watchCreateNewWallet() {
 	yield* takeEvery(constants.CREATE_NEW_WALLET, createWalletSaga)
+}
+export function* watchInitNewWallet() {
+	yield* takeEvery(constants.INIT_NEW_WALLET, initNewWalletSaga)
 }
 export function* watchRecoverSeedSaga() {
 	yield* takeEvery(constants.RECOVER_SEED, recoverSeedSaga)

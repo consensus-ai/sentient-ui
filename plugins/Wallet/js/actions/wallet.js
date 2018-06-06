@@ -32,6 +32,11 @@ export const createNewWallet = (password, seed) => ({
 	password,
 	seed,
 })
+export const initNewWallet = (password, seed) => ({
+	type: constants.INIT_NEW_WALLET,
+	password,
+	seed,
+})
 export const getBalance = () => ({
 	type: constants.GET_BALANCE,
 })
@@ -224,4 +229,43 @@ export const setAddressDescription = (description) => ({
 	type: constants.SET_ADDRESS_DESCRIPTION,
 	description,
 })
-
+export const showInitWalletView = () => ({
+	type: constants.SHOW_INIT_WALLET_VIEW,
+})
+export const hideInitWalletView = () => ({
+	type: constants.HIDE_INIT_WALLET_VIEW,
+})
+export const showInitBackupWalletView = (password, seed) => ({
+	type: constants.SHOW_INIT_BACKUP_WALLET_VIEW,
+	password,
+	seed,
+})
+export const hideInitBackupWalletView = () => ({
+	type: constants.HIDE_INIT_BACKUP_WALLET_VIEW,
+})
+export const showInitializingSeedView = () => ({
+	type: constants.SHOW_INITIALIZING_SEED_VIEW,
+})
+export const hideInitializingSeedView = () => ({
+	type: constants.HIDE_INITIALIZING_SEED_VIEW,
+})
+export const setPassword = (password) => ({
+	type: constants.SET_PASSWORD,
+	password,
+})
+export const setPasswordConfirmation = (passwordConfirmation) => ({
+	type: constants.SET_PASSWORD_CONFIRMATION,
+	passwordConfirmation,
+})
+export const setGenerateNewSeed = (generateNewSeed) => ({
+	type: constants.SET_GENERATE_NEW_SEED,
+	generateNewSeed,
+})
+export const setSeed = (seed) => ({
+	type: constants.SET_SEED,
+	seed,
+})
+export const setInitWalletError = (error) => ({
+	type: constants.SET_INIT_WALLET_ERROR,
+	error,
+})

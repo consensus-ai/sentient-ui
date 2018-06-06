@@ -178,7 +178,14 @@
 .wallet-toolbar .lock-button {
 	margin-left: auto;
 	display: flex;
+}
+
+.wallet-toolbar .lock-button.unlocked {
 	cursor: pointer;
+}
+
+.wallet-toolbar .lock-button.locked {
+	cursor: not-allowed;
 }
 
 .wallet-toolbar .lock-button:hover {
@@ -195,7 +202,15 @@
 	background-position: center center;
 	background-color: rgba(0,0,0,0);
 	background-repeat: no-repeat;
+}
+
+
+.wallet-toolbar .lock-button-icon.unlocked {
 	background-image: url('../assets/lock-button-icon.png');
+}
+
+.wallet-toolbar .lock-button-icon.locked {
+	background-image: url('../assets/unlock-button-icon.png');
 }
 /*
  * END WALLET TOOLBAR VIEW
@@ -218,6 +233,11 @@
 	border-radius: 6px;
 	box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 	background: white;
+}
+
+.transaction-list-view .no-txns-message {
+	margin: 30px;
+	font-size: 16px;
 }
 
 .transaction-row {
@@ -694,10 +714,25 @@
 	margin-bottom: 40px;
 }
 /*
- *
  * END LOCK SCREEN VIEW
+ */
+
+
+/*
+ *
+ * INIT WALLET VIEW
  *
  */
+
+.init-wallet-view {
+	display: flex;
+	flex-direction: column;
+}
+
+/*
+ * END INIT WALLET VIEW
+ */
+
 
 
 

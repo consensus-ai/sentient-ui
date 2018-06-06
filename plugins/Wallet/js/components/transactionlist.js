@@ -6,7 +6,7 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 	if (transactions.size === 0) {
 		return (
 			<div className="transaction-list-view">
-				<h3> No recent transactions </h3>
+				<div className="no-txns-message">No recent transactions</div>
 			</div>
 		)
 	}

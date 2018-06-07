@@ -3,14 +3,14 @@ import { platform } from 'os'
 import { shell } from 'electron'
 
 // Set UI version via package.json.
-document.getElementById('uiversion').innerHTML = VERSION
+document.getElementsByClassName('ui-version')[0].innerHTML += VERSION
 
 // Set daemon version via API call.
 SentientAPI.call('/daemon/version', (err, result) => {
 	if (err) {
 		SentientAPI.showError('Error', err.toString())
 	} else {
-		document.getElementById('senversion').innerHTML = result.version
+		document.getElementsByClassName('daemon-version')[0].innerHTML += result.version
 	}
 })
 
@@ -18,23 +18,42 @@ function genDownloadLink(version, thePlatform) {
 	return `https://github.com/consensus-ai/sentient-ui/releases/download/v${version}/sentient-ui-${version}-${thePlatform}-amd64.zip`
 }
 
+function showError(err) {
+	let errorMessage = typeof err.message !== 'undefined' ? err.message : err.toString()
+	document.getElementsByClassName("error-container")[0].style.display = 'block'
+	document.getElementsByClassName("error-container")[0].innerHTML = errorMessage
+}
+
+function hideError() {
+	document.getElementsByClassName("error-container")[0].style.display = 'none'
+	document.getElementsByClassName("error-container")[0].innerHTML = ""
+}
+
 function updateCheck() {
 	SentientAPI.call('/daemon/update', (err, result) => {
 		if (err) {
-			SentientAPI.showError('Error', err.toString())
+			showError(err)
 		} else if (result.available) {
-			document.getElementById('newversion').innerHTML = result.version
-			document.getElementById('downloadlink').href = genDownloadLink(result.version, platform())
-			document.getElementById('nonew').style.display = 'none'
-			document.getElementById('yesnew').style.display = 'block'
+			hideError()
+			document.getElementsByClassName('new-version-download-container')[0].style.display = 'block'
+			document.getElementsByClassName('new-version-available')[0].style.display = 'block'
+			document.getElementsByClassName('no-new-version')[0].style.display = 'none'
+
+			let downloadURL = genDownloadLink(result.version, platform())
+			document.getElementsByClassName('new-version-link')[0].innerHTML = downloadURL
 		} else {
-			document.getElementById('nonew').style.display = 'block'
-			document.getElementById('yesnew').style.display = 'none'
+			hideError()
+			document.getElementsByClassName('new-version-download-container')[0].style.display = 'block'
+			document.getElementsByClassName('new-version-available')[0].style.display = 'none'
+			document.getElementsByClassName('no-new-version')[0].style.display = 'block'
 		}
 	})
 }
 
-document.getElementById('updatecheck').onclick = updateCheck
-document.getElementById('datadiropen').onclick = () => {
+document.getElementsByClassName('check-update-button')[0].onclick = updateCheck
+document.getElementsByClassName('open-data-button')[0].onclick = () => {
 	shell.showItemInFolder(SentientAPI.config.sentientd.datadir)
+}
+document.getElementsByClassName('new-version-link')[0].onclick = (e) => {
+	shell.openExternal(e.target.innerHTML)
 }

@@ -10,7 +10,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
-	background-image: url('../assets/wallet-background.png');
+	background-image: url('../assets/background.png');
 	background-size: 378px 295px;
 	background-position: top right;
 	background-color: #FFFFFF;
@@ -31,6 +31,9 @@
 	height: 100%;
 }
 
+.button:active {
+	transform: translateX(2px) translateY(2px);
+}
 
 /*
  *
@@ -475,6 +478,9 @@
 	cursor: pointer;
 	display: flex;
 }
+.address-list-view .address-col.col-address .generate-btn:hover {
+	opacity: 0.8;
+}
 
 .address-list-view .address-col.col-address span {
 	line-height: 41px;
@@ -584,6 +590,11 @@
 
 	cursor: not-allowed;
 }
+
+.send-view .send-button-container.active:hover {
+  background-color: #396AB0;
+}
+
 .send-view .send-button-container.active {
 	background: #0043A4;
 	cursor: pointer;

@@ -10,42 +10,37 @@
 		<link rel="stylesheet" href="css/about.css">
 	</head>
 	<body>
-		<!-- Frame -->
-		<div class="frame">
-			<!-- Header -->
-			<div class="header">
-				<div class="title">About</div>
-			</div>
+		<div class="about">
+			<div class="content">
+				<div class="error-container" style="display:none"></div>
 
-			<!-- Version Info -->
-			<div class='about'>
-				Sentient UI version:
-				<div class='version'>
-					<span id='uiversion'></span>
+				<div class="ui-version-container">
+					<span class="ui-version">Wallet software v</span>
 				</div>
-			</div>
-			<div class='about'>
-				Sentient version:
-				<div class='version'>
-					<span id='senversion'></span>
+
+				<div class="daemon-version-container">
+					<span class="daemon-version">Daemon v</span>
 				</div>
-			</div>
-			<div class='about'>
-				<button id='updatecheck'>Check for Update</button>
-			</div>
-			<div class='about'>
-				<button id='datadiropen'>Show Sentient Data</button>
-			</div>
-			<div id='nonew' class='about' style='display:none'>
-				You are on the latest version.
-			</div>
-			<div id='yesnew' class='about' style='display:none'>
-				A new version is available:
-				<span id='newversion'></span>
-				<div class='version'>
-					<a href='' id='downloadlink'>
-						<button>Download</button>
-					</a>
+
+				<div class="button check-update-button">
+					<div class="check-update-icon"></div>
+					<span>Check for update</span>
+				</div>
+
+				<div class="new-version-download-container" style="display:none">
+					<div class="new-version-available" style="display:none">
+						<span>New version available at:</span>
+						<span class="new-version-link"></span>
+					</div>
+
+					<div class="no-new-version" style="display:none">
+						No new version available
+					</div>
+				</div>
+
+				<div class="button open-data-button">
+					<i class="open-data-icon fa fa-folder-open"></i>
+					<span>Open data directory</span>
 				</div>
 			</div>
 		</div>

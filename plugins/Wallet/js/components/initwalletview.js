@@ -63,7 +63,7 @@ const InitWalletView = ({showInitWalletView, showInitBackupWalletView, showInitS
 
       <div className="error-container">{error}</div>
 
-      <button type="submit" onClick={onClickSubmit}>Create</button>
+      <button type="submit" onClick={onClickSubmit} className="button">Create</button>
     </div>
   )
 

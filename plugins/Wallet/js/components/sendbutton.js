@@ -9,7 +9,7 @@ const SendButton = ({isActive, isLocked, actions}) => {
     }
   };
 
-  let walletBtnClass = "wallet-button send-button"
+  let walletBtnClass = "button wallet-button send-button"
   if (isLocked) {
     walletBtnClass += " disabled"
   } else if (isActive) {

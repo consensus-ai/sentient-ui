@@ -22,7 +22,7 @@ const LockButton = ({isLocked, actions}) => {
   }
 
 	return (
-		<div className={"lock-button " + lockedClass} onClick={onClick} title={lockBtnTooltipText}>
+		<div className={"button lock-button " + lockedClass} onClick={onClick} title={lockBtnTooltipText}>
 			<div className={"lock-button-icon " + lockedClass}></div>
 		</div>
 	)

@@ -29,7 +29,7 @@ const PasswordPrompt = ({password, error, unlocking, actions}) => {
 			<label>Enter your wallet password to unlock the wallet</label>
 			<input type="password" value={password} className="password-input" onChange={onPasswordChange} placeholder="password" />
 			<div className="password-error">{error}</div>
-			<div className={"unlock-button-container " + getUnlockBtnActiveClass()} onClick={onUnlockClick}>
+			<div className={"button unlock-button-container " + getUnlockBtnActiveClass()} onClick={onUnlockClick}>
 				<div className="unlock-button-icon"></div>
 				<div className="unlock-button-label">Unlock wallet</div>
 			</div>

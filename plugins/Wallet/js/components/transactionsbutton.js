@@ -9,7 +9,7 @@ const TransactionsButton = ({isActive, isLocked, actions}) => {
     }
   };
 
-  let walletBtnClass = "wallet-button transactions-button"
+  let walletBtnClass = "button wallet-button transactions-button"
   if (isLocked) {
     walletBtnClass += " disabled"
   } else if (isActive) {

@@ -1,6 +1,6 @@
 {
   "name": "sentient-ui",
-  "version": "0.0.1",
+  "version": "0.0.1-testnet",
   "main": "dist/main.js",
   "author": "Consensus AI",
   "description": "A UI application for interfacing with Sentient Network",

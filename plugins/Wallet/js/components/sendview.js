@@ -63,9 +63,9 @@ const SendView = ({currencytype, sendAddress, sendAmount, feeEstimate, sendError
 				Estimated fee: <b>{feeEstimate}</b>
 			</div>
 			<div className="send-error">{sendError}</div>
-			<div className={"send-button-container " + getSendBtnActiveClass()} onClick={handleSendClick}>
+			<div className={"button send-button-container " + getSendBtnActiveClass()} onClick={handleSendClick}>
 				<div className="send-button-icon"></div>
-				<div className="send-button-label">Send</div>
+				<div className="send-button-label">Submit transaction</div>
 			</div>
 		</div>
 	)

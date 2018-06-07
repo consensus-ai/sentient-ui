@@ -46,7 +46,7 @@ const ReceiveView = ({addresses, address, description, actions}) => {
 								 data-address={oldAddress.address} />
 				</div>
 				<div className="address-col col-address small-text">{oldAddress.address}</div>
-				<div className="address-col col-copy copy-icon"
+				<div className="button address-col col-copy copy-icon"
 						 title="Copy"
 						 onClick={handleCopyToClipboard}
 						 data-address={oldAddress.address}></div>
@@ -60,7 +60,7 @@ const ReceiveView = ({addresses, address, description, actions}) => {
 				<div className="address-col col-index"></div>
 				<div className="address-col col-description"></div>
 				<div className="address-col col-address">
-					<div className="generate-btn" onClick={handleGenerateClick}>
+					<div className="button generate-btn" onClick={handleGenerateClick}>
 						<div className="generate-icon"></div>
 						<span>Generate new address</span>
 					</div>

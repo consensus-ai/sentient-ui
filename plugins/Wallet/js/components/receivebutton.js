@@ -9,7 +9,7 @@ const ReceiveButton = ({isActive, isLocked, actions}) => {
     }
   };
 
-  let walletBtnClass = "wallet-button receive-button"
+  let walletBtnClass = "button wallet-button receive-button"
   if (isLocked) {
     walletBtnClass += " disabled"
   } else if (isActive) {

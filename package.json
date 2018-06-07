@@ -35,7 +35,9 @@
     "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony-v2.8.22",
     "uglifyjs-webpack-plugin": "^0.4.3",
     "webpack": "^2.5.1",
-    "electron-debug": "^2.0.0"
+    "electron-debug": "^2.0.0",
+    "style-loader": "^0.21.0",
+    "css-loader": "^0.28.11"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
@@ -47,6 +49,7 @@
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
     "react-redux": "^5.0.6",
+    "react-toastify": "^4.0.2",
     "redux": "^3.7.2",
     "redux-saga": "^0.15.6",
     "semver": "^5.4.1",

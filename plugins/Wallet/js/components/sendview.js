@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import BigNumber from 'bignumber.js'
+import { toast } from 'react-toastify'
 
 const SendView = ({currencytype, sendAddress, sendAmount, feeEstimate, sendError, actions}) => {
 	const isValidNumber = (num) => {

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { List } from 'immutable'
+import { toast } from 'react-toastify'
 const {clipboard} = require('electron')
 
 const ReceiveView = ({addresses, address, description, actions}) => {
@@ -17,10 +18,17 @@ const ReceiveView = ({addresses, address, description, actions}) => {
 		actions.updateAddressDescription({ description: descr, address: addr })
 	}
 
+	let copyToastId = null
 	const handleCopyToClipboard = (e) => {
 		let addr = e.target.getAttribute('data-address')
 		if (addr) {
 			clipboard.writeText(addr)
+
+			if (!toast.isActive(copyToastId)) {
+				copyToastId = toast("address copied to clipboard", {
+					autoClose: 3000,
+				})
+			}
 		}
 	}
 

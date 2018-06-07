@@ -17,6 +17,10 @@ import BackupPrompt from '../containers/backupprompt.js'
 import BalanceInfo from '../containers/balanceinfo.js'
 import LockScreen from '../containers/lockscreen.js'
 
+import { ToastContainer, Slide } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+
 const Wallet = ({showBackupPrompt, senfundbalance, showTransactionListView, showReceiveView, showChangePasswordDialog, showSendView, showNewWalletDialog, showRecoveryDialog, unlocked, actions }) => {
 	return (
 		<div className="wallet">
@@ -37,6 +41,16 @@ const Wallet = ({showBackupPrompt, senfundbalance, showTransactionListView, show
 				{unlocked && showSendView ? <SendView /> : null}
 				{unlocked ? null : <LockScreen />}
 			</div>
+
+			<ToastContainer
+				className='sen-toast-container'
+				toastClassName='sen-toast'
+				bodyClassName='sen-toast-body'
+				closeButtonClassName='sen-toast-close-button'
+				progressClassName='sen-toast-progress'
+				transition={Slide}
+				position='bottom-right'
+			/>
 		</div>
 	)
 }

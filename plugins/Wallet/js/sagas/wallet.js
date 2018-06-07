@@ -5,6 +5,7 @@ import * as actions from '../actions/wallet.js'
 import * as constants from '../constants/wallet.js'
 import { walletUnlockError } from '../actions/error.js'
 import { List } from 'immutable'
+import { toast } from 'react-toastify'
 
 // Send an error notification.
 const sendError = (e) => {
@@ -324,6 +325,7 @@ function* sendCurrencySaga(action) {
 		yield put(actions.setSendAddress(''))
 		yield put(actions.hideAllViews())
 		yield put(actions.showTransactionListView())
+		toast("Transaction submitted", { autoClose: 7000 })
 	} catch (e) {
 		yield put(actions.setSendError(e.message))
 	}

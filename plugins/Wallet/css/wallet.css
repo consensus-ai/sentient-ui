@@ -120,7 +120,7 @@
 }
 
 .wallet-toolbar .wallet-button.active {
-	background-color: #396AB0;
+	background-color: #E2E3E5;
 }
 
 .wallet-toolbar .wallet-button.disabled {
@@ -734,7 +734,51 @@
  */
 
 
+/*
+ *
+ * CUSTOM TOAST STYLE
+ *
+ */
 
+.sen-toast-container {
+	width: 280px !important;
+}
+
+.sen-toast {
+	color: #5C7099 !important;
+	background: #FFFFFF !important;
+	min-height: 45px !important;
+	box-shadow: 0 2px 8px 0 rgba(61,75,102,0.53) !important;
+	border-radius: 4px !important;
+	font-size: 14px !important;
+	font-family: "Avenir Next" !important;
+
+	margin-bottom: 0 !important;
+	margin-top: 15px !important;
+}
+
+.sen-toast-body {
+	margin: auto 10px !important;
+}
+
+.sen-toast button { /* close button */
+	color: #C1C1C1 !important;
+	margin: -5px -1px 0 0 !important;
+}
+
+.sen-toast button:hover {
+	background-color: #FFFFFF !important;
+	border: 0px !important;
+}
+
+.sen-toast-progress {
+	background-color: #C1C1C1 !important;
+	background: #C1C1C1 !important;
+	height: 2px !important;
+}
+/*
+ * END CUSTOM TOAST STYPE
+ */
 
 @keyframes modal-fadein {
 	from {opacity: 0}

@@ -32,17 +32,26 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 	const transactionComponents = transactions
 		.take(ntransactions)
 		.filter((txn) => {
-			if (!filter) {
-				return true
-			}
-			return txn.transactionsums.totalSen.abs().gt(0) || txn.transactionsums.totalSenfund.abs().gt(0) || txn.transactionsums.totalMiner.abs().gt(0)
+			return txn.transactionsums.totalSen.abs().gt(0) || txn.transactionsums.totalMiner.abs().gt(0)
 		})
 		.map((txn, key) => {
-			let amount = txn.transactionsums.totalSen
+			let amount = 0
+			let isMiner = false
+			if (txn.transactionsums.totalSen.abs().gt(0)) {
+				amount = txn.transactionsums.totalSen
+				isMiner = false
+			} else if (txn.transactionsums.totalMiner.abs().gt(0)) {
+				amount = txn.transactionsums.totalMiner
+				isMiner = true
+			}
+
 			let directionClass = amount.gt(0) ? "direction-inbound" : "direction-outbound"
 			let directionTooltipText = amount.gt(0) ? "In" : "Out"
+			directionTooltipText += isMiner ? " (miner)" : ""
+
 			let confirmedClass = txn.confirmed ? "confirmed" : "unconfirmed"
 			let statusTooltipText = txn.confirmed ? "Confirmed" : "Pending"
+			statusTooltipText += isMiner ? " (miner)" : ""
 
 			let amountStr = toCurrencyString(amount)
 			amountStr = amount.gt(0) ? "+" + amountStr : amountStr

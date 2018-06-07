@@ -72,7 +72,7 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 		<div className="transaction-list-view">
 			<div className="transaction-row row-header">
 				<div className="transaction-col col-direction"></div>
-				<div className="transaction-col col-amount">Quantity</div>
+				<div className="transaction-col col-amount">Amount</div>
 				<div className="transaction-col col-txn-id">Transaction ID</div>
 				<div className="transaction-col col-date">Date</div>
 				<div className="transaction-col col-time">Time</div>

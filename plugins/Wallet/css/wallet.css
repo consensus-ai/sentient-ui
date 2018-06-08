@@ -355,6 +355,28 @@
 	background-color: #FFFFFF;
 	background-repeat: no-repeat;
 }
+
+.transaction-list-view .show-more {
+  cursor: pointer;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+
+  height: 64px;
+  width: 100%;
+
+  font-size: 16px;
+}
+
+.transaction-list-view .show-more i {
+	margin-right: 10px;
+}
+
+.transaction-list-view .show-more:hover {
+	opacity: 0.8;
+}
+
 /*
  * END TRANSACTIONS VIEW
  */

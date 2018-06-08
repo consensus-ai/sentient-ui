@@ -29,6 +29,10 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 		return date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
 	}
 
+	const onClickLoadMore = () => {
+		actions.showMoreTransactions()
+	}
+
 	const transactionComponents = transactions
 		.take(ntransactions)
 		.filter((txn) => {
@@ -80,6 +84,12 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 			</div>
 			<div className="transaction-items">
 				{transactionComponents}
+				{transactions.size > ntransactions &&
+					<div className="button show-more" onClick={onClickLoadMore}>
+						<i className="fa fa-caret-down"></i>
+						<span>Load more...</span>
+					</div>
+				}
 			</div>
 		</div>
 	)

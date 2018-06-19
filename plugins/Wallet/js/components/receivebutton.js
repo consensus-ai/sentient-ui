@@ -1,13 +1,33 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 
-const ReceiveButton = ({actions}) => {
-	const handleReceiveButtonClick = () => actions.showReceivePrompt()
+const ReceiveButton = ({isActive, isLocked, actions}) => {
+	const onClick = () => {
+    if (!isLocked) {
+      actions.hideAllViews()
+      actions.showReceiveView()
+    }
+  };
+
+  let walletBtnClass = "button wallet-button receive-button"
+  if (isLocked) {
+    walletBtnClass += " disabled"
+  } else if (isActive) {
+    walletBtnClass += " active"
+  }
+
 	return (
-		<div className="wallet-button receive-button" onClick={handleReceiveButtonClick}>
-			<i className="fa fa-download fa-2x" />
-			<span>Receive Sen</span>
+		<div className={walletBtnClass} onClick={onClick}>
+			<div className="receive-button-icon"></div>
+			<span>Addresses</span>
 		</div>
 	)
 }
+
+ReceiveButton.propTypes = {
+  isActive: PropTypes.bool.isRequired,
+  isLocked: PropTypes.bool.isRequired,
+}
+
 
 export default ReceiveButton

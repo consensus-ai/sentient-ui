@@ -1,6 +1,6 @@
-/*  Style Guide: 
+/*  Style Guide:
  *    Transparent: 70% Opacity
- *    
+ *
  *    White:      #FFFFFF
  *    Grey-White: #F5F5F5
  *    Faint-Grey: #ECECEC
@@ -23,9 +23,9 @@ select, input, html, body {
 	margin: 0;
 	padding: 0;
 	border-spacing: 0;
-	font-family: 'Roboto Condensed', sans-serif;
-	font-weight: 300;
-	font-size: 18px;
+	font-family: 'Avenir Next';
+	font-weight: normal;
+	font-size: 16px;
 }
 html, body {
 	height: 100%;

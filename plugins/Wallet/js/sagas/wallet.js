@@ -5,6 +5,7 @@ import * as actions from '../actions/wallet.js'
 import * as constants from '../constants/wallet.js'
 import { walletUnlockError } from '../actions/error.js'
 import { List } from 'immutable'
+import { toast } from 'react-toastify'
 
 // Send an error notification.
 const sendError = (e) => {
@@ -55,6 +56,8 @@ function* walletUnlockSaga(action) {
 		yield put(actions.setEncrypted())
 		yield put(actions.setUnlocked())
 		yield put(actions.handlePasswordChange(''))
+		yield put(walletUnlockError(''))
+		yield put(actions.showTransactionListView())
 	} catch (e) {
 		yield put(actions.handlePasswordChange(''))
 		yield put(walletUnlockError(e.message))
@@ -120,6 +123,52 @@ function* createWalletSaga(action) {
 	}
 }
 
+// Call /wallet/init to create a new wallet, show the user the seed view,
+// wait for user to close the view, then unlock the wallet with the password,
+// and show the transactions view
+function* initNewWalletSaga(action) {
+	try {
+		let response
+		const seedProvided = !!action.seed
+
+		if (seedProvided) {
+			yield put(actions.hideInitWalletView())
+			yield put(actions.showInitializingSeedView())
+			response = yield sentientdCall({
+				url: '/wallet/init/seed',
+				method: 'POST',
+				timeout: 1.7e8, // two days
+				qs: {
+					dictionary: 'english',
+					encryptionpassword: action.password,
+					seed: action.seed,
+				},
+			})
+			yield put(actions.hideInitializingSeedView())
+		} else {
+			response = yield sentientdCall({
+				url: '/wallet/init',
+				method: 'POST',
+				qs: {
+					dictionary: 'english',
+					encryptionpassword: action.password,
+				},
+			})
+			yield put(actions.hideInitWalletView())
+		}
+
+		const actualSeed = seedProvided ? action.seed : response.primaryseed
+		yield put(actions.showInitBackupWalletView(action.password, actualSeed))
+	} catch (e) {
+		yield put(actions.hideInitializingSeedView())
+		yield put(actions.hideInitBackupWalletView())
+		yield put(actions.showInitWalletView())
+
+		let errorContent = typeof e.message !== 'undefined' ? e.message : e.toString()
+		yield put(actions.setInitWalletError(errorContent))
+	}
+}
+
 // call /wallet and compute the confirmed balance as well as the unconfirmed delta.
 function* getBalanceSaga() {
 	try {
@@ -129,7 +178,10 @@ function* getBalanceSaga() {
 		const unconfirmedIncoming = SentientAPI.hastingsToSen(response.unconfirmedincomingsen)
 		const unconfirmedOutgoing = SentientAPI.hastingsToSen(response.unconfirmedoutgoingsen)
 		const unconfirmed = unconfirmedIncoming.minus(unconfirmedOutgoing)
-		yield put(actions.setBalance(confirmed.round(2).toString(), unconfirmed.round(2).toString(), response.senfundbalance, senclaimbalance.round(2).toString()))
+
+		const consensusResponse = yield sentientdCall('/consensus')
+		const synced = consensusResponse.synced
+		yield put(actions.setBalance(synced, confirmed.round(2).toString(), unconfirmed.round(2).toString(), response.senfundbalance, senclaimbalance.round(2).toString()))
 	} catch (e) {
 		console.error('error fetching balance: ' + e.toString())
 	}
@@ -146,7 +198,18 @@ function* getTransactionsSaga() {
 	}
 }
 
-function* showReceivePromptSaga() {
+
+function* showTransactionListViewSaga() {
+	try {
+		const response = yield sentientdCall('/wallet/transactions?startheight=0&endheight=0')
+		const transactions = parseRawTransactions(response)
+		yield put(actions.setTransactions(transactions))
+	} catch (e) {
+		console.error('error fetching transactions: ' + e.toString())
+	}
+}
+
+function* showReceiveViewSaga() {
 	try {
 		const cachedAddrs = List(SentientAPI.config.attr('receiveAddresses'))
 		// validate the addresses. if this node has no record of an address, prune
@@ -161,6 +224,25 @@ function* showReceivePromptSaga() {
 		console.error(e)
 		sendError(e)
 	}
+}
+
+// updateAddressDescriptionSaga handles UPDATE_ADDRESS_DESCRIPTION actions, updating
+// the the address object in the config
+function* updateAddressDescriptionSaga(action) {
+	let addrs = List(SentientAPI.config.attr('receiveAddresses'))
+
+	addrs.forEach((addr) => {
+		if (addr.address == action.address.address) {
+			addr.description = action.address.description
+			try {
+				SentientAPI.config.save()
+			} catch (e) {
+				console.error(`error saving config: ${e.toString()}`)
+			}
+		}
+	})
+
+	yield put(actions.setReceiveAddresses(addrs))
 }
 
 // saveAddressSaga handles SAVE_ADDRESS actions, adding the address object to
@@ -227,6 +309,7 @@ function* sendCurrencySaga(action) {
 			throw { message: 'Invalid currency type!' }
 		}
 		const sendAmount = action.currencytype === 'sen' ? SentientAPI.senToHastings(action.amount).toString() : action.amount
+
 		yield sentientdCall({
 			url: '/wallet/' + action.currencytype,
 			method: 'POST',
@@ -235,11 +318,14 @@ function* sendCurrencySaga(action) {
 				amount: sendAmount,
 			},
 		})
-		yield put(actions.closeSendPrompt())
+
 		yield put(actions.getBalance())
 		yield put(actions.getTransactions())
 		yield put(actions.setSendAmount(''))
 		yield put(actions.setSendAddress(''))
+		yield put(actions.hideAllViews())
+		yield put(actions.showTransactionListView())
+		toast("Transaction submitted", { autoClose: 7000 })
 	} catch (e) {
 		yield put(actions.setSendError(e.message))
 	}
@@ -265,7 +351,7 @@ function* changePasswordSaga(action) {
 }
 
 
-function *startSendPromptSaga() {
+function *showSendViewSaga() {
 	try {
 		const response = yield sentientdCall('/tpool/fee')
 		const feeEstimate = SentientAPI.hastingsToSen(response.maximum).times(1e3).round(8).toString() + ' SEN/KB'
@@ -315,11 +401,14 @@ export function* dataFetcher() {
 		})
 	}
 }
-export function* watchStartSendPrompt() {
-	yield *takeEvery(constants.START_SEND_PROMPT, startSendPromptSaga)
+export function* watchStartSendView() {
+	yield *takeEvery(constants.SHOW_SEND_VIEW, showSendViewSaga)
 }
 export function* watchCreateNewWallet() {
 	yield* takeEvery(constants.CREATE_NEW_WALLET, createWalletSaga)
+}
+export function* watchInitNewWallet() {
+	yield* takeEvery(constants.INIT_NEW_WALLET, initNewWalletSaga)
 }
 export function* watchRecoverSeedSaga() {
 	yield* takeEvery(constants.RECOVER_SEED, recoverSeedSaga)
@@ -339,8 +428,11 @@ export function* watchGetBalance() {
 export function* watchGetTransactions() {
 	yield* takeEvery(constants.GET_TRANSACTIONS, getTransactionsSaga)
 }
-export function* watchShowReceivePromptSaga() {
-	yield* takeEvery(constants.SHOW_RECEIVE_PROMPT, showReceivePromptSaga)
+export function* watchShowTransactionListViewSaga() {
+	yield* takeEvery(constants.SHOW_TRANSACTION_LIST_VIEW, showTransactionListViewSaga)
+}
+export function* watchShowReceiveViewSaga() {
+	yield* takeEvery(constants.SHOW_RECEIVE_VIEW, showReceiveViewSaga)
 }
 export function* watchSendCurrency() {
 	yield* takeEvery(constants.SEND_CURRENCY, sendCurrencySaga)
@@ -359,4 +451,7 @@ export function* watchGetNewReceiveAddress() {
 }
 export function* watchSaveAddress() {
 	yield *takeEvery(constants.SAVE_ADDRESS, saveAddressSaga)
+}
+export function* watchUpdateAddressDescription() {
+	yield *takeEvery(constants.UPDATE_ADDRESS_DESCRIPTION, updateAddressDescriptionSaga)
 }

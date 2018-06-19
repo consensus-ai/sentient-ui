@@ -4,7 +4,6 @@ import Wallet from '../containers/wallet.js'
 
 const WalletApp = () => (
 	<div className="app">
-		<LockScreen />
 		<Wallet />
 	</div>
 )

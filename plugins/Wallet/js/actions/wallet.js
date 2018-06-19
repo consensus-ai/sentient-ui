@@ -32,11 +32,17 @@ export const createNewWallet = (password, seed) => ({
 	password,
 	seed,
 })
+export const initNewWallet = (password, seed) => ({
+	type: constants.INIT_NEW_WALLET,
+	password,
+	seed,
+})
 export const getBalance = () => ({
 	type: constants.GET_BALANCE,
 })
-export const setBalance = (confirmed, unconfirmed, senfunds, senclaimbalance) => ({
+export const setBalance = (synced, confirmed, unconfirmed, senfunds, senclaimbalance) => ({
 	type: constants.SET_BALANCE,
+	synced,
 	confirmed,
 	unconfirmed,
 	senfunds,
@@ -49,12 +55,11 @@ export const setTransactions = (transactions) => ({
 	type: constants.SET_TRANSACTIONS,
 	transactions,
 })
-export const startSendPrompt = (currencytype) => ({
-	type: constants.START_SEND_PROMPT,
-	currencytype,
+export const showSendView = () => ({
+	type: constants.SHOW_SEND_VIEW,
 })
-export const closeSendPrompt = () => ({
-	type: constants.CLOSE_SEND_PROMPT,
+export const closeSendView = () => ({
+	type: constants.CLOSE_SEND_VIEW,
 })
 export const setSendAddress = (address) => ({
 	type: constants.SET_SEND_ADDRESS,
@@ -64,11 +69,20 @@ export const setSendAmount = (amount) => ({
 	type: constants.SET_SEND_AMOUNT,
 	amount,
 })
-export const showReceivePrompt = () => ({
-	type: constants.SHOW_RECEIVE_PROMPT,
+export const hideAllViews = () => ({
+	type: constants.HIDE_ALL_VIEWS,
 })
-export const hideReceivePrompt = () => ({
-	type: constants.HIDE_RECEIVE_PROMPT,
+export const showTransactionListView = () => ({
+	type: constants.SHOW_TRANSACTION_LIST_VIEW,
+})
+export const hideTransactionListView = () => ({
+	type: constants.HIDE_TRANSACTION_LIST_VIEW,
+})
+export const showReceiveView = () => ({
+	type: constants.SHOW_RECEIVE_VIEW,
+})
+export const hideReceiveView = () => ({
+	type: constants.HIDE_RECEIVE_VIEW,
 })
 export const getNewReceiveAddress = () => ({
 	type: constants.GET_NEW_RECEIVE_ADDRESS,
@@ -203,6 +217,10 @@ export const saveAddress = (address) => ({
 	type: constants.SAVE_ADDRESS,
 	address,
 })
+export const updateAddressDescription = (address) => ({
+	type: constants.UPDATE_ADDRESS_DESCRIPTION,
+	address,
+})
 export const setReceiveAddresses = (addresses) => ({
 	type: constants.SET_RECEIVE_ADDRESSES,
 	addresses,
@@ -211,4 +229,43 @@ export const setAddressDescription = (description) => ({
 	type: constants.SET_ADDRESS_DESCRIPTION,
 	description,
 })
-
+export const showInitWalletView = () => ({
+	type: constants.SHOW_INIT_WALLET_VIEW,
+})
+export const hideInitWalletView = () => ({
+	type: constants.HIDE_INIT_WALLET_VIEW,
+})
+export const showInitBackupWalletView = (password, seed) => ({
+	type: constants.SHOW_INIT_BACKUP_WALLET_VIEW,
+	password,
+	seed,
+})
+export const hideInitBackupWalletView = () => ({
+	type: constants.HIDE_INIT_BACKUP_WALLET_VIEW,
+})
+export const showInitializingSeedView = () => ({
+	type: constants.SHOW_INITIALIZING_SEED_VIEW,
+})
+export const hideInitializingSeedView = () => ({
+	type: constants.HIDE_INITIALIZING_SEED_VIEW,
+})
+export const setPassword = (password) => ({
+	type: constants.SET_PASSWORD,
+	password,
+})
+export const setPasswordConfirmation = (passwordConfirmation) => ({
+	type: constants.SET_PASSWORD_CONFIRMATION,
+	passwordConfirmation,
+})
+export const setGenerateNewSeed = (generateNewSeed) => ({
+	type: constants.SET_GENERATE_NEW_SEED,
+	generateNewSeed,
+})
+export const setSeed = (seed) => ({
+	type: constants.SET_SEED,
+	seed,
+})
+export const setInitWalletError = (error) => ({
+	type: constants.SET_INIT_WALLET_ERROR,
+	error,
+})

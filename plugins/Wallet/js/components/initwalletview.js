@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const InitWalletView = ({showInitWalletView, showInitBackupWalletView, showInitSeedView, password, passwordConfirmation, generateNewSeed, seed, error, actions}) => {
+const InitWalletView = ({showInitWalletView, showInitBackupWalletView, showInitSeedView, password, passwordConfirmation, generateNewSeed, seed, confirmSeedBackup, error, actions}) => {
   const onChangePassword = (e) => {
     actions.setPassword(e.target.value)
   }
@@ -10,6 +10,9 @@ const InitWalletView = ({showInitWalletView, showInitBackupWalletView, showInitS
   }
   const onChangeGenerateNewSeed = (e) => {
     actions.setGenerateNewSeed(e.target.value.toLowerCase() == "true")
+  }
+  const onConfirmSeedBackup = (e) => {
+    actions.setConfirmSeedBackup(e.target.checked)
   }
   const onChangeSeed = (e) => {
     actions.setSeed(e.target.value)
@@ -41,37 +44,55 @@ const InitWalletView = ({showInitWalletView, showInitBackupWalletView, showInitS
 
     return true
   }
+
   const onClickDismissBackupView = () => {
-    actions.hideInitBackupWalletView()
+    if (confirmSeedBackup) {
+      actions.hideInitBackupWalletView()
+    }
   }
 
   const initWalletView = (
     <div className="init-wallet-view">
-      <input className="password-field" type="password" placeholder="password" value={password} onChange={onChangePassword}/>
-      <input className="password-field" type="password" placeholder="confirm password" value={passwordConfirmation} onChange={onChangePasswordConfirmation} />
+      <label className="password-label">Create a password to encrypt your wallet with.</label>
+      <input className="password-field password" type="password" placeholder="Password" value={password} onChange={onChangePassword}/>
+      <input className="password-field password-confirmation" type="password" placeholder="Confirm password" value={passwordConfirmation} onChange={onChangePasswordConfirmation} />
 
-      <label>
-        <input type="radio" name="generateseed" value={true} id="generate-seed-yes" checked={generateNewSeed} onChange={onChangeGenerateNewSeed} />
-        Generate a new seed
-      </label>
-      <label>
-        <input type="radio" name="generateseed" value={false} id="generate-seed-no" checked={!generateNewSeed} onChange={onChangeGenerateNewSeed} />
-        Import an existing seed
-      </label>
+      <div className="seed-options-container">
+        <label className="seed-label">
+          <input className="seed-radio" type="radio" name="generateseed" value={true} id="generate-seed-yes" checked={generateNewSeed} onChange={onChangeGenerateNewSeed} />
+          Create a new wallet (a new seed will be securely generated for you)
+        </label>
+        <label className="seed-label">
+          <input className="seed-radio" type="radio" name="generateseed" value={false} id="generate-seed-no" checked={!generateNewSeed} onChange={onChangeGenerateNewSeed} />
+          Import an existing seed
+        </label>
+      </div>
 
-      <input type="text" name="seed" placeholder="Seed" disabled={generateNewSeed} value={seed} onChange={onChangeSeed} />
+      {!generateNewSeed &&
+        <textarea className="seed" type="text" name="seed" placeholder="Seed" disabled={generateNewSeed} value={seed} onChange={onChangeSeed} />
+      }
 
       <div className="error-container">{error}</div>
 
-      <button type="submit" onClick={onClickSubmit} className="button">Create</button>
+      <div className="button create-button" type="submit" onClick={onClickSubmit}>Create</div>
     </div>
   )
 
   const initBackupWalletView = (
     <div className="init-backup-wallet-view">
+      <div className="seed-label">This is your seed:</div>
       <div className="seed-container">{seed}</div>
-      <div className="password-container">{password}</div>
-      <button onClick={onClickDismissBackupView}>DONE</button>
+      <div className="seed-warning">
+        WARNING! Make sure to save this seed in a secure location offline.
+        Do not share this seed with anyone.
+        If you lose this seed, it will be impossible to recover your funds.
+      </div>
+
+      <label className="confirm-label">
+        <input className="confirm-checkbox" type="checkbox" name="confirm-seed-backup" id="confirm-seed-backup" value={true} checked={confirmSeedBackup} onChange={onConfirmSeedBackup} />
+        I confirm that my seed is backed up and safe
+      </label>
+      <div className={"button dismiss-backup-button " + (confirmSeedBackup ? "active" : "")} onClick={onClickDismissBackupView}>Done</div>
     </div>
   )
 
@@ -104,6 +125,7 @@ InitWalletView.propTypes = {
   passwordConfirmation: PropTypes.string.isRequired,
   generateNewSeed: PropTypes.bool.isRequired,
   seed: PropTypes.string.isRequired,
+  confirmSeedBackup: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
 }
 

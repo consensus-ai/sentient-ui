@@ -269,3 +269,7 @@ export const setInitWalletError = (error) => ({
 	type: constants.SET_INIT_WALLET_ERROR,
 	error,
 })
+export const setConfirmSeedBackup = (confirmSeedBackup) => ({
+	type: constants.SET_CONFIRM_SEED_BACKUP,
+	confirmSeedBackup,
+})

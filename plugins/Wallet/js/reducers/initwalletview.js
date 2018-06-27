@@ -3,7 +3,8 @@ import { SHOW_INIT_WALLET_VIEW, HIDE_INIT_WALLET_VIEW,
          SET_PASSWORD, SET_PASSWORD_CONFIRMATION,
          SET_GENERATE_NEW_SEED, SET_SEED, SET_INIT_WALLET_ERROR,
          SHOW_INIT_BACKUP_WALLET_VIEW, HIDE_INIT_BACKUP_WALLET_VIEW,
-         SHOW_INITIALIZING_SEED_VIEW, HIDE_INITIALIZING_SEED_VIEW } from '../constants/wallet.js'
+         SHOW_INITIALIZING_SEED_VIEW, HIDE_INITIALIZING_SEED_VIEW,
+         SET_CONFIRM_SEED_BACKUP } from '../constants/wallet.js'
 
 const initialState = Map({
   showinitwalletview: true,
@@ -13,6 +14,7 @@ const initialState = Map({
   passwordconfirmation: '',
   generatenewseed: true,
   seed: '',
+  confirmseedbackup: false,
   initwalleterror: '',
 })
 
@@ -42,6 +44,8 @@ export default function initwalletview(state = initialState, action) {
     return state.set('seed', action.seed)
   case SET_INIT_WALLET_ERROR:
     return state.set('initwalleterror', action.error)
+  case SET_CONFIRM_SEED_BACKUP:
+    return state.set('confirmseedbackup', action.confirmSeedBackup)
   default:
     return state
   }

@@ -74,22 +74,24 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 
 	return (
 		<div className="transaction-list-view">
-			<div className="transaction-row row-header">
-				<div className="transaction-col col-direction"></div>
-				<div className="transaction-col col-amount">Amount</div>
-				<div className="transaction-col col-txn-id">Transaction ID</div>
-				<div className="transaction-col col-date">Date</div>
-				<div className="transaction-col col-time">Time</div>
-				<div className="transaction-col col-status"><span>Status</span></div>
-			</div>
-			<div className="transaction-items">
-				{transactionComponents}
-				{transactions.size > ntransactions &&
-					<div className="button show-more" onClick={onClickLoadMore}>
-						<i className="fa fa-caret-down"></i>
-						<span>Load more...</span>
-					</div>
-				}
+			<div className="transaction-list-overflow-container">
+				<div className="transaction-row row-header">
+					<div className="transaction-col col-direction"></div>
+					<div className="transaction-col col-amount">Amount</div>
+					<div className="transaction-col col-txn-id">Transaction ID</div>
+					<div className="transaction-col col-date">Date</div>
+					<div className="transaction-col col-time">Time</div>
+					<div className="transaction-col col-status"><span>Status</span></div>
+				</div>
+				<div className="transaction-items">
+					{transactionComponents}
+					{transactions.size > ntransactions &&
+						<div className="button show-more" onClick={onClickLoadMore}>
+							<i className="fa fa-caret-down"></i>
+							<span>Load more...</span>
+						</div>
+					}
+				</div>
 			</div>
 		</div>
 	)

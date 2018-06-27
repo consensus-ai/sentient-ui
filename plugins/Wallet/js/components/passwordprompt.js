@@ -3,6 +3,13 @@ import React from 'react'
 
 const PasswordPrompt = ({password, error, unlocking, actions}) => {
 	const onPasswordChange = (e) => actions.handlePasswordChange(e.target.value)
+
+	const handleKeyPress = (e) => {
+		if (e.key === 'Enter') {
+			onUnlockClick()
+		}
+	}
+
 	const onUnlockClick = () => {
 		if (password && password.length > 0) {
 			actions.unlockWallet(password)
@@ -25,7 +32,7 @@ const PasswordPrompt = ({password, error, unlocking, actions}) => {
 	}
 
 	return (
-		<div className="password-prompt">
+		<div className="password-prompt" onKeyPress={handleKeyPress}>
 			<label>Enter your wallet password to unlock the wallet</label>
 			<input type="password" value={password} className="password-input" onChange={onPasswordChange} placeholder="password" />
 			<div className="password-error">{error}</div>

@@ -10,6 +10,8 @@ const containerStyle = {
 	backgroundColor: '#C6C6C6',
 	width: '100%',
 	height: '100%',
+	padding: '30px 40px',
+	boxSizing: 'border-box'
 }
 
 const errorLogStyle = {

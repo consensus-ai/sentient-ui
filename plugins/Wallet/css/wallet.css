@@ -1105,7 +1105,7 @@
 	color: #000000;
 }
 .create-wallet-button i {
-	color: #00CBA0;
+	color: #0043A4;
 }
 .create-wallet-button i:hover {
 	color: #00A785;
@@ -1286,16 +1286,20 @@ td {
 }
 
 button{
-	background-color: #00CAA2;
-	border: 0;
-	color: white;
-	border-radius: 10px;
-	padding: 8px;
+	background: #0043A4;
+	color: #FFFFFF;
+	box-shadow: 0 2px 8px 0 rgba(61,75,102,0.53);
+	border-radius: 4px;
+	cursor: pointer;
 	font-size: 16px;
-	border: 2px solid transparent;
+	padding: 8px;
+	border: 0;
 }
 
 button:hover {
-	background-color: #00BAA2;
-	border: 2px solid gray;
+	opacity: 0.8;
+}
+
+button:active {
+	transform: translateX(2px) translateY(2px);
 }

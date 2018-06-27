@@ -190,7 +190,7 @@ html, body {
 	max-height: 50px;
 	max-width: calc(100% - 200px);
 	display: inline-block;
-	border: 1px solid #00CBA0;
+	border: 1px solid #0043A4;
 
 	border-radius: 0px;
 	overflow: hidden;
@@ -200,11 +200,11 @@ html, body {
 	padding: 8px;
 	padding-left: 16px;
 	padding-right: 16px;
-	border-right: 1px solid #00CBA0;
+	border-right: 1px solid #0043A4;
 	color: #f5f5f5;
 }
 .capsule .pod.button:hover {
-	color: #00CBA0;
+	color: #0043A4;
 }
 .capsule .pod * {
 	display: inline-block;

@@ -117,9 +117,12 @@ select:hover {
 	-webkit-animation: fadein 0.5s;
 }
 .button {
-	-webkit-user-select: none;
+	user-select: none;
 }
 .button:hover {
-	color: #4a4a4a;
+	opacity: 0.8;
 	cursor: pointer;
+}
+.button:active {
+  transform: translateX(2px) translateY(2px);
 }

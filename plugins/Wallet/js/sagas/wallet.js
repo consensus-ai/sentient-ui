@@ -396,7 +396,7 @@ export function* dataFetcher() {
 		tasks = tasks.concat(yield fork(getTransactionsSaga))
 		yield join(...tasks)
 		yield race({
-			task: call(delay, 8000),
+			task: call(delay, 2000),
 			cancel: take(constants.FETCH_DATA),
 		})
 	}

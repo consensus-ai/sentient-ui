@@ -118,6 +118,7 @@ export const unloadPlugins = () => {
 export const getOrderedPlugins = (path, homePlugin) => {
 	return List([
 		Path.join(path,"Wallet"),
+		Path.join(path,"Miner"),
 		Path.join(path, "About")
 	])
 }

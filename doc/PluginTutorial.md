@@ -11,9 +11,6 @@ done in a webpage.
 One could make a plugin that views Github.com by making a folder
 `plugins/Github/` and placing a one-line index.html file:
 `<meta http-equiv="refresh" content="0; url=http://Github.com/" />`
-Suddenly, there's a button labeled 'Github' and upon click, shows ![Note:
-Though this is currently a bit buggy due to sites using global variables that
-conflict with nodeintegration being turned on.](/doc/assets/github-plugin.png)
 
 ## Making a Sidebar Button
 
@@ -32,10 +29,6 @@ The plugin directory should now be:
  └── assets/
      └── button.png
 ```
-
-The Overview uses the 'bars' [font awesome icon in png form](http://fa2png.io/).
-Loading up Sentient-UI again, we'll see: ![Impressive plugin ain't
-it?](/doc/assets/sidebar.png)
 
 ## Making a Mainbar View
 
@@ -96,7 +89,6 @@ The plugin directory should now be:
  └── assets/
      └── button.png
 ```
-Loading up Sentient-UI again, we'll see: ![Impressive plugin ain't it?](/doc/assets/basic-overview.png)
 
 ## Styling the View
 
@@ -295,8 +287,6 @@ The plugin directory should reflect our css files:
 +└── css/
 +    └── overview.css
 ```
-
-Loading up Sentient-UI again, we'll see: ![Impressive plugin ain't it?](/doc/assets/styled-overview.png)
 
 ## Updating our View
 
@@ -576,8 +566,7 @@ function stop() {
 
 Loading up Sentient-UI again, we'll all see something different because the numbers
 should be pulled from the API and one's sentientd-state. In our case, the view shows
-the yet-encrypted release network:
-![Impressive plugin ain't it?](/doc/assets/working-overview.png)
+the yet-encrypted release network.
 
 ### Abstracting the Extra Mile
 
@@ -700,9 +689,6 @@ IPCRenderer.on('coin-sent', function(event, err, result) {
 });
 ```
 
-In the wallet view, we can trigger this notification and another, making them
-appear as such: ![If only we sent to an actual addresses](/doc/assets/wallet-notifications.png)
-
 In a similar, but more unwieldy manner, one can send a tooltip IPC message to
 show atop an element as demonstrated again by wallet:
 
@@ -730,4 +716,3 @@ document.getElementById('create-address').onclick = function() {
 
 Which will make this tooltip appear on click as such:
 
-![It's the details that make the best UI](/doc/assets/wallet-tooltip.png)

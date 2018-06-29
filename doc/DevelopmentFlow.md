@@ -1,27 +1,27 @@
 # Development Flow
 
+## Running the UI
+
+It is recommended to have `sentientd` running on your machine so that when you're actively developing
+the UI, you don't have to wait for the daemon to start up and get into a synced state.
+
 ## Packaging & Releasing Sentient-UI
 
-There are some packaging scripts (using electron-packager) in the package.json.
+There is a [release.sh](https://github.com/consensus-ai/sentient-ui/blob/master/release.sh) script that can help package a release of Sentient UI.
 
-For them to work, you will need to have release archives of the correct version
-in the `release` folder of the Sia package in your GOPATH. To do so, run `make
-xc` from the Sia repository followed by `npm run release` from the Sentient-UI
-repository.
+It is mostly automated, but requires you to have a local release of [sentient-network](https://github.com/consensus-ai/sentient-network) ready. See the [Release Process](https://github.com/consensus-ai/sentient-network/blob/master/doc/Release%20Process.md) documentation for `sentient-network` for instructions on how to create a release.
 
-## Building Distributables
+You will want to update the path to those releases here: https://github.com/consensus-ai/sentient-ui/blob/master/release.sh#L56
 
-Places packaged versions into release/ folder, see the package.json for details.
-
-* `npm run release`
+Protip: if you have extra time, you could improve the `release.sh` script to pull the release
+from Github so we don't have to rely on local filepaths.
 
 ## Other Commands
 
 Useful commands for development.
 
 * `npm run clean`
-will remove node_modules, your Sia state kept in lib/Sia, and the
-configuration settings from config.json.
+will get you started with a fresh repo
 * `npm run fresh`
 will run clean, install, then start to simulate a fresh install run of the UI.
 * `npm run debug`

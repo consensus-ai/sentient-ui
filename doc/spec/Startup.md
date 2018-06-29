@@ -10,5 +10,5 @@ This specification outlines the desired behaviour of Sentient-UI when it first l
 - Initialize electron's main window.  Register applicable event listeners (`close`, `closed`, etc), and load the renderer's entrypoint `index.html`.
 
 ### Renderer Process
-- Display a loading screen until communication with an active `siad` has been established.
+- Display a loading screen until communication with an active `sentientd` has been established.
 - Disable the loading screen and initialize the plugin system.

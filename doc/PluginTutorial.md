@@ -1,9 +1,5 @@
 # How to write a plugin
 
-Note: the screenshots here were taken from before a skin revamp of the UI, but
-the general principles, javascript, and most of the css are still valid and in
-use.
-
 ## It's a webpage... it's that simple.
 
 Plugins are loaded into Sentient-UI on run-time through an electron utility called
@@ -60,8 +56,7 @@ plugin for most everyone, so we'll add a nice little greeting and title to it:
 		<!-- Frame -->
 		<div class='frame'>
 			<div class='welcome'>
-				<div class='large'>Welcome to Sia</div>
-				<div class='small'>A highly efficient decentralized storage network.</div>
+				<div class='large'>Welcome to Sentient Network</div>
 			</div>
 		</div>
 	</body>
@@ -358,7 +353,7 @@ For example usage, view the js files of any currently implemented plugins.
 
 ### Making API calls
 
-To send api calls through the UI to a hosted siad, call ipc's sendToHost()
+To send api calls through the UI to a hosted sentientd, call ipc's sendToHost()
 function along the message channel 'api-call' and pass in the string of the
 call address.
 
@@ -580,7 +575,7 @@ function stop() {
 ```
 
 Loading up Sentient-UI again, we'll all see something different because the numbers
-should be pulled from the API and one's siad-state. In our case, the view shows
+should be pulled from the API and one's sentientd-state. In our case, the view shows
 the yet-encrypted release network:
 ![Impressive plugin ain't it?](/doc/assets/working-overview.png)
 

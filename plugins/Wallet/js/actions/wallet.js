@@ -229,26 +229,30 @@ export const setAddressDescription = (description) => ({
 	type: constants.SET_ADDRESS_DESCRIPTION,
 	description,
 })
-export const showInitWalletView = () => ({
-	type: constants.SHOW_INIT_WALLET_VIEW,
+
+
+export const setShowCreatePasswordView = (showCreatePasswordView) => ({
+	type: constants.SHOW_CREATE_PASSWORD_VIEW,
+	showCreatePasswordView,
 })
-export const hideInitWalletView = () => ({
-	type: constants.HIDE_INIT_WALLET_VIEW,
+export const setShowGenerateSeedView = (showGenerateSeedView) => ({
+	type: constants.SHOW_GENERATE_SEED_VIEW,
+	showGenerateSeedView,
 })
-export const showInitBackupWalletView = (password, seed) => ({
-	type: constants.SHOW_INIT_BACKUP_WALLET_VIEW,
-	password,
-	seed,
+export const setShowImportSeedView = (showImportSeedView) => ({
+	type: constants.SHOW_IMPORT_SEED_VIEW,
+	showImportSeedView,
 })
-export const hideInitBackupWalletView = () => ({
-	type: constants.HIDE_INIT_BACKUP_WALLET_VIEW,
+export const setShowBackupSeedView = (showBackupSeedView, seed) => ({
+	type: constants.SHOW_BACKUP_SEED_VIEW,
+	showBackupSeedView,
+	seed
 })
-export const showInitializingSeedView = () => ({
-	type: constants.SHOW_INITIALIZING_SEED_VIEW,
+export const setShowWalletInitializingView = (showWalletInitializingView) => ({
+	type: constants.SHOW_WALLET_INITIALIZING_VIEW,
+	showWalletInitializingView,
 })
-export const hideInitializingSeedView = () => ({
-	type: constants.HIDE_INITIALIZING_SEED_VIEW,
-})
+
 export const setPassword = (password) => ({
 	type: constants.SET_PASSWORD,
 	password,

@@ -1,15 +1,17 @@
 import { Map } from 'immutable'
-import { SHOW_INIT_WALLET_VIEW, HIDE_INIT_WALLET_VIEW,
+import { SHOW_CREATE_PASSWORD_VIEW, SHOW_GENERATE_SEED_VIEW,
+         SHOW_IMPORT_SEED_VIEW, SHOW_BACKUP_SEED_VIEW, SHOW_WALLET_INITIALIZING_VIEW,
          SET_PASSWORD, SET_PASSWORD_CONFIRMATION,
          SET_GENERATE_NEW_SEED, SET_SEED, SET_INIT_WALLET_ERROR,
-         SHOW_INIT_BACKUP_WALLET_VIEW, HIDE_INIT_BACKUP_WALLET_VIEW,
-         SHOW_INITIALIZING_SEED_VIEW, HIDE_INITIALIZING_SEED_VIEW,
          SET_CONFIRM_SEED_BACKUP } from '../constants/wallet.js'
 
 const initialState = Map({
-  showinitwalletview: true,
-  showinitbackupwalletview: false,
-  showinitializingseedview: false,
+  showcreatepasswordview: true,
+  showgenerateseedview: false,
+  showimportseedview: false,
+  showbackupseedview: false,
+  showwalletinitializingview: false,
+
   password: '',
   passwordconfirmation: '',
   generatenewseed: true,
@@ -20,20 +22,17 @@ const initialState = Map({
 
 export default function initwalletview(state = initialState, action) {
   switch (action.type) {
-  case SHOW_INIT_WALLET_VIEW:
-    return state.set('showinitwalletview', true)
-  case HIDE_INIT_WALLET_VIEW:
-    return state.set('showinitwalletview', false)
-  case SHOW_INIT_BACKUP_WALLET_VIEW:
-    return state.set('password', action.password)
+  case SHOW_CREATE_PASSWORD_VIEW:
+    return state.set('showcreatepasswordview', action.showCreatePasswordView)
+  case SHOW_GENERATE_SEED_VIEW:
+    return state.set('showgenerateseedview', action.showGenerateSeedView)
+  case SHOW_IMPORT_SEED_VIEW:
+    return state.set('showimportseedview', action.showImportSeedView)
+  case SHOW_BACKUP_SEED_VIEW:
+    return state.set('showbackupseedview', action.showBackupSeedView)
                 .set('seed', action.seed)
-                .set('showinitbackupwalletview', true)
-  case HIDE_INIT_BACKUP_WALLET_VIEW:
-    return state.set('showinitbackupwalletview', false)
-  case SHOW_INITIALIZING_SEED_VIEW:
-    return state.set('showinitializingseedview', true)
-  case HIDE_INITIALIZING_SEED_VIEW:
-    return state.set('showinitializingseedview', false)
+  case SHOW_WALLET_INITIALIZING_VIEW:
+    return state.set('showwalletinitializingview', action.showWalletInitializingView)
   case SET_PASSWORD:
     return state.set('password', action.password)
   case SET_PASSWORD_CONFIRMATION:

@@ -1,126 +1,178 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import { toast } from 'react-toastify'
+const {clipboard} = require('electron')
+const fs = require('fs')
+const {dialog} = require('electron').remote
 
-const InitWalletView = ({showInitWalletView, showInitBackupWalletView, showInitSeedView, password, passwordConfirmation, generateNewSeed, seed, confirmSeedBackup, error, actions}) => {
-  const onChangePassword = (e) => {
-    actions.setPassword(e.target.value)
-  }
-  const onChangePasswordConfirmation = (e) => {
-    actions.setPasswordConfirmation(e.target.value)
-  }
-  const onChangeGenerateNewSeed = (e) => {
-    actions.setGenerateNewSeed(e.target.value.toLowerCase() == "true")
-  }
-  const onConfirmSeedBackup = (e) => {
-    actions.setConfirmSeedBackup(e.target.checked)
-  }
-  const onChangeSeed = (e) => {
-    actions.setSeed(e.target.value)
-  }
-  const onClickSubmit = (e) => {
-    if (password.length < 8) {
-      actions.setInitWalletError("password is too short")
-      return false
+const InitWalletView = ({showCreatePasswordView, showGenerateSeedView, showImportSeedView, showBackupSeedView, showWalletInitializingView, password, passwordConfirmation, generateNewSeed, seed, confirmSeedBackup, error, actions}) => {
+
+  if (showCreatePasswordView) {
+    const MIN_PASSWORD_LENGTH = 8
+
+    const handleKeyPress = (e) => {
+      if (e.key === 'Enter') {
+        onClickSavePassword()
+      }
+    }
+    const onChangePassword = (e) => {
+      actions.setPassword(e.target.value)
+    }
+    const onChangePasswordConfirmation = (e) => {
+      actions.setPasswordConfirmation(e.target.value)
+    }
+    const onClickSavePassword = (e) => {
+      if (password.length >= MIN_PASSWORD_LENGTH && passwordConfirmation === password) {
+        actions.setShowCreatePasswordView(false)
+        actions.setShowGenerateSeedView(true)
+      }
     }
 
-    if (password != passwordConfirmation) {
-      actions.setInitWalletError("passwords don't match")
-      return false
+    var passwordValidationStatusClass = ""
+    var passwordValidationStatusWidth = Math.min(password.length/MIN_PASSWORD_LENGTH, 1) * 100 + "%"
+    if (password.length > 0 && password.length < MIN_PASSWORD_LENGTH) {
+      passwordValidationStatusClass = "invalid"
+    } else if (password.length >= MIN_PASSWORD_LENGTH) {
+      passwordValidationStatusClass = "valid"
     }
 
-    if (generateNewSeed) {
-      actions.setInitWalletError('')
+    var passwordConfirmationValidationStatusClass = ""
+    var passwordConfirmationValidationStatusWidth = Math.min(passwordConfirmation.length/MIN_PASSWORD_LENGTH, 1) * 100 + "%"
+    if (passwordConfirmation !== password || (passwordConfirmation.length > 0 && passwordConfirmation.length < MIN_PASSWORD_LENGTH)) {
+      passwordConfirmationValidationStatusClass = "invalid"
+    } else if (passwordConfirmation.length >= MIN_PASSWORD_LENGTH && passwordConfirmation === password) {
+      passwordConfirmationValidationStatusClass = "valid"
+    }
+
+    return (
+      <div className="create-password-view" onKeyPress={handleKeyPress}>
+        <label className="title">Let's create your Sentient Wallet.<br/>Set a password of 8 symbols minimum.</label>
+
+        <div className="password-field-container">
+          <div className={"password-validation-status-container " + (password.length == 0 ? "hidden" : "")}>
+            <div className={"password-validation-status " + passwordValidationStatusClass} style={{width: passwordValidationStatusWidth}}></div>
+          </div>
+          <input name="password-field" id="password-field" className="input-field password-field password" type="password" value={password} placeholder=" " onChange={onChangePassword}/>
+          <label htmlFor="password-field" className="input-label">Set a password</label>
+        </div>
+
+        <div className="password-field-container">
+          <div className={"password-validation-status-container " + (passwordConfirmation.length == 0 ? "hidden" : "")}>
+            <div className={"password-validation-status " + passwordConfirmationValidationStatusClass} style={{width: passwordConfirmationValidationStatusWidth}}></div>
+          </div>
+          <input name="password-confirmation-field" id="password-confirmation-field" className="input-field password-field password-confirmation" type="password" value={passwordConfirmation} placeholder=" " onChange={onChangePasswordConfirmation} />
+          <label htmlFor="password-confirmation-field" className="input-label">Confirm password</label>
+        </div>
+
+        <div className={"button save-password-button " + (password.length > MIN_PASSWORD_LENGTH && passwordConfirmation === password ? "active" : "")} onClick={onClickSavePassword}>Save password</div>
+      </div>
+    )
+  }
+
+  if (showGenerateSeedView) {
+    const onClickGenerateSeedButton = (e) => {
       actions.initNewWallet(password, null)
-    } else {
-      let chunks = seed.trim().split(' ')
-      if (chunks.length != 29) {
-        actions.setInitWalletError("invalid seed")
-        return false
-      }
-
-      actions.setInitWalletError('')
-      actions.initNewWallet(password, seed.trim())
+    }
+    const onClickImportSeedButton = (e) => {
+      actions.setShowGenerateSeedView(false)
+      actions.setShowImportSeedView(true)
     }
 
-    return true
+    return  (
+      <div className="generate-seed-view">
+        <label className="title">Now you need to generate a seed - a special mnemonic phrase for wallet recovery.</label>
+        <div className={"button generate-seed-button"} onClick={onClickGenerateSeedButton}>Generate a new seed</div>
+        <div className={"button import-seed-button"} onClick={onClickImportSeedButton}>I already have a seed and want to import it</div>
+      </div>
+    )
   }
 
-  const onClickDismissBackupView = () => {
-    if (confirmSeedBackup) {
-      actions.hideInitBackupWalletView()
+  if (showImportSeedView) {
+    const onChangeSeed = (e) => {
+      actions.setSeed(e.target.value)
     }
-  }
-
-  const initWalletView = (
-    <div className="init-wallet-view">
-      <label className="password-label">Create a password to encrypt your wallet with.</label>
-      <input className="password-field password" type="password" placeholder="Password" value={password} onChange={onChangePassword}/>
-      <input className="password-field password-confirmation" type="password" placeholder="Confirm password" value={passwordConfirmation} onChange={onChangePasswordConfirmation} />
-
-      <div className="seed-options-container">
-        <label className="seed-label">
-          <input className="seed-radio" type="radio" name="generateseed" value={true} id="generate-seed-yes" checked={generateNewSeed} onChange={onChangeGenerateNewSeed} />
-          Create a new wallet (a new seed will be securely generated for you)
-        </label>
-        <label className="seed-label">
-          <input className="seed-radio" type="radio" name="generateseed" value={false} id="generate-seed-no" checked={!generateNewSeed} onChange={onChangeGenerateNewSeed} />
-          Import an existing seed
-        </label>
-      </div>
-
-      {!generateNewSeed &&
-        <textarea className="seed" type="text" name="seed" placeholder="Seed" disabled={generateNewSeed} value={seed} onChange={onChangeSeed} />
+    const isValidSeed = () => {
+      return seed && seed.split(' ').length == 29
+    }
+    const onClickImportSeedButton = (e) => {
+      if (isValidSeed()) {
+        actions.initNewWallet(password, seed)
       }
+    }
 
-      <div className="error-container">{error}</div>
-
-      <div className="button create-button" type="submit" onClick={onClickSubmit}>Create</div>
-    </div>
-  )
-
-  const initBackupWalletView = (
-    <div className="init-backup-wallet-view">
-      <div className="seed-label">This is your seed:</div>
-      <div className="seed-container">{seed}</div>
-      <div className="seed-warning">
-        WARNING! Make sure to save this seed in a secure location offline.
-        Do not share this seed with anyone.
-        If you lose this seed, it will be impossible to recover your funds.
+    return (
+      <div className="import-seed-view">
+        <label className="title">Paste your seed phrase to the form below and click the Import button.</label>
+        <textarea className="seed" type="text" name="seed" value={seed} onChange={onChangeSeed} />
+        <div className={"button import-seed-button " + (isValidSeed() ? "active" : "")} onClick={onClickImportSeedButton}>Import</div>
       </div>
-
-      <label className="confirm-label">
-        <input className="confirm-checkbox" type="checkbox" name="confirm-seed-backup" id="confirm-seed-backup" value={true} checked={confirmSeedBackup} onChange={onConfirmSeedBackup} />
-        I confirm that my seed is backed up and safe
-      </label>
-      <div className={"button dismiss-backup-button " + (confirmSeedBackup ? "active" : "")} onClick={onClickDismissBackupView}>Done</div>
-    </div>
-  )
-
-  const initSeedView = (
-    <div className="init-seed-view">
-      <div>Restoring wallet from seed. This may take a few minutes...</div>
-    </div>
-  )
-
-  if (showInitWalletView) {
-     return initWalletView
+    )
   }
 
-  if (showInitBackupWalletView) {
-    return initBackupWalletView
+  if (showBackupSeedView) {
+    let copyToastId = null
+    const onClickCopySeedToClipboard = (e) => {
+      clipboard.writeText(seed)
+
+      if (!toast.isActive(copyToastId)) {
+        copyToastId = toast("seed copied to clipboard", {
+          autoClose: 3000,
+        })
+      }
+    }
+    const onClickDownloadAsTextFile = (e) => {
+      dialog.showSaveDialog(function (filePath) {
+        if (filePath === undefined) {
+          return
+        }
+
+        fs.writeFile(filePath, seed, function (err) {
+          if (err) {
+            dialog.showErrorBox('File save error', err.message)
+          } else {
+            toast("seed file saved", {
+              autoClose: 3000,
+            })
+          }
+        })
+      })
+    }
+    const onClickDismissBackup = (e) => {
+      actions.setShowBackupSeedView(false)
+      actions.setShowWalletInitializingView(true)
+    }
+
+    return (
+      <div className="backup-seed-view">
+        <label className="title">Save your seed phrase in a safe place. If you lose it, you won't be able to access your funds.</label>
+        <div className="seed-container">{seed}</div>
+        <div className="actions-container">
+          <div className="button copy-to-clipboard-button" onClick={onClickCopySeedToClipboard}>Copy to clipboard</div>
+          <div className="button download-button" onClick={onClickDownloadAsTextFile}>Download a text file</div>
+        </div>
+        <div className={"button dismiss-backup-button"} onClick={onClickDismissBackup}>I saved the seed. Continue.</div>
+      </div>
+    )
   }
 
-  if (showInitSeedView) {
-    return initSeedView
+  if (showWalletInitializingView) {
+    return (
+      <div className="wallet-initializing-view">
+        <label className="title">Restoring wallet from seed.<br/>This may take a few minutes...</label>
+      </div>
+    )
   }
 
   return null
 }
 
 InitWalletView.propTypes = {
-  showInitWalletView: PropTypes.bool.isRequired,
-  showInitBackupWalletView: PropTypes.bool.isRequired,
-  showInitSeedView: PropTypes.bool.isRequired,
+  showCreatePasswordView: PropTypes.bool.isRequired,
+  showGenerateSeedView: PropTypes.bool.isRequired,
+  showImportSeedView: PropTypes.bool.isRequired,
+  showBackupSeedView: PropTypes.bool.isRequired,
+  showWalletInitializingView: PropTypes.bool.isRequired,
+
   password: PropTypes.string.isRequired,
   passwordConfirmation: PropTypes.string.isRequired,
   generateNewSeed: PropTypes.bool.isRequired,

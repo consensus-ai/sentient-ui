@@ -127,13 +127,11 @@ function* createWalletSaga(action) {
 // wait for user to close the view, then unlock the wallet with the password,
 // and show the transactions view
 function* initNewWalletSaga(action) {
-	try {
-		let response
-		const seedProvided = !!action.seed
+	let response
+	const seedProvided = !!action.seed
 
-		if (seedProvided) {
-			yield put(actions.hideInitWalletView())
-			yield put(actions.showInitializingSeedView())
+	if (seedProvided) {
+		try {
 			response = yield sentientdCall({
 				url: '/wallet/init/seed',
 				method: 'POST',
@@ -144,8 +142,14 @@ function* initNewWalletSaga(action) {
 					seed: action.seed,
 				},
 			})
-			yield put(actions.hideInitializingSeedView())
-		} else {
+			yield put(actions.setShowImportSeedView(false))
+			yield put(actions.setShowWalletInitializingView(true))
+		} catch (e) {
+			let errorContent = typeof e.message !== 'undefined' ? e.message : e.toString()
+			toast.error(errorContent, { autoClose: false })
+		}
+	} else {
+		try {
 			response = yield sentientdCall({
 				url: '/wallet/init',
 				method: 'POST',
@@ -154,18 +158,12 @@ function* initNewWalletSaga(action) {
 					encryptionpassword: action.password,
 				},
 			})
-			yield put(actions.hideInitWalletView())
+			yield put(actions.setShowGenerateSeedView(false))
+			yield put(actions.setShowBackupSeedView(true, response.primaryseed))
+		} catch (e) {
+			let errorContent = typeof e.message !== 'undefined' ? e.message : e.toString()
+			toast(errorContent, { autoClose: 7000 })
 		}
-
-		const actualSeed = seedProvided ? action.seed : response.primaryseed
-		yield put(actions.showInitBackupWalletView(action.password, actualSeed))
-	} catch (e) {
-		yield put(actions.hideInitializingSeedView())
-		yield put(actions.hideInitBackupWalletView())
-		yield put(actions.showInitWalletView())
-
-		let errorContent = typeof e.message !== 'undefined' ? e.message : e.toString()
-		yield put(actions.setInitWalletError(errorContent))
 	}
 }
 

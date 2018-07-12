@@ -1,6 +1,7 @@
 import { put, take, fork, call, join, race } from 'redux-saga/effects'
 import { takeEvery, delay } from 'redux-saga'
 import { sentientdCall, parseRawTransactions } from './helpers.js'
+import { userFriendlyError } from './error_helpers.js'
 import * as actions from '../actions/wallet.js'
 import * as constants from '../constants/wallet.js'
 import { walletUnlockError } from '../actions/error.js'
@@ -11,7 +12,7 @@ import { toast } from 'react-toastify'
 const sendError = (e) => {
 	SentientAPI.showError({
 		title: 'Sentient-UI Wallet Error',
-		content: typeof e.message !== 'undefined' ? e.message : e.toString(),
+		content: userFriendlyError(e),
 	})
 }
 
@@ -60,7 +61,8 @@ function* walletUnlockSaga(action) {
 		yield put(actions.showTransactionListView())
 	} catch (e) {
 		yield put(actions.handlePasswordChange(''))
-		yield put(walletUnlockError(e.message))
+		yield put(walletUnlockError(userFriendlyError(e)))
+		toast.error(userFriendlyError(e), { autoClose: 7000 })
 	}
 }
 
@@ -146,7 +148,7 @@ function* initNewWalletSaga(action) {
 			yield put(actions.setShowWalletInitializingView(true))
 		} catch (e) {
 			let errorContent = typeof e.message !== 'undefined' ? e.message : e.toString()
-			toast.error(errorContent, { autoClose: 10000 })
+			toast.error(userFriendlyError(e), { autoClose: 7000 })
 		}
 	} else {
 		try {
@@ -162,7 +164,7 @@ function* initNewWalletSaga(action) {
 			yield put(actions.setShowBackupSeedView(true, response.primaryseed))
 		} catch (e) {
 			let errorContent = typeof e.message !== 'undefined' ? e.message : e.toString()
-			toast(errorContent, { autoClose: 10000 })
+			toast.error(userFriendlyError(e), { autoClose: 7000 })
 		}
 	}
 }
@@ -325,7 +327,8 @@ function* sendCurrencySaga(action) {
 		yield put(actions.showTransactionListView())
 		toast("Transaction submitted", { autoClose: 7000 })
 	} catch (e) {
-		yield put(actions.setSendError(e.message))
+		yield put(actions.setSendError(userFriendlyError(e)))
+		toast.error(userFriendlyError(e), { autoClose: 12000 })
 	}
 }
 
@@ -344,7 +347,7 @@ function* changePasswordSaga(action) {
 		})
 		yield put(actions.setChangePasswordError('password changed successfully.'))
 	} catch (e) {
-		yield put(actions.setChangePasswordError(e.message))
+		yield put(actions.setChangePasswordError(userFriendlyError(e)))
 	}
 }
 

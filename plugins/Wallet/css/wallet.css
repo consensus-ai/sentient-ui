@@ -1038,6 +1038,17 @@
 	align-items: center;
 }
 
+.import-seed-view .back-button {
+	background-image: url(../assets/back-button-icon.png);
+  background-size: 17px 14px;
+  background-position: center;
+  background-color: #FFFFFF;
+  background-repeat: no-repeat;
+  height: 14px;
+  width: 17px;
+  align-self: left;
+}
+
 .import-seed-view .title {
 	color: #3D4B66;
 	font-size: 14px;

@@ -5,7 +5,8 @@
 const ERROR_MAPPING = {
   "error when calling /wallet/init/seed: cannot init from seed until blockchain is synced": "Cannot restore wallet from seed until blockchain is synchronized",
   "error when calling /wallet/unlock: provided encryption key is incorrect": "The password you entered is incorrect",
-  "error when calling /wallet/sen: unable to fund transaction: insufficient balance": "Failed to send transaction - insufficient balance"
+  "error when calling /wallet/sen: unable to fund transaction: insufficient balance": "Failed to send transaction - insufficient balance",
+  "error when calling /wallet/init/seed: seed failed checksum verification": "You entered an invalid seed"
 }
 
 // userFriendlyError will translate some of the most common errors

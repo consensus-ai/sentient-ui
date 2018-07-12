@@ -88,6 +88,10 @@ const InitWalletView = ({showCreatePasswordView, showGenerateSeedView, showImpor
   }
 
   if (showImportSeedView) {
+    const onClickBack = (e) => {
+      actions.setShowGenerateSeedView(true)
+      actions.setShowImportSeedView(false)
+    }
     const onChangeSeed = (e) => {
       actions.setSeed(e.target.value)
     }
@@ -102,6 +106,7 @@ const InitWalletView = ({showCreatePasswordView, showGenerateSeedView, showImpor
 
     return (
       <div className="import-seed-view">
+        <div className="button back-button" onClick={onClickBack}></div>
         <label className="title">Paste your seed phrase to the form below and click the Import button.</label>
         <textarea className="seed" type="text" name="seed" value={seed} onChange={onChangeSeed} />
         <div className={"button import-seed-button " + (isValidSeed() ? "active" : "")} onClick={onClickImportSeedButton}>Import</div>
@@ -176,7 +181,7 @@ InitWalletView.propTypes = {
   password: PropTypes.string.isRequired,
   passwordConfirmation: PropTypes.string.isRequired,
   generateNewSeed: PropTypes.bool.isRequired,
-  seed: PropTypes.string.isRequired,
+  seed: PropTypes.string,
   confirmSeedBackup: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
 }

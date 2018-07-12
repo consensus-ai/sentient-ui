@@ -146,7 +146,7 @@ function* initNewWalletSaga(action) {
 			yield put(actions.setShowWalletInitializingView(true))
 		} catch (e) {
 			let errorContent = typeof e.message !== 'undefined' ? e.message : e.toString()
-			toast.error(errorContent, { autoClose: false })
+			toast.error(errorContent, { autoClose: 10000 })
 		}
 	} else {
 		try {
@@ -162,7 +162,7 @@ function* initNewWalletSaga(action) {
 			yield put(actions.setShowBackupSeedView(true, response.primaryseed))
 		} catch (e) {
 			let errorContent = typeof e.message !== 'undefined' ? e.message : e.toString()
-			toast(errorContent, { autoClose: 7000 })
+			toast(errorContent, { autoClose: 10000 })
 		}
 	}
 }

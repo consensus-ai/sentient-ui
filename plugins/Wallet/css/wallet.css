@@ -1118,21 +1118,37 @@
  *
  */
 
+.Toastify__toast-container--top-center {
+	top: 0 !important;
+  left: 25% !important;
+  margin-left: 0 !important;
+}
+
 .sen-toast-container {
-	width: 280px !important;
+	width: 50% !important;
+	display: flex !important;
+	flex-direction: column !important;
+}
+
+.Toastify__toast--error {
+	background: #FF4848 !important;
+	color: #FFFFFF !important;
+}
+
+.Toastify__toast--default {
+	background: #FFFFFF !important;
+	color: #5C7099 !important;
 }
 
 .sen-toast {
-	color: #5C7099 !important;
-	background: #FFFFFF !important;
 	min-height: 45px !important;
-	box-shadow: 0 2px 8px 0 rgba(61,75,102,0.53) !important;
-	border-radius: 4px !important;
+	box-shadow: 2px 2px 4px 0 #C7C9CD !important;
+	border-radius: 3px 3px 3px 3px !important;
 	font-size: 14px !important;
 	font-family: "Avenir Next" !important;
 
 	margin-bottom: 0 !important;
-	margin-top: 15px !important;
+	margin-top: 10px !important;
 }
 
 .sen-toast-body {
@@ -1142,6 +1158,7 @@
 .sen-toast button { /* close button */
 	color: #C1C1C1 !important;
 	margin: -5px -1px 0 0 !important;
+	box-shadow: none !important;
 }
 
 .sen-toast button:hover {
@@ -1152,7 +1169,7 @@
 .sen-toast-progress {
 	background-color: #C1C1C1 !important;
 	background: #C1C1C1 !important;
-	height: 2px !important;
+	height: 3px !important;
 }
 /*
  * END CUSTOM TOAST STYLE

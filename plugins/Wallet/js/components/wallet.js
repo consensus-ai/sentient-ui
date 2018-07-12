@@ -17,7 +17,7 @@ import BackupPrompt from '../containers/backupprompt.js'
 import BalanceInfo from '../containers/balanceinfo.js'
 import LockScreen from '../containers/lockscreen.js'
 
-import { ToastContainer, Slide } from 'react-toastify'
+import { ToastContainer, Zoom } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 
@@ -48,8 +48,8 @@ const Wallet = ({showBackupPrompt, senfundbalance, showTransactionListView, show
 				bodyClassName='sen-toast-body'
 				closeButtonClassName='sen-toast-close-button'
 				progressClassName='sen-toast-progress'
-				transition={Slide}
-				position='bottom-right'
+				transition={Zoom}
+				position='top-center'
 			/>
 		</div>
 	)

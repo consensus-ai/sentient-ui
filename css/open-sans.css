@@ -1,0 +1,20 @@
+@font-face {
+  font-family: "Open Sans";
+  src:url(../assets/OpenSans-Regular.ttf) format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src:url(../assets/OpenSans-Bold.ttf) format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src:url(../assets/OpenSans-Semibold.ttf) format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}

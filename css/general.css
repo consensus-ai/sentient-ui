@@ -13,14 +13,14 @@ html,body {
 	height: 100%;
 	width: 100%;
 
-	font-family: 'Avenir Next';
+	font-family: 'Open Sans';
 	font-weight: normal;
 	font-size: 16px;
 
 	-webkit-user-select: none;
 }
 .pure-g [class*="pure-u"] {
-	font-family: 'Avenir Next';
+	font-family: 'Open Sans';
 	font-weight: normal;
 }
 ::-webkit-scrollbar {
@@ -57,12 +57,12 @@ html,body {
 	margin-bottom: 4px;
 }
 .logo-container {
-	padding: 30px 0 30px 40px;
+	padding: 30px 0;
 }
 .logo {
 	width: 160px;
 	display: block;
-	margin: 0;
+	margin: 0 auto;
 }
 .statusbar {
 	position: absolute;

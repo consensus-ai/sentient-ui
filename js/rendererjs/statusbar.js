@@ -5,8 +5,8 @@ import React from 'react'
 
 // currentEstimatedHeight returns the estimated block height for the current time.
 const currentEstimatedHeight = () => {
-	const knownBlockHeight = 1
-	const knownBlockTime = new Date(1532570400*1000)
+	const knownBlockHeight = 460
+	const knownBlockTime = new Date(1532910950*1000)
 	const blockTime = 10 //minutes
 	const diffMinutes = Math.abs(new Date() - knownBlockTime) / 1000 / 60
 

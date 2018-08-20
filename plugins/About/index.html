@@ -1,53 +1,74 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>About</title>
-		<!-- CSS -->
-		<link rel="stylesheet" href="../../css/open-sans.css">
-		<link rel="stylesheet" href="../../css/font-awesome.min.css">
-		<link rel='stylesheet' href='../../css/pure-min.css'>
-		<link rel="stylesheet" href="../../css/plugin-standard.css">
-		<link rel="stylesheet" href="css/about.css">
-	</head>
-	<body>
-		<div class="about">
-			<div class="content">
-				<div class="error-container" style="display:none"></div>
+<head>
+    <title>About</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/open-sans.css">
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
+    <link rel='stylesheet' href='../../css/pure-min.css'>
+    <link rel="stylesheet" href="../../css/plugin-standard.css">
+    <link rel="stylesheet" href="css/about.css">
+</head>
+<body>
+<div class="about">
+    <div class="content space-between">
 
-				<div class="ui-version-container">
-					<span class="ui-version">Wallet software v</span>
-				</div>
+        <div class="row row-top">
+            <div class="error-container" style="display:none"></div>
 
-				<div class="daemon-version-container">
-					<span class="daemon-version">Daemon v</span>
-				</div>
+            <div class="info-container">You are using the latest version of Sentient Wallet.</div>
 
-				<div class="button check-update-button">
-					<div class="check-update-icon"></div>
-					<span>Check for update</span>
-				</div>
+            <div class="ui-version-container">
+                <span class="ui-version">Wallet software v</span>
+            </div>
 
-				<div class="new-version-download-container" style="display:none">
-					<div class="new-version-available" style="display:none">
-						<span>New version available at:</span>
-						<span class="new-version-link"></span>
-					</div>
+            <div class="daemon-version-container">
+                <span class="daemon-version">Daemon v</span>
+            </div>
 
-					<div class="no-new-version" style="display:none">
-						No new version available
-					</div>
-				</div>
 
-				<div class="button open-data-button">
-					<i class="open-data-icon fa fa-folder-open"></i>
-					<span>Open data directory</span>
-				</div>
-			</div>
-		</div>
+            <div class="daemon-version-container mt-60">
+                <span class="daemon-version">Version 1.3.3  is ready for install </span>
+            </div>
 
-		<!-- JS -->
-		<script src="../../dist/manifest.js"></script>
-		<script src="../../dist/vendor.js"></script>
-		<script src="../../dist/plugins/About.js"></script>
-	</body>
+            <!--<div class="button check-update-button">
+                <div class="check-update-icon"></div>
+                <span>Check for update</span>
+            </div>-->
+
+            <div class="button install-update-button">
+                <div class="install-update-icon"></div>
+                <span>Install update</span>
+            </div>
+
+            <div class="progress-bar">
+                <span style='width:33.5%;'></span>
+            </div>
+
+            <div class="new-version-download-container" style="display:none">
+                <div class="new-version-available" style="display:none">
+                    <span>New version available at:</span>
+                    <span class="new-version-link"></span>
+                </div>
+
+                <div class="no-new-version" style="display:none">
+                    No new version available
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-bottom">
+            <div class="button open-data-button">
+                <i class="open-data-icon fa fa-folder-open"></i>
+                <span>Open data directory</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
+<script src="../../dist/manifest.js"></script>
+<script src="../../dist/vendor.js"></script>
+<script src="../../dist/plugins/About.js"></script>
+</body>
 </html>

@@ -3,27 +3,15 @@ import React from 'react'
 
 // -- helper functions --
 
-// currentEstimatedHeight returns the estimated block height for the current time.
-const currentEstimatedHeight = () => {
-	const knownBlockHeight = 460
-	const knownBlockTime = new Date(1532910950*1000)
-	const blockTime = 10 //minutes
-	const diffMinutes = Math.abs(new Date() - knownBlockTime) / 1000 / 60
-
-	const estimatedHeight = knownBlockHeight + (diffMinutes / blockTime)
-
-	return Math.floor(estimatedHeight + 0.5) // round to the nearest block
-}
-
 // estimatedProgress returns the estimated sync progress given the current
 // blockheight, as a number from 0 -> 99.9
-const estimatedProgress = (currentHeight) =>
-	Math.min(currentHeight / currentEstimatedHeight() * 100, 99.9)
+const estimatedProgress = (currentHeight, estimatedHeight) =>
+	currentHeight * 100 / estimatedHeight
 
 // -- components --
 
-const StatusBar = ({synced, blockheight, peers}) => {
-	const progress = estimatedProgress(blockheight) || 0
+const StatusBar = ({synced, blockheight, peers, explorerheight}) => {
+	const progress = estimatedProgress(blockheight, explorerheight) || 0
 
 	const redColor = '#E0000B'
 	const blueColor = '#0043A4'

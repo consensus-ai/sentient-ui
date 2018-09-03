@@ -36,29 +36,45 @@ function hideError() {
 	document.getElementsByClassName("error-container")[0].innerHTML = ""
 }
 
-function saveFile(filename, file_url) {
+function showProgressBar(version) {
+	document.getElementsByClassName('mt-60')[0].style.display = 'block'
+	document.getElementsByClassName("mt-60")[0].innerHTML = `A new version ${version} is downloading`
+	document.getElementsByClassName("progress-bar")[0].style.display = 'block'
+}
+
+function showInstallButton(filename, version) {
+	document.getElementsByClassName("mt-60")[0].style.display = 'block'
+	document.getElementsByClassName("mt-60")[0].innerHTML = "Version  " + version + "  is ready for install"
+	document.getElementsByClassName("install-update-button")[0].style.display = 'block'
+	document.getElementsByClassName("progress-bar")[0].style.display = 'none'
+	document.getElementsByClassName("install-update-button")[0].onclick = (e) => {
+		shell.openItem(filename)
+	}
+}
+
+function saveFile(filename, file_url, version) {
+	showProgressBar(version)
 	let received_bytes = 0;
 	let total_bytes = 0;
-	let req = request({ method: 'GET', uri: file_url })
+	let req = request({ method: 'GET', uri: file_url, timeout: 1500 })
 	let out = fs.createWriteStream(filename)
 	req.pipe(out)
 
 	req.on('response', (data) => {
         total_bytes = parseInt(data.headers['content-length'], 10)
-    })
-
-	req.on('data', (chunk) => {
+    }).on('data', (chunk) => {
         received_bytes += chunk.length
         showProgress(received_bytes, total_bytes)
-    })
-
-	req.on('end', () => {
-        alert("File succesfully downloaded");
-    })
+    }).on('end', () => {
+		showInstallButton(filename, version)
+    }).on('error', () => {
+		alert('HERE OLOLO')
+	})
 }
 
 function showProgress(received, total) {
-    let percentage = (received * 100) / total;
+	let percentage = (received * 100) / total;
+	document.querySelector('.progress-bar span').style.width = percentage + '%'
 }
 
 function updateCheck() {
@@ -66,26 +82,25 @@ function updateCheck() {
 		{ headers: { 'User-Agent': ' Sentient-UI' },  json: true }, (err, res, body) => {
 		if (res && res.statusCode === 200) {
 			hideError()
-			if (body.tag_name !== `v${VERSION}`) {
-				document.getElementsByClassName('new-version-download-container')[0].style.display = 'block'
-				document.getElementsByClassName('new-version-available')[0].style.display = 'block'
-				document.getElementsByClassName('no-new-version')[0].style.display = 'none'
+			if (body.tag_name === `v${VERSION}`) {
+				document.getElementsByClassName('info-container')[0].style.display = 'none'
+				document.getElementsByClassName('check-update-button')[0].style.display = 'none'
 				dialog.showSaveDialog({
 					title: 'Save Update File.',
 					defaultPath: genFileName(body.tag_name, platform())
 				}, (filename) => {
 					if (filename === undefined) return
-					saveFile(filename, genDownloadLink(body.tag_name, platform()))
+					showProgressBar()
+					saveFile(filename, genDownloadLink(body.tag_name, platform()), body.tag_name)
 				})
 			} else {
-				document.getElementsByClassName('new-version-download-container')[0].style.display = 'block'
+				document.getElementsByClassName('info-container')[0].style.display = 'block'
 				document.getElementsByClassName('new-version-available')[0].style.display = 'none'
-				document.getElementsByClassName('no-new-version')[0].style.display = 'block'
 			}
 		} else {
 			showError(err)
 		}
-	});
+	})
 }
 
 document.getElementsByClassName('check-update-button')[0].onclick = updateCheck

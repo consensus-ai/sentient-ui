@@ -38,14 +38,9 @@ const startUI = (welcomeMsg, initUI) => {
 		try {
 			const consensusData = await Sentientd.call(sentientdConfig.address, {timeout: 500, url: '/consensus'})
 			const gatewayData = await Sentientd.call(sentientdConfig.address, {timeout: 500, url: '/gateway'})
-			const explorerData = await Sentientd.call(sentientdConfig.address, {timeout: 500, url: '/explorer'})
 			ReactDOM.render(
-				<StatusBar 
-					peers={gatewayData.peers.length}
-					synced={consensusData.synced}
-					blockheight={consensusData.height}
-					explorerheight={explorerData.height}
-				/>, document.getElementById('statusbar')
+				<StatusBar peers={gatewayData.peers.length}	synced={consensusData.synced} blockheight={consensusData.height} />,
+				document.getElementById('statusbar')
 			)
 			await new Promise((resolve) => setTimeout(resolve, 5000))
 		} catch (e) {
@@ -169,7 +164,7 @@ export default async function loadingScreen(initUI) {
 			'rpc-addr': sentientdConfig.rpcaddr,
 			'api-addr': sentientdConfig.address,
 			'genesis-file': sentientdConfig.genesisfile,
-			'modules': 'gectmw',
+			'modules': 'gctmw',
 		})
 		sentientdProcess.on('error', (e) => showError('Sentientd couldnt start: ' + e.toString()))
 		sentientdProcess.on('close', unexpectedExitHandler)

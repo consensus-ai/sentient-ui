@@ -114,16 +114,6 @@
     margin-bottom: 20px;
 }
 
-.new-version-download-container {
-    margin-bottom: 30px;
-}
-
-.new-version-link {
-    text-decoration: underline;
-    cursor: pointer;
-    color: #0366D6;
-}
-
 .about .open-data-button {
     box-shadow: none;
     background: none;

@@ -42,10 +42,17 @@ function showProgressBar(version) {
 	document.getElementsByClassName("progress-bar")[0].style.display = 'block'
 }
 
+function showInfoContainer(){
+	document.getElementsByClassName('info-container')[0].style.display = ''
+	setTimeout(function(){
+		document.getElementsByClassName('info-container')[0].style.display = 'none'
+	}, 3000)
+}
+
 function showInstallButton(filename, version) {
 	document.getElementsByClassName("mt-60")[0].style.display = 'block'
 	document.getElementsByClassName("mt-60")[0].innerHTML = "Version  " + version + "  is ready for install"
-	document.getElementsByClassName("install-update-button")[0].style.display = 'block'
+	document.getElementsByClassName("install-update-button")[0].style.display = ''
 	document.getElementsByClassName("progress-bar")[0].style.display = 'none'
 	document.getElementsByClassName("install-update-button")[0].onclick = (e) => {
 		shell.openItem(filename)
@@ -68,7 +75,9 @@ function saveFile(filename, file_url, version) {
     }).on('end', () => {
 		showInstallButton(filename, version)
     }).on('error', () => {
-		alert('HERE OLOLO')
+		document.getElementsByClassName('check-update-button')[0].style.display = ''
+		document.getElementsByClassName("mt-60")[0].innerHTML = `Something went wrong and version ${version} was not downloaded`
+		document.querySelector('.check-update-button span').innerHTML = 'Try once again'
 	})
 }
 
@@ -78,24 +87,29 @@ function showProgress(received, total) {
 }
 
 function updateCheck() {
+	document.getElementsByClassName('load')[0].style.display = 'block'
+	document.getElementsByClassName('check-update-button')[0].style.display = 'none'
 	request('https://api.github.com/repos/consensus-ai/sentient-ui/releases/latest', 
 		{ headers: { 'User-Agent': ' Sentient-UI' },  json: true }, (err, res, body) => {
+		document.getElementsByClassName('load')[0].style.display = 'none'
 		if (res && res.statusCode === 200) {
 			hideError()
-			if (body.tag_name === `v${VERSION}`) {
+			if (body.tag_name !== `v${VERSION}`) {
 				document.getElementsByClassName('info-container')[0].style.display = 'none'
-				document.getElementsByClassName('check-update-button')[0].style.display = 'none'
 				dialog.showSaveDialog({
 					title: 'Save Update File.',
 					defaultPath: genFileName(body.tag_name, platform())
 				}, (filename) => {
-					if (filename === undefined) return
+					if (filename === undefined) {
+						document.getElementsByClassName('check-update-button')[0].style.display = ''
+						return
+					}
 					showProgressBar()
 					saveFile(filename, genDownloadLink(body.tag_name, platform()), body.tag_name)
 				})
 			} else {
-				document.getElementsByClassName('info-container')[0].style.display = 'block'
-				document.getElementsByClassName('new-version-available')[0].style.display = 'none'
+				showInfoContainer()
+				document.getElementsByClassName('check-update-button')[0].style.display = ''
 			}
 		} else {
 			showError(err)
@@ -106,7 +120,4 @@ function updateCheck() {
 document.getElementsByClassName('check-update-button')[0].onclick = updateCheck
 document.getElementsByClassName('open-data-button')[0].onclick = () => {
 	shell.showItemInFolder(SentientAPI.config.sentientd.datadir)
-}
-document.getElementsByClassName('new-version-link')[0].onclick = (e) => {
-	shell.openExternal(e.target.innerHTML)
 }

@@ -53,9 +53,9 @@ installSentientNetwork() {
 	fi
 
 	# get the release
-	cp /Users/vladimirli/.go/src/github.com/consensus-ai/sentient-network/release/$releaseFileName .
-	unzip ./$releaseFileName
-	rm $releaseFileName
+	cp $HOME/$releaseFileName `pwd`
+	unzip `pwd`/$releaseFileName
+	rm -f `pwd`/$releaseFileName
 
 	# install into app dir
 	mv sentient-network-v* $appDir/sentient-network

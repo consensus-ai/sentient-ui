@@ -178,7 +178,7 @@ export default async function loadingScreen(initUI) {
 	// Set a timeout to display a warning message about long load times caused by rescan.
 	setTimeout(() => {
 		if (overlayText.textContent === 'Loading Sentient...') {
-			overlayText.innerHTML= 'Loading can take a while after upgrading to a new version. Check the <a style="text-decoration: underline; cursor: pointer" id="releasenotelink">release notes</a> for more details.'
+			overlayText.innerHTML= 'Loading can take a while after upgrading or installing a new version. Thank you for your patience.'
 
 			document.getElementById('releasenotelink').onclick = () => {
 				shell.openExternal('https://github.com/consensus-ai/sentient-network/releases')

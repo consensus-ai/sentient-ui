@@ -26,6 +26,12 @@ export default function(window) {
 				{ label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' },
 			],
 		},
+		{
+			label: 'View',
+			submenu: [
+				{ label: 'Full Screen Mode', accelerator: 'Ctrl+CmdOrCtrl+F',  role: 'toggleFullScreen'}
+			],
+		},
 	]
 
 	return Menu.buildFromTemplate(menutemplate)

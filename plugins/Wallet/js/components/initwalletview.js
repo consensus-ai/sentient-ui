@@ -64,7 +64,7 @@ const InitWalletView = ({showCreatePasswordView, showGenerateSeedView, showImpor
           <label htmlFor="password-confirmation-field" className="input-label">Confirm password</label>
         </div>
 
-        <div className={"button save-password-button " + (password.length > MIN_PASSWORD_LENGTH && passwordConfirmation === password ? "active" : "")} onClick={onClickSavePassword}>Save password</div>
+        <div className={"button save-password-button " + (password.length >= MIN_PASSWORD_LENGTH && passwordConfirmation === password ? "active" : "")} onClick={onClickSavePassword}>Save password</div>
       </div>
     )
   }

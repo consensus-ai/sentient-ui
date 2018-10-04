@@ -38,7 +38,10 @@ const startUI = (welcomeMsg, initUI) => {
 		try {
 			const consensusData = await Sentientd.call(sentientdConfig.address, {timeout: 500, url: '/consensus'})
 			const gatewayData = await Sentientd.call(sentientdConfig.address, {timeout: 500, url: '/gateway'})
-			ReactDOM.render(<StatusBar peers={gatewayData.peers.length} synced={consensusData.synced} blockheight={consensusData.height} />, document.getElementById('statusbar'))
+			ReactDOM.render(
+				<StatusBar peers={gatewayData.peers.length}	synced={consensusData.synced} blockheight={consensusData.height} />,
+				document.getElementById('statusbar')
+			)
 			await new Promise((resolve) => setTimeout(resolve, 5000))
 		} catch (e) {
 			await new Promise((resolve) => setTimeout(resolve, 500))

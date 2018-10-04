@@ -5,8 +5,12 @@ import React from 'react'
 
 // currentEstimatedHeight returns the estimated block height for the current time.
 const currentEstimatedHeight = () => {
-	const knownBlockHeight = 460
-	const knownBlockTime = new Date(1532910950*1000)
+	const knownBlockHeight = 1
+	// Development
+	// const knownBlockTime = new Date(1531008194*1000)
+	// const blockTime = 2 //minutes
+	// Production
+	const knownBlockTime = new Date(1533310707*1000)
 	const blockTime = 10 //minutes
 	const diffMinutes = Math.abs(new Date() - knownBlockTime) / 1000 / 60
 
@@ -23,7 +27,10 @@ const estimatedProgress = (currentHeight) =>
 // -- components --
 
 const StatusBar = ({synced, blockheight, peers}) => {
-	const progress = estimatedProgress(blockheight) || 0
+	let progress = estimatedProgress(blockheight) || 0
+	if (progress > 80 && !synced && peers > 0) {
+		progress = 80;
+	}
 
 	const redColor = '#E0000B'
 	const blueColor = '#0043A4'
@@ -64,10 +71,11 @@ const StatusBar = ({synced, blockheight, peers}) => {
 	let statusText
 	let progressText = Math.round(progress) + "%"
 	if (!synced && peers === 0) {
-		statusTextStyle.color = redColor
+		progressBarStyle.backgroundColor = redColor
 		statusText = 'Not Synchronizing'
+		progressText = ''
 	} else if (synced && peers === 0) {
-		statusTextStyle.color = redColor
+		progressBarStyle.backgroundColor = redColor
 		statusText = 'No Peers'
 	} else if (!synced && peers > 0) {
 		statusText = 'Synchronizing'

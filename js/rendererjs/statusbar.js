@@ -27,7 +27,10 @@ const estimatedProgress = (currentHeight) =>
 // -- components --
 
 const StatusBar = ({synced, blockheight, peers}) => {
-	const progress = estimatedProgress(blockheight) || 0
+	let progress = estimatedProgress(blockheight) || 0
+	if (progress > 80 && !synced && peers > 0) {
+		progress = 80;
+	}
 
 	const redColor = '#E0000B'
 	const blueColor = '#0043A4'

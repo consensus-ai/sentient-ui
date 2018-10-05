@@ -57,12 +57,12 @@ html,body {
 	margin-bottom: 4px;
 }
 .logo-container {
-	padding: 30px 0 30px 32px;
+	padding: 30px 0;
 }
 .logo {
 	width: 160px;
 	display: block;
-	margin: 0;
+	margin: 0 auto;
 }
 .statusbar {
 	position: absolute;
@@ -80,7 +80,7 @@ html,body {
 
 	color: #3D4B66;
 	margin-left: 3px;
-	padding-left: 16px;
+	padding-left: 37px;
 }
 .sidebar-button:hover {
 	cursor: pointer;
@@ -264,13 +264,13 @@ html,body {
 
 .overlay {
 	display: inline-flex;
-  z-index: 10;
-  position: absolute;
-  width: 100%;
-  height: 100%;
+	z-index: 10;
+	position: absolute;
+	width: 100%;
+	height: 100%;
 
 	text-align: center;
-	font-size: 35px;
+	font-size: 24px;
 	background-color: #fff;
 	opacity: .5;
 }
@@ -278,6 +278,8 @@ html,body {
 	opacity: 1;
 	color: #0043A4;
 	margin: auto;
+	width: calc(100% - 275px);
+	margin-left: 275px;
 }
 .centered p {
 	margin: 0;

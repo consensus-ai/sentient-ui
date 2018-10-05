@@ -38,7 +38,10 @@ const startUI = (welcomeMsg, initUI) => {
 		try {
 			const consensusData = await Sentientd.call(sentientdConfig.address, {timeout: 500, url: '/consensus'})
 			const gatewayData = await Sentientd.call(sentientdConfig.address, {timeout: 500, url: '/gateway'})
-			ReactDOM.render(<StatusBar peers={gatewayData.peers.length} synced={consensusData.synced} blockheight={consensusData.height} />, document.getElementById('statusbar'))
+			ReactDOM.render(
+				<StatusBar peers={gatewayData.peers.length}	synced={consensusData.synced} blockheight={consensusData.height} />,
+				document.getElementById('statusbar')
+			)
 			await new Promise((resolve) => setTimeout(resolve, 5000))
 		} catch (e) {
 			await new Promise((resolve) => setTimeout(resolve, 500))
@@ -175,7 +178,7 @@ export default async function loadingScreen(initUI) {
 	// Set a timeout to display a warning message about long load times caused by rescan.
 	setTimeout(() => {
 		if (overlayText.textContent === 'Loading Sentient...') {
-			overlayText.innerHTML= 'Loading can take a while after upgrading to a new version. Check the <a style="text-decoration: underline; cursor: pointer" id="releasenotelink">release notes</a> for more details.'
+			overlayText.innerHTML= 'Loading can take a while after upgrading or installing a new version. Thank you for your patience.'
 
 			document.getElementById('releasenotelink').onclick = () => {
 				shell.openExternal('https://github.com/consensus-ai/sentient-network/releases')

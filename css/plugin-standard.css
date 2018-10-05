@@ -124,5 +124,5 @@ select:hover {
 	cursor: pointer;
 }
 .button:active {
-  transform: translateX(2px) translateY(2px);
+  	transform: translateX(2px) translateY(2px);
 }

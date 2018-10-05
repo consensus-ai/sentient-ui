@@ -1,6 +1,9 @@
 'use strict'
 import { platform } from 'os'
-import { shell } from 'electron'
+import { remote, shell } from 'electron'
+import request from 'request'
+const dialog = remote.dialog
+const fs = remote.require('fs')
 
 // Set UI version via package.json.
 document.getElementsByClassName('ui-version')[0].innerHTML += VERSION
@@ -15,7 +18,11 @@ SentientAPI.call('/daemon/version', (err, result) => {
 })
 
 function genDownloadLink(version, thePlatform) {
-	return `https://github.com/consensus-ai/sentient-ui/releases/download/v${version}/sentient-ui-${version}-${thePlatform}-amd64.zip`
+	return `https://github.com/consensus-ai/sentient-ui/releases/download/${version}/${genFileName(version, thePlatform)}`
+}
+
+function genFileName(version, thePlatform) {
+	return `sentient-ui-${version}-${thePlatform}-amd64.zip`
 }
 
 function showError(err) {
@@ -29,23 +36,83 @@ function hideError() {
 	document.getElementsByClassName("error-container")[0].innerHTML = ""
 }
 
-function updateCheck() {
-	SentientAPI.call('/daemon/update', (err, result) => {
-		if (err) {
-			showError(err)
-		} else if (result.available) {
-			hideError()
-			document.getElementsByClassName('new-version-download-container')[0].style.display = 'block'
-			document.getElementsByClassName('new-version-available')[0].style.display = 'block'
-			document.getElementsByClassName('no-new-version')[0].style.display = 'none'
+function showProgressBar(version) {
+	document.getElementsByClassName('mt-60')[0].style.display = 'block'
+	document.getElementsByClassName("mt-60")[0].innerHTML = `A new version ${version} is downloading`
+	document.getElementsByClassName("progress-bar")[0].style.display = 'block'
+}
 
-			let downloadURL = genDownloadLink(result.version, platform())
-			document.getElementsByClassName('new-version-link')[0].innerHTML = downloadURL
-		} else {
+function showInfoContainer(){
+	document.getElementsByClassName('info-container')[0].style.display = ''
+	setTimeout(function(){
+		document.getElementsByClassName('info-container')[0].style.display = 'none'
+	}, 3000)
+}
+
+function showInstallButton(filename, version) {
+	document.getElementsByClassName("mt-60")[0].style.display = 'block'
+	document.getElementsByClassName("mt-60")[0].innerHTML = "Version  " + version + "  is ready for install"
+	document.getElementsByClassName("install-update-button")[0].style.display = ''
+	document.getElementsByClassName("progress-bar")[0].style.display = 'none'
+	document.getElementsByClassName("install-update-button")[0].onclick = (e) => {
+		shell.openItem(filename)
+	}
+}
+
+function saveFile(filename, file_url, version) {
+	showProgressBar(version)
+	let received_bytes = 0;
+	let total_bytes = 0;
+	let req = request({ method: 'GET', uri: file_url, timeout: 1500 })
+	let out = fs.createWriteStream(filename)
+	req.pipe(out)
+
+	req.on('response', (data) => {
+        total_bytes = parseInt(data.headers['content-length'], 10)
+    }).on('data', (chunk) => {
+        received_bytes += chunk.length
+        showProgress(received_bytes, total_bytes)
+    }).on('end', () => {
+		showInstallButton(filename, version)
+    }).on('error', () => {
+		document.getElementsByClassName('check-update-button')[0].style.display = ''
+		document.getElementsByClassName("mt-60")[0].innerHTML = `Something went wrong and version ${version} was not downloaded`
+		document.querySelector('.check-update-button span').innerHTML = 'Try once again'
+	})
+}
+
+function showProgress(received, total) {
+	let percentage = (received * 100) / total;
+	document.querySelector('.progress-bar span').style.width = percentage + '%'
+}
+
+function updateCheck() {
+	document.getElementsByClassName('load')[0].style.display = 'block'
+	document.getElementsByClassName('check-update-button')[0].style.display = 'none'
+	request('https://api.github.com/repos/consensus-ai/sentient-ui/releases/latest', 
+		{ headers: { 'User-Agent': ' Sentient-UI' },  json: true }, (err, res, body) => {
+		document.getElementsByClassName('load')[0].style.display = 'none'
+		if (res && res.statusCode === 200) {
 			hideError()
-			document.getElementsByClassName('new-version-download-container')[0].style.display = 'block'
-			document.getElementsByClassName('new-version-available')[0].style.display = 'none'
-			document.getElementsByClassName('no-new-version')[0].style.display = 'block'
+			if (body.tag_name !== `v${VERSION}`) {
+				document.getElementsByClassName('info-container')[0].style.display = 'none'
+				dialog.showSaveDialog({
+					title: 'Save Update File.',
+					defaultPath: genFileName(body.tag_name, platform())
+				}, (filename) => {
+					if (filename === undefined) {
+						document.getElementsByClassName('check-update-button')[0].style.display = ''
+						return
+					}
+					showProgressBar()
+					saveFile(filename, genDownloadLink(body.tag_name, platform()), body.tag_name)
+				})
+			} else {
+				showInfoContainer()
+				document.getElementsByClassName('check-update-button')[0].style.display = ''
+			}
+		} else {
+			showError(err)
 		}
 	})
 }
@@ -53,7 +120,4 @@ function updateCheck() {
 document.getElementsByClassName('check-update-button')[0].onclick = updateCheck
 document.getElementsByClassName('open-data-button')[0].onclick = () => {
 	shell.showItemInFolder(SentientAPI.config.sentientd.datadir)
-}
-document.getElementsByClassName('new-version-link')[0].onclick = (e) => {
-	shell.openExternal(e.target.innerHTML)
 }

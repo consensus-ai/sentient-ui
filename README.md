@@ -20,6 +20,22 @@ Run from source
 2. `npm install`
 3. `npm start`
 
+## Build new release
+
+### Prerequisites
+
+For Mac OS
+
+0. brew install wine
+1. brew install gnu-sed --with-default-names
+2. brew install wget
+
+Steps for bulding new release
+
+0. Download latest [Sentient Network](https://github.com/consensus-ai/sentient-network/releases) files and put to home directory.
+1. Bump [version](https://github.com/consensus-ai/sentient-ui/blob/26c672315cff0380e7481def00852455c974b6d6/package.json#L3)
+2. Run from working directory `./release.sh PRIVATE_KEY PUBLIC_KEY [UI_VERSION] [SENTIENT-NETWORK_VERSION] [ELECTRON_VERSION]`
+
 ## [Contributing](doc/Developers.md)
 
 Read the document linked above to learn more about the application and its technologies.

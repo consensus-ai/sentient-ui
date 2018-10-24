@@ -2,119 +2,126 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background-image: url('../assets/background.png');
+  background-image: url("../assets/background.png");
   background-size: 378px 295px;
   background-position: top right;
   background-color: #FFFFFF;
   background-repeat: no-repeat;
   padding: 40px;
-
   height: auto;
   position: absolute;
   bottom: 0;
   top: 0;
   left: 0;
   right: 0;
-
   font-size: 14px;
   font-family: "Open Sans";
-  color: #5C7099;
-}
-
-.miner .content {
-  display: flex;
-  flex-direction: column;
-
-  border: 0.5px solid rgba(0,0,0,0.07);
-  border-radius: 6px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-  background: white;
-
-  width: 100%;
-  height: 100%;
-  padding: 60px 70px;
-
-  box-sizing: border-box;
-}
+  color: #5C7099; }
+  .miner .content {
+    display: flex;
+    flex-direction: column;
+    border: 0.5px solid rgba(0, 0, 0, 0.07);
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    background: white;
+    width: 100%;
+    height: 100%;
+    padding: 60px 70px;
+    box-sizing: border-box; }
+  .miner .top-row {
+    display: flex; }
+    .miner .top-row .exclamation {
+      color: #90A2BC;
+      display: flex;
+      align-items: center; }
+      .miner .top-row .exclamation i {
+        font-size: 2em;
+        padding-right: 1rem; }
+    .miner .top-row .dropdown {
+      padding: 0 1rem;
+      position: relative; }
+      .miner .top-row .dropdown ul {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #fff;
+        list-style: none;
+        border: 1px solid #EDEDED;
+        box-shadow: 0 1px 2px rgba(144, 162, 189, 0.16);
+        margin: 0 1rem;
+        border-radius: .5rem;
+        padding: .5rem;
+        color: #3F4C65;
+        font-size: 14px;
+        white-space: nowrap; }
+  .miner .data-cards {
+    display: flex; }
+    .miner .data-cards .item {
+      width: 25%;
+      text-align: center;
+      color: #0846A0; }
+      .miner .data-cards .item[passive] {
+        color: #90A2BC; }
+      .miner .data-cards .item b {
+        font-size: 24px;
+        font-weight: bold;
+        display: block; }
+      .miner .data-cards .item small {
+        font-weight: bold;
+        color: #CC4555;
+        font-size: 10px;
+        display: block;
+        min-height: 10px; }
+      .miner .data-cards .item span {
+        display: block; }
 
 .locked-status-container {
   display: flex;
   flex-direction: row;
-  align-items: center;
-}
-
-.locked-status-container i {
-  font-size: 35px;
-  margin-right: 10px;
-}
-
-.locked-status-container span {
-  font-size: 16px;
-}
+  align-items: center; }
+  .locked-status-container i {
+    font-size: 35px;
+    margin-right: 10px; }
+  .locked-status-container span {
+    font-size: 16px; }
 
 .wallet-controls-container .row {
   font-size: 16px;
   margin-bottom: 5px;
   display: flex;
-  flex-flow: row nowrap;
-}
-
-.wallet-controls-container .row .col {
-  min-width: 180px;
-}
-
+  flex-flow: row nowrap; }
+  .wallet-controls-container .row .col {
+    min-width: 180px; }
 .wallet-controls-container .label {
   font-weight: 600;
-  margin-right: 10px;
-}
-
-.wallet-controls-container .value {
-}
-
+  margin-right: 10px; }
 .wallet-controls-container .divider {
   height: 0;
   border-top: 1px dashed rgba(92, 112, 153, 0.37);
-  margin: 34px 0;
-}
-
+  margin: 34px 0; }
 .wallet-controls-container .miner-status-value {
-  font-weight: 600;
-}
-
-.wallet-controls-container .miner-status-value.disabled {
-  color: #e80000;
-}
-
-.wallet-controls-container .miner-status-value.enabled {
-  color: #76b976;
-}
-
+  font-weight: 600; }
+  .wallet-controls-container .miner-status-value.disabled {
+    color: #e80000; }
+  .wallet-controls-container .miner-status-value.enabled {
+    color: #76b976; }
 .wallet-controls-container .hash-rate-container {
-  margin-bottom: 30px;
-}
-
+  margin-bottom: 30px; }
 .wallet-controls-container .mining-action-button {
-  box-shadow: 0 2px 8px 0 rgba(61,75,102,0.53);
+  box-shadow: 0 2px 8px 0 rgba(61, 75, 102, 0.53);
   border-radius: 4px;
-
   width: 150px;
   height: 44px;
   padding: 0 10px;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   font-size: 14px;
-  color: rgba(255,255,255,0.87);
+  color: rgba(255, 255, 255, 0.87);
+  cursor: pointer; }
+  .wallet-controls-container .mining-action-button.stop {
+    background: #a40000; }
+  .wallet-controls-container .mining-action-button.start {
+    background: #0aa400; }
 
-  cursor: pointer;
-}
-
-.wallet-controls-container .mining-action-button.stop {
-  background: #a40000;
-}
-
-.wallet-controls-container .mining-action-button.start {
-  background: #0aa400;
-}
+/*# sourceMappingURL=miner.css.map */

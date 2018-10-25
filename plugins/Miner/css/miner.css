@@ -1,80 +1,3 @@
-.miner {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  background-image: url("../assets/background.png");
-  background-size: 378px 295px;
-  background-position: top right;
-  background-color: #FFFFFF;
-  background-repeat: no-repeat;
-  padding: 40px;
-  height: auto;
-  position: absolute;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-  font-size: 14px;
-  font-family: "Open Sans";
-  color: #5C7099; }
-  .miner .content {
-    display: flex;
-    flex-direction: column;
-    border: 0.5px solid rgba(0, 0, 0, 0.07);
-    border-radius: 6px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-    background: white;
-    width: 100%;
-    height: 100%;
-    padding: 60px 70px;
-    box-sizing: border-box; }
-  .miner .top-row {
-    display: flex; }
-    .miner .top-row .exclamation {
-      color: #90A2BC;
-      display: flex;
-      align-items: center; }
-      .miner .top-row .exclamation i {
-        font-size: 2em;
-        padding-right: 1rem; }
-    .miner .top-row .dropdown {
-      padding: 0 1rem;
-      position: relative; }
-      .miner .top-row .dropdown ul {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: #fff;
-        list-style: none;
-        border: 1px solid #EDEDED;
-        box-shadow: 0 1px 2px rgba(144, 162, 189, 0.16);
-        margin: 0 1rem;
-        border-radius: .5rem;
-        padding: .5rem;
-        color: #3F4C65;
-        font-size: 14px;
-        white-space: nowrap; }
-  .miner .data-cards {
-    display: flex; }
-    .miner .data-cards .item {
-      width: 25%;
-      text-align: center;
-      color: #0846A0; }
-      .miner .data-cards .item[passive] {
-        color: #90A2BC; }
-      .miner .data-cards .item b {
-        font-size: 24px;
-        font-weight: bold;
-        display: block; }
-      .miner .data-cards .item small {
-        font-weight: bold;
-        color: #CC4555;
-        font-size: 10px;
-        display: block;
-        min-height: 10px; }
-      .miner .data-cards .item span {
-        display: block; }
-
 .locked-status-container {
   display: flex;
   flex-direction: row;
@@ -123,5 +46,161 @@
     background: #a40000; }
   .wallet-controls-container .mining-action-button.start {
     background: #0aa400; }
+
+.miner {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-image: url("../assets/background.png");
+  background-size: 378px 295px;
+  background-position: top right;
+  background-color: #FFFFFF;
+  background-repeat: no-repeat;
+  padding: 40px;
+  height: auto;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  font-size: 14px;
+  font-family: "Open Sans";
+  color: #5C7099; }
+  .miner .content {
+    display: flex;
+    flex-direction: column;
+    border: 0.5px solid rgba(0, 0, 0, 0.07);
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    background: white;
+    width: 100%;
+    height: 100%;
+    padding: 60px 70px;
+    box-sizing: border-box; }
+  .miner .top-row {
+    display: flex;
+    justify-content: space-between; }
+    .miner .top-row .exclamation {
+      color: #90A2BC;
+      display: flex;
+      align-items: center;
+      font-size: 1rem; }
+      .miner .top-row .exclamation i {
+        font-size: 2.2rem;
+        padding-right: 1rem; }
+    .miner .top-row .dropdown {
+      padding: 0.5rem 1rem;
+      position: relative; }
+      .miner .top-row .dropdown ul {
+        background: #fff;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        list-style: none;
+        border: 1px solid #EDEDED;
+        box-shadow: 0 1px 2px rgba(144, 162, 189, 0.16);
+        margin: 0 1rem;
+        border-radius: 0.3rem;
+        padding: 0;
+        color: #3F4C65;
+        font-size: 14px;
+        white-space: nowrap;
+        transition: opacity .3s 0s, visibility 0s .3s;
+        opacity: 0;
+        visibility: hidden; }
+        .miner .top-row .dropdown ul:before {
+          content: "";
+          position: absolute;
+          top: -7px;
+          right: 20px;
+          width: 13px;
+          height: 7px;
+          background: url(../../../assets/Triangle.svg) no-repeat top center; }
+        .miner .top-row .dropdown ul li {
+          cursor: pointer;
+          transition: color .3s;
+          color: #90A2BC;
+          padding: 0.4rem 1rem; }
+          .miner .top-row .dropdown ul li:hover {
+            color: #0846A0; }
+      .miner .top-row .dropdown span {
+        font-weight: 500;
+        cursor: pointer;
+        transition: color .3s;
+        color: #90A2BC; }
+        .miner .top-row .dropdown span i {
+          padding-left: 1rem; }
+      .miner .top-row .dropdown:hover span {
+        color: #0846A0; }
+      .miner .top-row .dropdown:hover ul {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity .3s 0s, visibility 0s 0s; }
+  .miner .data-cards {
+    display: flex;
+    margin: 4rem -5rem; }
+    .miner .data-cards .item {
+      position: relative;
+      width: 25%;
+      text-align: center;
+      color: #0846A0; }
+      .miner .data-cards .item[passive] {
+        color: #90A2BC; }
+      .miner .data-cards .item b {
+        font-size: 24px;
+        font-weight: bold;
+        display: block; }
+      .miner .data-cards .item small {
+        font-weight: bold;
+        color: #CC4555;
+        font-size: 10px;
+        display: block;
+        min-height: 16px; }
+      .miner .data-cards .item span {
+        display: block; }
+      .miner .data-cards .item .balance {
+        position: absolute;
+        top: -24px;
+        right: 22px;
+        font-size: 1.1rem; }
+        .miner .data-cards .item .balance .info {
+          position: absolute;
+          border: 1px solid #EDEDED;
+          box-shadow: 0 1px 2px rgba(144, 162, 189, 0.16);
+          border-radius: 0.3rem;
+          top: -35px;
+          right: -32px;
+          font-size: 14px;
+          white-space: nowrap;
+          padding: 0.4rem 0.7rem;
+          background: #fff;
+          transition: opacity .3s 0s, visibility 0s .3s;
+          opacity: 0;
+          visibility: hidden; }
+          .miner .data-cards .item .balance .info:before {
+            content: "";
+            position: absolute;
+            bottom: -7px;
+            right: 32px;
+            width: 13px;
+            height: 7px;
+            background: url(../../../assets/Triangle.svg) no-repeat top center;
+            transform: scale(1, -1); }
+        .miner .data-cards .item .balance i {
+          cursor: pointer; }
+          .miner .data-cards .item .balance i:hover + .info {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity .3s 0s, visibility 0s 0s; }
+
+.wallet {
+  color: #465268;
+  position: absolute;
+  top: 40px;
+  right: 45px;
+  padding-left: 30px;
+  background: url(../../../assets/wallet-icon.svg) no-repeat left center;
+  background-size: 24px 24px;
+  line-height: 24px; }
 
 /*# sourceMappingURL=miner.css.map */

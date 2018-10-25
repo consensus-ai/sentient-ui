@@ -57,6 +57,8 @@
   background-color: #FFFFFF;
   background-repeat: no-repeat;
   padding: 40px;
+  min-height: 100%;
+  box-sizing: border-box;
   height: auto;
   position: absolute;
   bottom: 0;
@@ -69,17 +71,19 @@
   .miner .content {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     border: 0.5px solid rgba(0, 0, 0, 0.07);
     border-radius: 6px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     background: white;
     width: 100%;
     height: 100%;
-    padding: 60px 70px;
+    padding: 60px 0 0 0;
     box-sizing: border-box; }
   .miner .top-row {
     display: flex;
-    justify-content: space-between; }
+    justify-content: space-between;
+    padding: 0 70px; }
     .miner .top-row .exclamation {
       color: #90A2BC;
       display: flex;
@@ -138,7 +142,7 @@
         transition: opacity .3s 0s, visibility 0s 0s; }
   .miner .data-cards {
     display: flex;
-    margin: 4rem -5rem; }
+    padding: 3rem 0 4rem 0; }
     .miner .data-cards .item {
       position: relative;
       width: 25%;
@@ -160,8 +164,8 @@
         display: block; }
       .miner .data-cards .item .balance {
         position: absolute;
-        top: -24px;
-        right: 22px;
+        top: -23px;
+        right: 12px;
         font-size: 1.1rem; }
         .miner .data-cards .item .balance .info {
           position: absolute;
@@ -192,6 +196,13 @@
             opacity: 1;
             visibility: visible;
             transition: opacity .3s 0s, visibility 0s 0s; }
+  .miner .graph {
+    position: relative;
+    padding: 23px 0; }
+    .miner .graph img {
+      display: block;
+      height: 100%;
+      width: 100%; }
 
 .wallet {
   color: #465268;

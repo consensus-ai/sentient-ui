@@ -86,7 +86,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background-image: url('../assets/background.png');
+  background-image: url('../../assets/background.png');
   background-size: 378px 295px;
   background-position: top right;
   background-color: #FFFFFF;
@@ -165,7 +165,7 @@
           right: 20px;
           width: 13px;
           height: 7px;
-          background: url(../../../assets/Triangle.svg) no-repeat top center;
+          background: url(../assets/Triangle.svg) no-repeat top center;
           //background-size: 13px 5px;
         }
 
@@ -258,7 +258,7 @@
             right: 32px;
             width: 13px;
             height: 7px;
-            background: url(../../../assets/Triangle.svg) no-repeat top center;
+            background: url(../assets/Triangle.svg) no-repeat top center;
             transform: scale(1, -1);
           }
         }
@@ -296,7 +296,7 @@
   top: 40px;
   right: 45px;
   padding-left: 30px;
-  background: url(../../../assets/wallet-icon.svg) no-repeat left center;
+  background: url(../assets/wallet-icon.svg) no-repeat left center;
   background-size: 24px 24px;
   line-height: 24px;
 }

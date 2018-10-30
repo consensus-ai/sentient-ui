@@ -86,7 +86,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background-image: url('../../assets/background.png');
+  background-image: url('../assets/background.png');
   background-size: 378px 295px;
   background-position: top right;
   background-color: #FFFFFF;
@@ -251,6 +251,7 @@
           transition: opacity .3s 0s, visibility 0s .3s;
           opacity: 0;
           visibility: hidden;
+          color: #3F4C65;
           &:before {
             content: "";
             position: absolute;

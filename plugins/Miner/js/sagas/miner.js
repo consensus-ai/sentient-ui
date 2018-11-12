@@ -19,14 +19,15 @@ const sendError = (e) => {
 // See https://github.com/yelouafi/redux-saga to read more about redux-saga.
 
 //  Call /wallet and dispatch the appropriate actions from the returned JSON.
-function* getLockStatusSaga() {
+function* getWalletBalanceSaga() {
 	try {
-		const response = yield sentientdCall('/wallet')
-		if (!response.unlocked) {
-			yield put(actions.setWalletLocked(true))
-		} else {
-			yield put(actions.setWalletLocked(false))
-		}
+		const walletResponse    = yield sentientdCall('/wallet')
+		const consensusResponse = yield sentientdCall('/consensus')
+
+		const confirmed = SentientAPI.hastingsToSen(walletResponse.confirmedsenbalance)
+		const unlocked  = walletResponse.unlocked
+		const synced    = consensusResponse.synced
+		yield put(actions.setWalletBalance(synced, confirmed.round(2).toString(), unlocked))
 	} catch (e) {
 		console.error('error fetching lock status: ' + e.toString())
 	}
@@ -67,7 +68,7 @@ function* stopMinerSaga() {
 export function* dataFetcher() {
 	while (true) {
 		let tasks = []
-		tasks = tasks.concat(yield fork(getLockStatusSaga))
+		tasks = tasks.concat(yield fork(getWalletBalanceSaga))
 		tasks = tasks.concat(yield fork(getMiningStatusSaga))
 		yield join(...tasks)
 		yield race({
@@ -77,8 +78,8 @@ export function* dataFetcher() {
 	}
 }
 
-export function* watchGetLockStatus() {
-	yield* takeEvery(constants.GET_LOCK_STATUS, getLockStatusSaga)
+export function* watchWalletBalance() {
+	yield* takeEvery(constants.GET_WALLET_BALANCE, getWalletBalanceSaga)
 }
 
 export function* watchGetMiningStatus() {

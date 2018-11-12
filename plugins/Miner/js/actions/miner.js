@@ -1,15 +1,17 @@
 import * as constants from '../constants/miner.js'
 
 export const getLockStatus = () => ({
-  type: constants.GET_LOCK_STATUS,
+  type: constants.GET_WALLET_BALANCE,
 })
 
 export const fetchData = () => ({
   type: constants.FETCH_DATA,
 })
 
-export const setWalletLocked = (walletLocked) => ({
-  type: constants.SET_WALLET_LOCKED,
+export const setWalletBalance = (synced, confirmedBalance, walletLocked) => ({
+  type: constants.SET_WALLET_BALANCE,
+  synced,
+  confirmedBalance,
   walletLocked,
 })
 

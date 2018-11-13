@@ -125,6 +125,8 @@
     display: flex;
     justify-content: space-between;
     padding: 0 70px;
+    position: relative;
+    z-index: 1;
     .exclamation {
       color: #90A2BC;
       display: flex;
@@ -185,6 +187,10 @@
         cursor: pointer;
         transition: color .3s;
         color: #90A2BC;
+        display: block;
+        width: 125px;
+        white-space: nowrap;
+        text-align: right;
         i {
           padding-left: 1rem;
         }

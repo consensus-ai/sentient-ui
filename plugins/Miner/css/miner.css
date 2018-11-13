@@ -83,7 +83,9 @@
   .miner .top-row {
     display: flex;
     justify-content: space-between;
-    padding: 0 70px; }
+    padding: 0 70px;
+    position: relative;
+    z-index: 1; }
     .miner .top-row .exclamation {
       color: #90A2BC;
       display: flex;
@@ -131,7 +133,11 @@
         font-weight: 500;
         cursor: pointer;
         transition: color .3s;
-        color: #90A2BC; }
+        color: #90A2BC;
+        display: block;
+        width: 125px;
+        white-space: nowrap;
+        text-align: right; }
         .miner .top-row .dropdown span i {
           padding-left: 1rem; }
       .miner .top-row .dropdown:hover span {

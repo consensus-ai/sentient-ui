@@ -197,12 +197,15 @@
         cursor: pointer;
         font-family: "Open Sans";
         letter-spacing: -0.03em; }
+        .miner .top-row .dropdown span:hover {
+          box-shadow: 0 2px 8px rgba(61, 75, 102, 0.53);
+          color: #0846A0; }
         .miner .top-row .dropdown span i {
           padding-left: 1rem; }
-      .miner .top-row .dropdown:hover span {
+      .miner .top-row .dropdown.open span {
         box-shadow: 0 2px 8px rgba(61, 75, 102, 0.53);
         color: #0846A0; }
-      .miner .top-row .dropdown:hover ul {
+      .miner .top-row .dropdown.open ul {
         opacity: 1;
         visibility: visible;
         transition: opacity .3s 0s, visibility 0s 0s; }

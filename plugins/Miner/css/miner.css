@@ -47,6 +47,57 @@
   .wallet-controls-container .mining-action-button.start {
     background: #0aa400; }
 
+/*
+ *
+ * BALANCE INFO VIEW
+ *
+ */
+.balance-info-container {
+  width: 100%;
+  height: 66px;
+  display: flex; }
+
+.balance-info {
+  text-align: right;
+  margin-left: auto; }
+
+.balance-info-icon {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+  margin-right: 10px;
+  background-size: 25px 25px;
+  background-position: center center;
+  background-color: rgba(0, 0, 0, 0);
+  background-repeat: no-repeat; }
+
+.balance-info-synced-icon {
+  margin-top: -5px;
+  background-image: url("../assets/wallet-icon.png"); }
+
+.balance-info-not-synced-icon {
+  cursor: help;
+  margin-top: -2px;
+  background-image: url("../assets/wallet-not-synced-icon.png"); }
+
+.balance-info-amount-container {
+  font-size: 14px;
+  color: #3D4B66;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: help; }
+
+.balance-info-amount {
+  font-weight: 600;
+  margin-right: 5px; }
+
+.balance-info-currency {
+  font-weight: normal; }
+
+/*
+ * END BALANCE INFO VIEW
+ */
 .miner {
   display: flex;
   flex-direction: column;
@@ -64,26 +115,17 @@
   bottom: 0;
   top: 0;
   left: 0;
-  right: 0;
-  font-size: 14px;
-  font-family: "Open Sans";
-  color: #5C7099; }
+  right: 0; }
   .miner .content {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    border: 0.5px solid rgba(0, 0, 0, 0.07);
-    border-radius: 6px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-    background: white;
     width: 100%;
     height: 100%;
-    padding: 60px 0 0 0;
     box-sizing: border-box; }
   .miner .top-row {
     display: flex;
-    justify-content: space-between;
-    padding: 0 70px;
+    justify-content: flex-end;
+    align-items: center;
     position: relative;
     z-index: 1; }
     .miner .top-row .exclamation {
@@ -95,7 +137,6 @@
         font-size: 2.2rem;
         padding-right: 1rem; }
     .miner .top-row .dropdown {
-      padding: 0.5rem 1rem;
       position: relative; }
       .miner .top-row .dropdown ul {
         background: #fff;
@@ -105,7 +146,8 @@
         list-style: none;
         border: 1px solid #EDEDED;
         box-shadow: 0 1px 2px rgba(144, 162, 189, 0.16);
-        margin: 0 1rem;
+        width: 100%;
+        margin: 6px 0 0 0;
         border-radius: 0.3rem;
         padding: 0;
         color: #3F4C65;
@@ -116,9 +158,16 @@
         visibility: hidden; }
         .miner .top-row .dropdown ul:before {
           content: "";
+          width: 100%;
+          position: absolute;
+          top: -6px;
+          left: 0;
+          height: 6px; }
+        .miner .top-row .dropdown ul:after {
+          content: "";
           position: absolute;
           top: -7px;
-          right: 20px;
+          right: 16px;
           width: 13px;
           height: 7px;
           background: url(../assets/Triangle.svg) no-repeat top center; }
@@ -131,46 +180,103 @@
             color: #0846A0; }
       .miner .top-row .dropdown span {
         font-weight: 500;
-        cursor: pointer;
-        transition: color .3s;
+        transition: .3s;
         color: #90A2BC;
-        display: block;
         width: 125px;
         white-space: nowrap;
-        text-align: right; }
+        text-align: right;
+        font-size: 14px;
+        background-color: #fff;
+        height: 34px;
+        padding: 1px 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(61, 75, 102, 0.23);
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: "Open Sans";
+        letter-spacing: -0.03em; }
+        .miner .top-row .dropdown span:hover {
+          box-shadow: 0 2px 8px rgba(61, 75, 102, 0.53);
+          color: #0846A0; }
         .miner .top-row .dropdown span i {
           padding-left: 1rem; }
-      .miner .top-row .dropdown:hover span {
+      .miner .top-row .dropdown.open span {
+        box-shadow: 0 2px 8px rgba(61, 75, 102, 0.53);
         color: #0846A0; }
-      .miner .top-row .dropdown:hover ul {
+      .miner .top-row .dropdown.open ul {
         opacity: 1;
         visibility: visible;
         transition: opacity .3s 0s, visibility 0s 0s; }
+    .miner .top-row .miner-button {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.87);
+      height: 34px;
+      padding: 1px 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(61, 75, 102, 0.53);
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 14px; }
+      .miner .top-row .miner-button .button-icon {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        vertical-align: middle;
+        margin: 0 10px 0 0;
+        background-size: cover;
+        background-position: center center;
+        background-color: rgba(0, 0, 0, 0);
+        background-repeat: no-repeat; }
+      .miner .top-row .miner-button.start-button {
+        background-color: #1BA21A; }
+        .miner .top-row .miner-button.start-button .button-icon {
+          background-image: url(../assets/start-button-icon.svg); }
+      .miner .top-row .miner-button.stop-button {
+        background-color: #90A2BC; }
+        .miner .top-row .miner-button.stop-button .button-icon {
+          background-image: url(../assets/stop-button-icon.svg); }
   .miner .data-cards {
     display: flex;
-    padding: 3rem 0 4rem 0; }
+    padding: 2rem 0;
+    justify-content: space-between; }
     .miner .data-cards .item {
       position: relative;
-      width: 25%;
+      width: calc(25% - 50px);
       text-align: center;
-      color: #0846A0; }
-      .miner .data-cards .item[passive] {
-        color: #90A2BC; }
+      color: #0846A0;
+      border-radius: 0.4em;
+      padding: 2em 1em 1em;
+      border: 1px solid #EDEDED;
+      background: #fff; }
+      .miner .data-cards .item[hidden] {
+        visibility: hidden;
+        display: block !important; }
       .miner .data-cards .item b {
         font-size: 24px;
         font-weight: bold;
         display: block; }
       .miner .data-cards .item small {
         font-weight: bold;
-        color: #CC4555;
         font-size: 10px;
         display: block;
         min-height: 16px; }
+        .miner .data-cards .item small.red {
+          color: #CC4555; }
       .miner .data-cards .item span {
-        display: block; }
+        display: block;
+        font-size: 14px;
+        letter-spacing: -0.03em; }
+      .miner .data-cards .item[disabled] {
+        color: #90A2BC; }
+        .miner .data-cards .item[disabled] small {
+          color: #90A2BC; }
       .miner .data-cards .item .balance {
         position: absolute;
-        top: -23px;
+        top: 5px;
         right: 12px;
         font-size: 1.1rem; }
         .miner .data-cards .item .balance .info {
@@ -199,17 +305,58 @@
             transform: scale(1, -1); }
         .miner .data-cards .item .balance i {
           cursor: pointer; }
+          .miner .data-cards .item .balance i:before {
+            width: 14px;
+            height: 14px;
+            content: "";
+            display: block;
+            background: url("../assets/info.svg") no-repeat center; }
           .miner .data-cards .item .balance i:hover + .info {
             opacity: 1;
             visibility: visible;
             transition: opacity .3s 0s, visibility 0s 0s; }
   .miner .graph {
     position: relative;
-    padding: 23px 0; }
-    .miner .graph img {
-      display: block;
-      height: 100%;
-      width: 100%; }
+    border-radius: 0.4em;
+    border: 1px solid #EDEDED;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    min-height: 350px; }
+    .miner .graph .footer {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      letter-spacing: -0.03em; }
+      .miner .graph .footer span {
+        padding: 1.6em 2em;
+        color: #0846A0; }
+      .miner .graph .footer ul {
+        display: flex;
+        margin: 0;
+        padding: 0 1em;
+        list-style: none; }
+        .miner .graph .footer ul li {
+          padding: 1.8em 1em 1em;
+          cursor: pointer;
+          color: #90A2BC;
+          transition: .3s;
+          position: relative; }
+          .miner .graph .footer ul li:after {
+            width: 100%;
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 0;
+            transition: .3s;
+            background: #0846A0; }
+          .miner .graph .footer ul li:hover, .miner .graph .footer ul li.active {
+            color: #0846A0; }
+            .miner .graph .footer ul li:hover:after, .miner .graph .footer ul li.active:after {
+              height: 3px; }
 
 .wallet {
   color: #465268;
@@ -221,4 +368,66 @@
   background-size: 24px 24px;
   line-height: 24px; }
 
-/*# sourceMappingURL=miner.css.map */
+/*
+ *
+ * CUSTOM TOAST STYLE
+ *
+ */
+
+ .Toastify__toast-container--top-center {
+	top: 0 !important;
+  left: 25% !important;
+  margin-left: 0 !important;
+}
+
+.sen-toast-container {
+	width: 50% !important;
+	display: flex !important;
+	flex-direction: column !important;
+}
+
+.Toastify__toast--error {
+	background: #FF4848 !important;
+	color: #FFFFFF !important;
+}
+
+.Toastify__toast--default {
+	background: #0043A4 !important;
+	color: #FFFFFF !important;
+}
+
+.sen-toast {
+	min-height: 45px !important;
+	box-shadow: 2px 2px 4px 0 #C7C9CD !important;
+	border-radius: 3px 3px 3px 3px !important;
+	font-size: 14px !important;
+	font-family: "Open Sans" !important;
+
+	margin-bottom: 0 !important;
+	margin-top: 10px !important;
+}
+
+.sen-toast-body {
+	margin: auto 10px !important;
+	text-align: center !important;
+}
+
+.sen-toast button { /* close button */
+	color: #FFFFFF !important;
+	margin: -5px -1px 0 0 !important;
+	box-shadow: none !important;
+}
+
+.sen-toast button:hover {
+	background: none !important;
+	border: 0px !important;
+}
+
+.sen-toast-progress {
+	background-color: #FFFFFF !important;
+	background: #FFFFFF !important;
+	height: 1px !important;
+}
+/*
+ * END CUSTOM TOAST STYLE
+ */

@@ -4,9 +4,8 @@ import { bindActionCreators } from 'redux'
 import { startMiner, stopMiner } from '../actions/miner.js'
 
 const mapStateToProps = (state) => ({
-  synced: state.miner.get('synced'),
   confirmedBalance: state.miner.get('confirmedbalance'),
-  walletLocked: state.miner.get('walletlocked'),
+  walletUnlocked: state.miner.get('walletunlocked'),
   miningStatus: state.miner.get('miningstatus'),
 })
 

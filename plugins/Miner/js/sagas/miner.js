@@ -33,7 +33,14 @@ function* getWalletBalanceSaga() {
 }
 
 function* setMiningTypeSaga(action) {
-	yield put(actions.setMiningType(action.miningType))
+	const miningType = action.miningType
+	SentientAPI.config.attr('miningType', miningType)
+	try {
+		SentientAPI.config.save()
+	} catch (e) {
+		console.error(`error saving config: ${e.toString()}`)
+	}
+	yield put(actions.setMiningType(miningType))
 }
 
 function* getMiningTypeSaga() {

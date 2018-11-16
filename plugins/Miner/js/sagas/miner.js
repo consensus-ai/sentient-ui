@@ -3,6 +3,7 @@ import { takeEvery, delay } from 'redux-saga'
 import { sentientdCall } from './helpers.js'
 import * as actions from '../actions/miner.js'
 import * as constants from '../constants/miner.js'
+import { List } from 'immutable'
 import { toast } from 'react-toastify'
 
 // Send an error notification.
@@ -22,25 +23,32 @@ const sendError = (e) => {
 function* getWalletBalanceSaga() {
 	try {
 		const walletResponse    = yield sentientdCall('/wallet')
-		const consensusResponse = yield sentientdCall('/consensus')
 
 		const confirmed = SentientAPI.hastingsToSen(walletResponse.confirmedsenbalance)
 		const unlocked  = walletResponse.unlocked
-		const synced    = consensusResponse.synced
-		yield put(actions.setWalletBalance(synced, confirmed.round(2).toString(), unlocked))
+		yield put(actions.setWalletBalance(confirmed.round(2).toString(), unlocked))
 	} catch (e) {
 		console.error('error fetching lock status: ' + e.toString())
 	}
 }
 
+function* setMiningTypeSaga(action) {
+	yield put(actions.setMiningType(action.miningType))
+}
+
+function* getMiningTypeSaga() {
+	const miningType = SentientAPI.config.attr('miningType')
+	yield put(actions.setMiningType(miningType || 'pool'))
+}
+
 function* getMiningStatusSaga() {
 	try {
-		const response = yield sentientdCall('/miner')
-		if (!response) {
-			yield put(actions.setMiningStatus({}))
-		} else {
-			yield put(actions.setMiningStatus(response))
-		}
+		// const response = yield sentientdCall('/miner')
+		// if (!response) {
+		// 	yield put(actions.setMiningStatus({}))
+		// } else {
+		// 	yield put(actions.setMiningStatus(response))
+		// }
 	} catch (e) {
 		console.error('error fetching mining status: ' + e.toString())
 	}
@@ -94,3 +102,10 @@ export function* watchStopMiner() {
 	yield* takeEvery(constants.STOP_MINER, stopMinerSaga)
 }
 
+export function* watchSetMiningType() {
+	yield* takeEvery(constants.CHANGE_MINING_TYPE, setMiningTypeSaga)
+}
+
+export function* watchGetMiningType() {
+	yield* takeEvery(constants.GET_MINING_TYPE, getMiningTypeSaga)
+}

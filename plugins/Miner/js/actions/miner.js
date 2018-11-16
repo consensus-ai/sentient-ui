@@ -8,11 +8,10 @@ export const fetchData = () => ({
   type: constants.FETCH_DATA,
 })
 
-export const setWalletBalance = (synced, confirmedBalance, walletLocked) => ({
+export const setWalletBalance = (confirmedBalance, walletUnlocked) => ({
   type: constants.SET_WALLET_BALANCE,
-  synced,
   confirmedBalance,
-  walletLocked,
+  walletUnlocked,
 })
 
 export const getMiningStatus = () => ({
@@ -22,6 +21,20 @@ export const getMiningStatus = () => ({
 export const setMiningStatus = (miningStatus) => ({
   type: constants.SET_MINING_STATUS,
   miningStatus,
+})
+
+export const setMiningType = (miningType) => ({
+  type: constants.SET_MINING_TYPE,
+  miningType,
+})
+
+export const getMiningType = () => ({
+  type: constants.GET_MINING_TYPE,
+})
+
+export const changeMiningType = (miningType) => ({
+  type: constants.CHANGE_MINING_TYPE,
+  miningType
 })
 
 export const startMiner = () => ({

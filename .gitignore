@@ -21,6 +21,3 @@ sen-testing
 
 # OSX
 .DS_STORE
-
-*.scss
-*.map

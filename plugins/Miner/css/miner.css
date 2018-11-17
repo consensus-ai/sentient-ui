@@ -243,8 +243,7 @@
             color: #0846A0; }
       .miner .top-row .dropdown span {
         font-weight: 500;
-        transition: .3s;
-        color: #90A2BC;
+        transition: box-shadow .3s;
         width: 125px;
         white-space: nowrap;
         text-align: right;
@@ -259,19 +258,26 @@
         border-radius: 4px;
         cursor: pointer;
         font-family: "Open Sans";
-        letter-spacing: -0.03em; }
-        .miner .top-row .dropdown span:hover {
-          box-shadow: 0 2px 8px rgba(61, 75, 102, 0.53);
-          color: #0846A0; }
+        letter-spacing: -0.03em;
+        color: #0846A0; }
         .miner .top-row .dropdown span i {
           padding-left: 1rem; }
-      .miner .top-row .dropdown.open span {
+      .miner .top-row .dropdown:not(.disabled) span:active {
+        transform: translateX(2px) translateY(2px); }
+      .miner .top-row .dropdown:not(.disabled):hover span {
+        box-shadow: 0 2px 8px rgba(61, 75, 102, 0.53); }
+      .miner .top-row .dropdown:not(.disabled).open span {
         box-shadow: 0 2px 8px rgba(61, 75, 102, 0.53);
         color: #0846A0; }
-      .miner .top-row .dropdown.open ul {
+      .miner .top-row .dropdown:not(.disabled).open ul {
         opacity: 1;
         visibility: visible;
         transition: opacity .3s 0s, visibility 0s 0s; }
+      .miner .top-row .dropdown.disabled span {
+        color: #90A2BC;
+        cursor: auto; }
+      .miner .top-row .dropdown.disabled ul {
+        display: none; }
     .miner .top-row .miner-button {
       font-size: 14px;
       color: rgba(255, 255, 255, 0.87);
@@ -420,3 +426,5 @@
             color: #0846A0; }
           .miner .graph .footer ul li:hover:after, .miner .graph .footer ul li.active:after {
             height: 3px; }
+
+/*# sourceMappingURL=miner.css.map */

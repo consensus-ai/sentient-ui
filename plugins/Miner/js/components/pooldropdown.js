@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import React from 'react'
 
 
@@ -21,14 +20,14 @@ class PoolDropdown extends React.Component {
     }
 
     toggleList () {
-        if (this.props.actions.walletUnlocked) return
+        if (this.props.mining) return
         this.setState(prevState => ({
             open: !prevState.open
         }))
     }
 
     render () {
-        const { walletUnlocked, miningType } = this.props
+        const { walletUnlocked, miningType, mining } = this.props
         const { open } = this.state
 
         let selectedOption = 'Local Daemon'
@@ -37,11 +36,11 @@ class PoolDropdown extends React.Component {
         }
 
         return(
-            <div className={`dropdown ${open ? "open" : ""} ${walletUnlocked ? "" : "disabled"}`}>
+            <div className={`dropdown ${open ? "open" : ""} ${walletUnlocked && !mining ? "" : "disabled"}`}>
                 <span className={walletUnlocked ? "" : "disabled"} onClick={() => this.toggleList()}>
                     {selectedOption} <i className="fa fa-angle-down"></i>
                 </span>
-                {walletUnlocked &&
+                {walletUnlocked && !mining &&
                     <ul>
                         <li onClick={() => this.changeType('pool')}>Pool Server</li>
                         <li onClick={() => this.changeType('local')}>Local Daemon</li>
@@ -54,6 +53,7 @@ class PoolDropdown extends React.Component {
 
 PoolDropdown.propTypes = {
     miningType: PropTypes.string.isRequired,
+    mining: PropTypes.bool.isRequired,
 }
 
 export default PoolDropdown

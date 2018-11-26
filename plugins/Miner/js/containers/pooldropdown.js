@@ -6,6 +6,7 @@ import { changeMiningType, getMiningType } from '../actions/miner.js'
 const mapStateToProps = (state) => ({
   miningType: state.miner.get('miningtype'),
   walletUnlocked: state.miner.get('walletunlocked'),
+  mining: state.miner.get('mining'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

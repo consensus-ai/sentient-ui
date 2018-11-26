@@ -5,8 +5,10 @@ import { version } from '../../package.json'
 import semver from 'semver'
 
 const defaultSentientdPath = Path.join(__dirname, '../sentient-network', (process.platform === 'win32' ? 'sentientd.exe' : 'sentientd'))
+const defaultSentientMinerPath =  Path.join(__dirname, '../sentient-miner', (process.platform === 'win32' ? 'sentient-miner.exe' : 'sentient-miner'))
 const defaultGenesisFile = Path.join(__dirname, '../sentient-network', 'config', 'genesis.json')
 const defaultDataDir = Path.join(app.getPath('userData'), 'data')
+const defaultHashratesLogPath = Path.join(defaultDataDir, 'hashrates.log')
 
 // The default settings
 const defaultConfig = {

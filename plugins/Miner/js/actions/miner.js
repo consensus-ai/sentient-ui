@@ -14,18 +14,36 @@ export const setWalletBalance = (confirmedBalance, walletUnlocked) => ({
   walletUnlocked,
 })
 
-export const getMiningStatus = () => ({
-  type: constants.GET_MINING_STATUS,
-})
-
-export const setMiningStatus = (miningStatus) => ({
+export const setMiningStatus = (miningStatus, miningPid) => ({
   type: constants.SET_MINING_STATUS,
   miningStatus,
+  miningPid,
+})
+
+export const setHashrateHistory = (hashrateHistory) => ({
+  type: constants.SET_HASHRATE_HISTORY,
+  hashrateHistory,
+})
+
+export const getHashrateHistory = (duration) => ({
+  type: constants.GET_HASHRATE_HISTORY,
+  duration,
+})
+
+export const updatePoolStats = (sharesEfficiency, balance) => ({
+  type: constants.UPDATE_POOL_STATS,
+  sharesEfficiency,
+  balance,
 })
 
 export const setMiningType = (miningType) => ({
   type: constants.SET_MINING_TYPE,
   miningType,
+})
+
+export const setHashRate = (hashRate) => ({
+  type: constants.UPDATE_MINING_HASH_RATE,
+  hashRate,
 })
 
 export const getMiningType = () => ({
@@ -41,6 +59,7 @@ export const startMiner = () => ({
   type: constants.START_MINER,
 })
 
-export const stopMiner = () => ({
+export const stopMiner = (pid) => ({
   type: constants.STOP_MINER,
+  pid,
 })

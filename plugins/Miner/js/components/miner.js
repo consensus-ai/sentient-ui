@@ -3,10 +3,10 @@ import React from 'react'
 import {ToastContainer, Zoom} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-import LockedWalletView from './locked_wallet'
-import UnlockedWalletView from './unlocked_wallet'
+import LockedWallet from './lockedwallet'
+import UnlockedWallet from '../containers/unlockedwallet'
 
-const Miner = ({walletUnlocked, miningStatus, confirmedBalance, actions}) => {
+const Miner = ({walletUnlocked, confirmedBalance, actions}) => {
     let formattedConfirmedBalance = confirmedBalance.replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
 
     return (
@@ -21,8 +21,8 @@ const Miner = ({walletUnlocked, miningStatus, confirmedBalance, actions}) => {
                 </div>
             </div>
 
-            {!walletUnlocked && <LockedWalletView />}
-            {walletUnlocked && <UnlockedWalletView />}
+            {!walletUnlocked && <LockedWallet/>}
+            {walletUnlocked && <UnlockedWallet />}
             <ToastContainer
                 className='sen-toast-container'
                 toastClassName='sen-toast'
@@ -39,7 +39,6 @@ const Miner = ({walletUnlocked, miningStatus, confirmedBalance, actions}) => {
 Miner.propTypes = {
     confirmedBalance: PropTypes.string.isRequired,
     walletUnlocked: PropTypes.bool.isRequired,
-    miningStatus: PropTypes.object.isRequired,
 }
 
 export default Miner

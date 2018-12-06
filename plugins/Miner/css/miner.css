@@ -311,16 +311,25 @@
   .miner .data-cards {
     display: flex;
     padding: 2rem 0;
-    justify-content: space-between; }
+    justify-content: space-between;
+    flex-wrap: wrap; }
     .miner .data-cards .item {
+      box-sizing: border-box;
       position: relative;
-      width: calc(25% - 50px);
+      width: calc(25% - .7em);
       text-align: center;
       color: #0846A0;
       border-radius: 0.4em;
       padding: 2em 1em 1em;
       border: 1px solid #EDEDED;
-      background: #fff; }
+      background: #fff;
+      margin: 0.5rem 0; }
+      @media (max-width: 767px) {
+        .miner .data-cards .item {
+          width: calc(50% - .7em); } }
+      @media (max-width: 500px) {
+        .miner .data-cards .item {
+          width: 100%; } }
       .miner .data-cards .item[hidden] {
         visibility: hidden;
         display: block !important; }
@@ -390,9 +399,10 @@
     border: 1px solid #EDEDED;
     background: #fff;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     flex-direction: column;
-    min-height: 350px; }
+    min-height: 350px;
+    margin: .5rem 0 0; }
     .miner .graph .footer {
       display: flex;
       justify-content: space-between;
@@ -426,5 +436,45 @@
             color: #0846A0; }
           .miner .graph .footer ul li:hover:after, .miner .graph .footer ul li.active:after {
             height: 3px; }
+
+.recharts-tooltip-wrapper .area-chart-tooltip {
+  color: #0846A0;
+  padding-bottom: 57px !important;
+  background: transparent !important;
+  transform: translateY(-35px);
+  transition: transform 400ms ease 0s; }
+  .recharts-tooltip-wrapper .area-chart-tooltip:before {
+    left: 0;
+    opacity: .4;
+    position: absolute;
+    width: 1px;
+    height: 52px;
+    bottom: 0;
+    background: -moz-linear-gradient(top, #0846a0 0%, rgba(8, 70, 160, 0) 100%);
+    background: -webkit-linear-gradient(top, #0846a0 0%, rgba(8, 70, 160, 0) 100%);
+    background: linear-gradient(to bottom, #0846a0 0%, rgba(8, 70, 160, 0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0846a0', endColorstr='#000846a0', GradientType=0); }
+  .recharts-tooltip-wrapper .area-chart-tooltip div {
+    display: block;
+    position: relative;
+    transform: translateX(-50%);
+    text-align: center; }
+    .recharts-tooltip-wrapper .area-chart-tooltip div .grey {
+      color: #B2B7C1; }
+    .recharts-tooltip-wrapper .area-chart-tooltip div .red {
+      color: #CC4555; }
+    .recharts-tooltip-wrapper .area-chart-tooltip div:first-child {
+      margin-bottom: .2rem;
+      font-size: 10px; }
+    .recharts-tooltip-wrapper .area-chart-tooltip div:last-child {
+      font-weight: bold;
+      font-size: 14px; }
+
+.recharts-tooltip-cursor {
+  width: 1px !important;
+  background: -moz-linear-gradient(top, #0846a0 0%, rgba(8, 70, 160, 0) 100%);
+  background: -webkit-linear-gradient(top, #0846a0 0%, rgba(8, 70, 160, 0) 100%);
+  background: linear-gradient(to bottom, #0846a0 0%, rgba(8, 70, 160, 0) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0846a0', endColorstr='#000846a0', GradientType=0); }
 
 /*# sourceMappingURL=miner.css.map */

@@ -16,7 +16,11 @@ const BlankStats = () => {
             <div className="item" disabled>
                 <div className="balance">
                     <i className="fa fa-info-circle"></i>
-                    <div className="info">Pool Minimum payout: 10 SEN</div>
+                    <div className="info">
+                        Minimum payout: 25 SEN
+                        <br/>
+                        Payout Frequency: 24hrs
+                    </div>
                 </div>
                 <b>&#8211;</b>
                 <small></small>

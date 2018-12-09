@@ -2,28 +2,13 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import PoolDropdown from '../containers/pooldropdown'
 import BlankStats from './blankstats'
-import BlankGrapf from './blankgraph'
-import Chart from './chart'
+import BlankGraph from './blankgraph'
+import Graphs from '../containers/graphs'
 
 class UnlockedWallet extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            chartType: 'hashrate',
-            selectedDuration: '24 hours',
-            durations: {
-                '24 hours': 86400, // 24 * 60 * 60
-                '3 days': 259200,  // 3 * 24 * 60 * 60
-                '1 week': 604800,  // 7 * 24 * 60 * 60
-                '1 month': 2592000 // 30 * 24 * 60 * 60
-            }
-        }
-    }
-
-    componentDidMount () {
-        const { actions } = this.props
-        actions.getHashrateHistory(86400)
     }
 
     getHashRateForDisplay () {
@@ -39,13 +24,8 @@ class UnlockedWallet extends React.Component {
     }
 
     changeChartType (type) {
-        this.setState({ chartType: type })
-    }
-
-    changeDuration (label) {
         const { actions } = this.props
-        actions.getHashrateHistory(this.state.durations[label])
-        this.setState({ selectedDuration: label })
+        actions.changeChartType(type)
     }
 
     miningActionOnClick ()  {
@@ -58,10 +38,10 @@ class UnlockedWallet extends React.Component {
     }
 
     render () {
-        const { miningType, mining, chartData, balance } = this.props
-        const { chartType, selectedDuration, durations } = this.state
+        const { miningType, mining, chartType, balance } = this.props
         const accepted = this.getAcceptedSharesEfficiency()
         const rejected = accepted && (100 - accepted).toFixed(2) || 0
+        const unpaidBalance = balance && balance.unpaid || 0
 
         return(
             <div className="content space-between">
@@ -72,55 +52,40 @@ class UnlockedWallet extends React.Component {
                         <span>{mining ?  "Stop miner" : "Start miner" }</span>
                     </div>
                 </div>
-                {!mining && <BlankStats />}
-                { mining &&
-                    <div className="data-cards">
-                        <div className="item" disabled={chartType != 'hashrate' ? 'disabled' : '' } onClick={()=> this.changeChartType('hashrate')}>
-                            <b>{this.getHashRateForDisplay()}</b>
+                <div className="data-cards">
+                    <div className="item" disabled={ chartType !== 'hashrate' ? 'disabled' : '' } onClick={()=> this.changeChartType('hashrate')}>
+                        <b>{this.getHashRateForDisplay()}</b>
+                        <small></small>
+                        <span>Current hash rate</span></div>
+                    <div className="item" hidden></div>
+                    {miningType == 'pool' &&
+                        <div className="item" disabled={ chartType !== 'shares' ? 'disabled' : '' } onClick={()=> this.changeChartType('shares')}>
+                            <b>{accepted}%</b>
+                            <small className="red">{rejected}% rejected</small>
+                            <span>Shares Efficiency</span>
+                        </div>
+                    }
+                    {miningType == 'local' &&
+                        <div className="item" disabled={ chartType !== 'blocks' ? 'disabled' : '' } onClick={()=> this.changeChartType('blocks')}>
+                            <b>1</b>
                             <small></small>
-                            <span>Current hash rate</span></div>
-                        <div className="item" hidden></div>
-                        {miningType == 'pool' &&
-                            <div className="item" disabled={chartType != 'shares' ? 'disabled' : '' } onClick={()=> this.changeChartType('shares')}>
-                                <b>{accepted}%</b>
-                                <small className="red">{rejected}% rejected</small>
-                                <span>Shares Efficiency</span>
-                            </div>
-                        }
-                        {miningType == 'local' &&
-                            <div className="item" disabled={chartType != 'blocks' ? 'disabled' : '' } onClick={()=> this.changeChartType('blocks')}>
-                                <b>1</b>
-                                <small></small>
-                                <span>Blocks Found</span>
-                            </div>
-                        }
-                        <div className="item" disabled>
-                            <div className="balance"><i className="fa fa-info-circle"></i>
-                                <div className="info">Pool Minimum payout: 10 SEN</div>
-                            </div>
-                            <b>{balance && balance.unpaid || 0} SEN</b>
-                            <small></small>
-                            <span>Unpaid balance</span></div>
-                    </div>
-                }
-                <div className="graph" ref={(el) => { this.graphRef = el }}>
-                    <Chart graphRef={this.graphRef} chartData={chartData} />
-                    <div className="footer">
-                        {chartType == 'shares' && <span>Shares this session</span>}
-                        {chartType == 'hashrate' && <span>Avarage hourly hash rate</span>}
-                        {chartType == 'blocks' && <span>Shares this session</span>}
-                        <ul>
-                            {
-                                Object.keys(durations).map((label) => {
-                                    return <li
-                                            key={label}
-                                            onClick={() => this.changeDuration(label)}
-                                            className={label == selectedDuration ? "active" : ""}>{label}</li>
-                                })
-                            }
-                        </ul>
+                            <span>Blocks Found</span>
+                        </div>
+                    }
+                    <div className="item">
+                        <div className="balance"><i className="fa fa-info-circle"></i>
+                        <div className="info">
+                            Minimum payout: 25 SEN
+                            <br/>
+                            Payout Frequency: 24hrs
+                        </div>
+                        </div>
+                        <b>{ unpaidBalance } SEN</b>
+                        <small></small>
+                        <span>Unpaid balance</span>
                     </div>
                 </div>
+                <Graphs />
             </div>
         )
     }

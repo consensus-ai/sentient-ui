@@ -1,9 +1,10 @@
 // Helper functions for the miner plugin.  Mostly used in sagas.
 import request from 'request'
 const { spawn } = require('child_process')
-const poolBaseUrl = 'http://pool.sentient.org'
+import fs from 'graceful-fs'
+
+const poolBaseUrl = 'http://18.220.209.205:9910'
 let callOptions = {}
-callOptions.url = poolBaseUrl
 callOptions.json = true
 callOptions.headers = {
   'User-Agent': 'Sentient-Agent',
@@ -23,9 +24,9 @@ export const sentientdCall = (uri) => new Promise((resolve, reject) => {
 
 // poolServerCall: promisify PoolServer API calls.  Resolve the promise with `response` if the call was successful,
 // otherwise reject the promise with `err`.
-
 export const poolServerCall = (url) => new Promise((resolve, reject) => {
-  callOptions.url = callOptions.url + url
+  callOptions.url = poolBaseUrl + url
+  console.log(`request: ${callOptions.url}`)
   request(callOptions, (err, res, body) => {
 		if (!err && (res.statusCode < 200 || res.statusCode > 299)) {
 			reject(body)
@@ -42,7 +43,7 @@ export const startMiningProcess = () => {
   const miningType = SentientAPI.config.attr('miningType')
   const sentientConfig = SentientAPI.config.sentientd
   const minerSetting = {
-    SENTIENT_MINER_HASHRATES_LOG_MAX_LINES: 260000, //1 month
+    SENTIENT_MINER_HASHRATES_LOG_MAX_LINES: 259200, //1 month
     SENTIENT_MINER_HASHRATES_LOG_FREQUENCY: 5,
     SENTIENT_MINER_HASHRATES_LOG_PATH: `${sentientConfig.datadir}/hashrates.log`
   }
@@ -58,4 +59,88 @@ export const startMiningProcess = () => {
 
   const child = spawn('/Users/alexander/Downloads/sentient-miner-0.1.1-osx-amd64', args, { stdio: 'ignore', env: minerSetting })
   return child.pid
+}
+
+// Format pool stats for graph
+export const formatHistory = (data, timeOffset, fixedDuration) => {
+  const currentTime = Math.floor((Date.now() / 1000) / fixedDuration) * fixedDuration
+  const startTime = Math.floor(timeOffset / fixedDuration) * fixedDuration
+  let endPeriod = startTime
+  let result = []
+  if(data.length) {
+    const formatedData = data.reduce((rv, stats) => {
+      let [time, submitted, accepted, stale] = stats
+      let acceptedOffset = accepted - rv["prev_accepted"]
+      let submittedOffset = submitted - rv["prev_submitted"]
+      let accepted_percent = (acceptedOffset * 100 / submittedOffset).toFixed(2)
+      rv[time] = {
+        time: time,
+        accepted: accepted_percent,
+        rejected: (100 - accepted_percent).toFixed(2),
+        baraccepted: acceptedOffset,
+        barrejected: (submittedOffset - acceptedOffset)
+      }
+      rv["prev_accepted"] = accepted
+      rv["prev_submitted"] = submitted
+      return rv
+    }, {prev_accepted: 0, prev_submitted: 0})
+
+    while (endPeriod <= currentTime) {
+      let currentPeriod = formatedData[endPeriod]
+      if (!currentPeriod) {
+        result.push({ time: endPeriod, accepted: 0, rejected: 0 })
+      } else {
+        result.push(currentPeriod)
+      }
+      endPeriod = endPeriod + fixedDuration
+    }
+  }
+  return result
+}
+
+// Collect hashrates by time
+export const fetchHashrate = (timeOffset, fixedDuration) => {
+  const startTime = Math.floor(timeOffset / fixedDuration) * fixedDuration
+  const currentTime = Math.floor((Date.now() / 1000) / fixedDuration) * fixedDuration
+  const hashRateData = fetchExisingData(startTime, fixedDuration)
+
+  let endPeriod = startTime
+  let resultHashRate = []
+
+  if (Object.keys(hashRateData).length) {
+      while (endPeriod <= currentTime) {
+          let currentPeriod = hashRateData[endPeriod]
+          if (currentPeriod) {
+              let avg = currentPeriod['hashrate']/currentPeriod['count']
+              resultHashRate.push({ hashrate: parseFloat(avg).toFixed(2), time: endPeriod })
+          } else {
+              resultHashRate.push({ hashrate: parseFloat(0).toFixed(2), time: endPeriod })
+          }
+          endPeriod = endPeriod + fixedDuration
+      }
+  }
+  return resultHashRate
+}
+
+// Fetching history from log file
+export const fetchExisingData = (startTime, fixedDuration) => {
+  const logFilePath = `${SentientAPI.config.sentientd.datadir}/hashrates.log`
+  const data = fs.readFileSync(logFilePath).toString().split("\n")
+  const result = data.reduce((rv, line) => {
+    let [timestamp, hashRate] = line.split(",")
+
+    hashRate = parseFloat(hashRate)
+    const groupTime = Math.floor(parseInt(timestamp) / fixedDuration) * fixedDuration
+    if (groupTime >= startTime) {
+      //group by minutes - round time to fixed period
+      if (typeof rv[groupTime] === 'undefined') {
+        rv[groupTime] = { count: 0, hashrate: 0 }
+      }
+      rv[groupTime]['count']++
+      rv[groupTime]['hashrate'] = rv[groupTime]['hashrate'] + hashRate
+    }
+    return rv
+  }, {})
+
+  return result
 }

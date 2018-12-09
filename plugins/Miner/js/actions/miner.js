@@ -22,7 +22,17 @@ export const setMiningStatus = (miningStatus, miningPid) => ({
 
 export const setHashrateHistory = (hashrateHistory) => ({
   type: constants.SET_HASHRATE_HISTORY,
-  hashrateHistory,
+  hashrateHistory
+})
+
+export const setPoolStatsHistory = (poolHistory) => ({
+  type: constants.SET_POOL_STATS_HISTORY,
+  poolHistory
+})
+
+export const changeChartType = (chartType) => ({
+  type: constants.CHANGE_CHART_TYPE,
+  chartType
 })
 
 export const getHashrateHistory = (duration) => ({
@@ -30,9 +40,18 @@ export const getHashrateHistory = (duration) => ({
   duration,
 })
 
-export const updatePoolStats = (sharesEfficiency, balance) => ({
-  type: constants.UPDATE_POOL_STATS,
+export const getPoolStatsHistory = (duration) => ({
+  type: constants.GET_POOL_STATS_HISTORY,
+  duration,
+})
+
+export const updateSharesEfficiency = (sharesEfficiency) => ({
+  type: constants.UPDATE_SHARES_EFFICIENCY,
   sharesEfficiency,
+})
+
+export const updateUnpaidBalance = (balance) => ({
+  type: constants.UPDATE_UNPAID_BALANCE,
   balance,
 })
 
@@ -42,7 +61,7 @@ export const setMiningType = (miningType) => ({
 })
 
 export const setHashRate = (hashRate) => ({
-  type: constants.UPDATE_MINING_HASH_RATE,
+  type: constants.UPDATE_HASH_RATE,
   hashRate,
 })
 

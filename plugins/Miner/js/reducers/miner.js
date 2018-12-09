@@ -10,9 +10,11 @@ const initialState = Map({
   hashrate: '0',
   mining: false,
   miningpid: null,
-  chartdata: [],
+  hashratehistory: [],
+  poolhistory: [],
   sharesefficiency: {},
   balance: {},
+  charttype: 'hashrate',
 })
 
 export default function minerReducer(state = initialState, action) {
@@ -28,22 +30,18 @@ export default function minerReducer(state = initialState, action) {
       .set('hashrate', '0')
   case constants.SET_MINING_TYPE:
     return state.set('miningtype', action.miningType)
-  case constants.UPDATE_MINING_HASH_RATE:
-    const hastRate = parseFloat(action.hashRate).toFixed(2)
-    const timestamp = Math.floor(Date.now() / 1000)
-    if ((timestamp / 5) % 1 === 0) {
-      return state
-        .set('hashrate', hastRate)
-        .set('chartdata', [...state.get('chartdata'), {hashrate: hastRate, time: timestamp}])
-    } else {
-      return state.set('hashrate', hastRate)
-    }
+  case constants.UPDATE_HASH_RATE:
+    return state.set('hashrate', action.hashRate)
+  case constants.SET_POOL_STATS_HISTORY:
+    return state.set('poolhistory', action.poolHistory)
   case constants.SET_HASHRATE_HISTORY:
-    return state.set('chartdata', action.hashrateHistory)
-  case constants.UPDATE_POOL_STATS:
-    return state
-      .set('sharesefficiency', action.sharesEfficiency)
-      .set('balance', action.balance)
+    return state.set('hashratehistory', action.hashrateHistory)
+  case constants.UPDATE_SHARES_EFFICIENCY:
+    return state.set('sharesefficiency', action.sharesEfficiency)
+  case constants.UPDATE_UNPAID_BALANCE:
+    return state.set('balance', action.balance)
+  case constants.CHANGE_CHART_TYPE:
+    return state.set('charttype', action.chartType)
   default:
     return state
   }

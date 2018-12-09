@@ -1,11 +1,21 @@
 import { put, take, fork, call, join, race } from 'redux-saga/effects'
 import { takeEvery, delay } from 'redux-saga'
-import { sentientdCall, startMiningProcess, poolServerCall} from './helpers.js'
-import fs from 'graceful-fs'
+import { sentientdCall, startMiningProcess, poolServerCall, fetchHashrate, formatHistory } from './helpers.js'
 import * as actions from '../actions/miner.js'
 import * as constants from '../constants/miner.js'
 import { List } from 'immutable'
-import { toast } from 'react-toastify'
+const groupOptions = {
+	86400: 600, //10 minutes
+	259200: 1800, //30 minutes
+	604800: 3600, //1 hour
+	2592000: 10800, //3 hours
+}
+const intervalOptions = {
+	86400: '10minutes',
+    259200: '30minutes',
+    604800: 'hour',
+    2592000: '3hours'
+}
 
 // Send an error notification.
 const sendError = (e) => {
@@ -82,13 +92,29 @@ function* stopMinerSaga(action) {
 	}
 }
 
+// Update unpaid balance each 5 seconds
+function* setUnpaidBalanceSaga() {
+	try {
+    	if ((Math.floor(Date.now() / 1000) / 5) % 1 === 0) {
+			const payoutAddress = SentientAPI.config.attr('payoutAddress')
+			//const balance = yield poolServerCall(`/pool/clients/${payoutAddress}/balance`)
+			const balance = yield poolServerCall(`/pool/clients/8fc5458c118440bd11a4beb674062b4221c7100973d76be3efbaf7ece3f69291dd88416b214b/balance`)
+
+			yield put(actions.updateUnpaidBalance(balance))
+		}
+	} catch (e) {
+		console.error('error fetching shares efficiency: ' + e.toString())
+	}
+}
+
+// On start miner get shares efficiency
 function* setPoolSharesEfficiencySaga() {
 	try {
 		const payoutAddress = SentientAPI.config.attr('payoutAddress')
-		const sharesEfficiency = yield poolServerCall(`/pool/clients/${payoutAddress}/shares/stats`)
-		const balance = yield poolServerCall(`/pool/clients/${payoutAddress}/balance`)
+		//const sharesEfficiency = yield poolServerCall(`/pool/clients/${payoutAddress}/shares/stats`)
+		const sharesEfficiency = yield poolServerCall(`/pool/clients/8fc5458c118440bd11a4beb674062b4221c7100973d76be3efbaf7ece3f69291dd88416b214b/shares/stats`)
 
-		yield put(actions.updatePoolStats(sharesEfficiency, balance))
+		yield put(actions.updateSharesEfficiency(sharesEfficiency))
 	} catch (e) {
 		console.error('error fetching shares efficiency: ' + e.toString())
 	}
@@ -96,20 +122,27 @@ function* setPoolSharesEfficiencySaga() {
 
 function* getHashrateHistorySaga(action) {
 	try {
-		const duration = action && action.duration || 24*60*60
-		const logFilePath = `${SentientAPI.config.sentientd.datadir}/hashrates.log`
+		const duration = action.duration
 		const timeOffset =  Math.floor(Date.now() / 1000) - duration
+		const hashrateData = fetchHashrate(timeOffset, groupOptions[duration])
 
-		let hashrateData = []
-		const data = fs.readFileSync(logFilePath).toString().split("\n");
-		data.forEach((line) => {
-			let [timestamp, hashRate] = line.split(",")
-			const logTime = parseInt(timestamp)
-			if (logTime >= timeOffset) {
-				hashrateData.push({hashrate: parseFloat(hashRate).toFixed(2), time: logTime})
-			}
-		})
 		yield put(actions.setHashrateHistory(hashrateData))
+	} catch (e) {
+		console.error('error getting hashrate: ' + e.toString())
+	}
+}
+
+function* getPoolStatsHistorySaga(action) {
+	try {
+		const duration = action.duration
+		const timeOffset =  Math.floor(Date.now() / 1000) - duration
+		const payoutAddress = SentientAPI.config.attr('payoutAddress')
+		//const poolStatsHistory = yield poolServerCall(`/pool/clients/${payoutAddress}/shares/historics?start_timestamp=${timeOffset}&interval=${intervalOptions[duration]}`)
+		const poolStatsHistory = yield poolServerCall(`/pool/clients/8fc5458c118440bd11a4beb674062b4221c7100973d76be3efbaf7ece3f69291dd88416b214b/shares/historics?start_timestamp=${timeOffset}&interval=${intervalOptions[duration]}`)
+
+		const poolData = formatHistory(poolStatsHistory, timeOffset, groupOptions[duration])
+
+		yield put(actions.setPoolStatsHistory(poolData))
 	} catch (e) {
 		console.error('error getting hashrate: ' + e.toString())
 	}
@@ -137,6 +170,10 @@ export function* watchStartMiner() {
 	yield* takeEvery(constants.START_MINER, startMinerSaga)
 }
 
+export function* watchGetPoolSharesEfficiency() {
+	yield* takeEvery(constants.START_MINER, setPoolSharesEfficiencySaga)
+}
+
 export function* watchStopMiner() {
 	yield* takeEvery(constants.STOP_MINER, stopMinerSaga)
 }
@@ -153,11 +190,10 @@ export function* watchGetHashrateHistory() {
 	yield* takeEvery(constants.GET_HASHRATE_HISTORY, getHashrateHistorySaga)
 }
 
-export function* watchSetHashrateHistory() {
-	yield* takeEvery(constants.SET_MINING_STATUS, getHashrateHistorySaga)
+export function* watchGetPoolStatsHistory() {
+	yield* takeEvery(constants.GET_POOL_STATS_HISTORY, getPoolStatsHistorySaga)
 }
 
-
-export function* watchUpdateMiningHasrate() {
-	yield* takeEvery(constants.UPDATE_MINING_HASH_RATE, setPoolSharesEfficiencySaga)
+export function* watchUnpaidBalance() {
+	yield* takeEvery(constants.UPDATE_HASH_RATE, setUnpaidBalanceSaga)
 }

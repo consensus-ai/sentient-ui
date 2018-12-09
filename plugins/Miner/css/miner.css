@@ -174,23 +174,17 @@
   min-height: 100vh;
   box-sizing: border-box;
   height: auto;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  right: 0; }
+  overflow-x: hidden; }
   .miner .content {
     display: flex;
     flex-direction: column;
-    width: 100%;
     box-sizing: border-box;
-    justify-content: space-between;
-    min-height: calc(100vh - 146px); }
+    min-height: calc(100vh - 146px);
+    min-width: 700px; }
   .miner .top-row {
     display: flex;
     justify-content: flex-end;
-    align-items: center;
-    position: relative;
-    z-index: 1; }
+    align-items: center; }
     .miner .top-row .exclamation {
       color: #90A2BC;
       display: flex;
@@ -204,6 +198,7 @@
       .miner .top-row .dropdown ul {
         background: #fff;
         position: absolute;
+        z-index: 1;
         top: 100%;
         left: 0;
         list-style: none;
@@ -310,9 +305,8 @@
           background-image: url(../assets/stop-button-icon.svg); }
   .miner .data-cards {
     display: flex;
-    padding: 2rem 0;
-    justify-content: space-between;
-    flex-wrap: wrap; }
+    padding: 2rem 0 1rem 0;
+    justify-content: space-between; }
     .miner .data-cards .item {
       box-sizing: border-box;
       position: relative;
@@ -324,12 +318,6 @@
       border: 1px solid #EDEDED;
       background: #fff;
       margin: 0.5rem 0; }
-      @media (max-width: 767px) {
-        .miner .data-cards .item {
-          width: calc(50% - .7em); } }
-      @media (max-width: 500px) {
-        .miner .data-cards .item {
-          width: 100%; } }
       .miner .data-cards .item[hidden] {
         visibility: hidden;
         display: block !important; }
@@ -359,10 +347,11 @@
         font-size: 1.1rem; }
         .miner .data-cards .item .balance .info {
           position: absolute;
+          z-index: 2;
           border: 1px solid #EDEDED;
           box-shadow: 0 1px 2px rgba(144, 162, 189, 0.16);
           border-radius: 0.3rem;
-          top: -35px;
+          bottom: 100%;
           right: -32px;
           font-size: 14px;
           white-space: nowrap;
@@ -439,17 +428,18 @@
 
 .recharts-tooltip-wrapper .area-chart-tooltip {
   color: #0846A0;
-  padding-bottom: 57px !important;
   background: transparent !important;
   transform: translateY(-35px);
   transition: transform 400ms ease 0s; }
   .recharts-tooltip-wrapper .area-chart-tooltip:before {
     left: 0;
+    content: "";
     opacity: .4;
     position: absolute;
     width: 1px;
-    height: 52px;
-    bottom: 0;
+    height: 220px;
+    top: 100%;
+    transform: translate(4px, -50px);
     background: -moz-linear-gradient(top, #0846a0 0%, rgba(8, 70, 160, 0) 100%);
     background: -webkit-linear-gradient(top, #0846a0 0%, rgba(8, 70, 160, 0) 100%);
     background: linear-gradient(to bottom, #0846a0 0%, rgba(8, 70, 160, 0) 100%);
@@ -469,5 +459,9 @@
     .recharts-tooltip-wrapper .area-chart-tooltip div:not(:first-child) {
       font-weight: bold;
       font-size: 14px; }
+
+.recharts-surface {
+  position: relative;
+  z-index: 1; }
 
 /*# sourceMappingURL=miner.css.map */

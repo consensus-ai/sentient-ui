@@ -172,13 +172,13 @@
   padding: 40px;
   min-height: 100vh;
   box-sizing: border-box;
-  height: auto; }
+  height: auto;
+  overflow-x: hidden; }
   .miner .content {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    min-height: calc(100vh - 146px);
-    min-width: 700px; }
+    min-height: calc(100vh - 146px); }
   .miner .top-row {
     display: flex;
     justify-content: flex-end;
@@ -304,7 +304,8 @@
   .miner .data-cards {
     display: flex;
     padding: 2rem 0 1rem 0;
-    justify-content: space-between; }
+    justify-content: space-between;
+    flex-wrap: wrap; }
     .miner .data-cards .item {
       box-sizing: border-box;
       position: relative;
@@ -316,9 +317,17 @@
       border: 1px solid #EDEDED;
       background: #fff;
       margin: 0.5rem 0; }
+      @media (max-width: 767px) {
+        .miner .data-cards .item {
+          width: calc(50% - .7em); } }
+      @media (max-width: 560px) {
+        .miner .data-cards .item {
+          width: 100%; } }
       .miner .data-cards .item[hidden] {
         visibility: hidden;
-        display: block !important; }
+        display: block !important;
+        padding: 0;
+        margin: 0; }
       .miner .data-cards .item b {
         font-size: 24px;
         font-weight: bold;
@@ -389,13 +398,18 @@
     justify-content: flex-end;
     flex-direction: column;
     min-height: 350px;
-    margin: .5rem 0 0;
-    overflow: hidden; }
+    margin: .5rem 0 0; }
     .miner .graph .footer {
       display: flex;
       justify-content: space-between;
       font-size: 14px;
       letter-spacing: -0.03em; }
+      @media (max-width: 767px) {
+        .miner .graph .footer {
+          font-size: 12px; } }
+      @media (max-width: 560px) {
+        .miner .graph .footer {
+          font-size: 10px; } }
       .miner .graph .footer span {
         padding: 1.6em 2em;
         color: #0846A0; }
@@ -424,6 +438,18 @@
             color: #0846A0; }
           .miner .graph .footer ul li:hover:after, .miner .graph .footer ul li.active:after {
             height: 3px; }
+    .miner .graph .EmptyHistory {
+      text-align: center;
+      color: #0846A0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 2rem;
+      width: 100%;
+      font-size: 14px;
+      letter-spacing: -0.03em;
+      box-sizing: border-box; }
 
 .recharts-tooltip-wrapper .area-chart-tooltip {
   color: #0846A0;
@@ -431,7 +457,7 @@
   transform: translateY(-35px);
   transition: transform 400ms ease 0s; }
   .recharts-tooltip-wrapper .area-chart-tooltip:before {
-    left: 0;
+    left: 1px;
     content: "";
     opacity: .4;
     position: absolute;
@@ -458,8 +484,21 @@
       font-weight: bold;
       font-size: 14px; }
 
-.recharts-surface {
-  position: relative;
-  z-index: 1; }
+.recharts-cartesian-axis {
+  font-size: 10px;
+  opacity: .3; }
+  .recharts-cartesian-axis line {
+    stroke: #0846a0 !important; }
+  .recharts-cartesian-axis text {
+    fill: #0846a0 !important; }
+
+.recharts-bar-rectangle path {
+  transition: .2s;
+  opacity: .3; }
+  .recharts-bar-rectangle path.active {
+    opacity: 1; }
+
+.recharts-tooltip-cursor {
+  display: none; }
 
 /*# sourceMappingURL=miner.css.map */

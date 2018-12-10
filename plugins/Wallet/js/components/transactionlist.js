@@ -1,14 +1,22 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { List } from 'immutable'
+import { shell } from 'electron'
 
 const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
+
+	const explorerUrl = 'https://explorer.sentient.org/transaction/'
+
 	if (transactions.size === 0) {
 		return (
 			<div className="transaction-list-view">
 				<div className="no-txns-message">No recent transactions</div>
 			</div>
 		)
+	}
+
+	const transactioOnClick = (e) => {
+		shell.openExternal(explorerUrl + e.target.textContent)
 	}
 
 	const toCurrencyString = (amount) => {
@@ -64,7 +72,7 @@ const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 				<div className="transaction-row" key={key}>
 					<div className={"transaction-col col-direction " + directionClass} title={directionTooltipText}></div>
 					<div className="transaction-col col-amount">{amountStr}</div>
-					<div className="transaction-col col-txn-id small-text">{txn.transactionid}</div>
+					<div style={{ cursor: 'pointer' }} className="transaction-col col-txn-id small-text" onClick={(e) => transactioOnClick(e)}>{txn.transactionid}</div>
 					<div className="transaction-col col-date">{toFormattedDate(txn.confirmationtimestamp)}</div>
 					<div className="transaction-col col-time">{toFormattedTime(txn.confirmationtimestamp)}</div>
 					<div className={"transaction-col col-status " + confirmedClass} title={statusTooltipText}></div>

@@ -2,14 +2,13 @@ import React from 'react'
 import { unix } from 'moment'
 import { AreaChart, Area, Tooltip, ResponsiveContainer } from 'recharts'
 
+import EmptyHistory from './emptyhistory'
+
 const HashRateGraph = ({hashrateHistory}) => {
 
   return(
     <div className="wrap">
-      { hashrateHistory.length === 0 && (<div>
-          If you don't see any stats, wait at least 10 minutes to see the first data point for your worker
-          or try to choose another range</div>
-      )}
+      { hashrateHistory.length === 0 && <EmptyHistory /> }
       { hashrateHistory.length !== 0 && (
         <ResponsiveContainer width="100%" height={230}>
           <AreaChart data={hashrateHistory} margin={{ top: 50 }} >

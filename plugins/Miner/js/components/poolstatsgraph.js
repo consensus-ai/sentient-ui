@@ -2,6 +2,8 @@ import React from 'react'
 import { Tooltip, ResponsiveContainer, Bar, BarChart, Cell, YAxis } from 'recharts';
 import { unix } from 'moment'
 
+import EmptyHistory from './emptyhistory'
+
 const PoolStatsGraph = ({poolHistory}) => {
 
   const mouseEnter = (index) => {
@@ -14,10 +16,7 @@ const PoolStatsGraph = ({poolHistory}) => {
 
   return(
     <div className="wrap">
-      { poolHistory.length === 0 && (<div>
-        If you don't see any stats, wait at least 10 minutes to see the first data point for your worker
-        or try to choose another range</div>
-      )}
+      { poolHistory.length === 0 && <EmptyHistory /> }
       { poolHistory.length !== 0 && (
         <ResponsiveContainer width="100%" height={230}>
           <BarChart data={poolHistory} margin={{ top: 50 }}>

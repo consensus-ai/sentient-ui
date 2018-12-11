@@ -80,17 +80,19 @@ const CustomTooltip = (props) => {
     }
 
     return (
-      <div className="area-chart-tooltip" style={style}>
+        <div className="area-chart-tooltip" style={style}>
           <div>{unix(payload[0].payload.time).format('MMM D YYYY, h:mma')}</div>
-          <div>{payload[0].payload.baraccepted}
-            <span className='grey'> / </span>
+          <div>
+            <span className="blue">{payload[0].payload.baraccepted}</span>
+            <i>/</i>
             <span className="red">{payload[0].payload.barrejected}</span>
           </div>
-          <div>{payload[0].payload.accepted} %
-            <span className='grey'> / </span>
+          <div>
+            <span className="blue">{payload[0].payload.accepted} %</span>
+            <i>/</i>
             <span className="red">{payload[0].payload.rejected} %</span>
           </div>
-      </div>
+        </div>
     )
   }
   return null;

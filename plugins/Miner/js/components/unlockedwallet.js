@@ -88,7 +88,7 @@ class UnlockedWallet extends React.Component {
                             Payout Frequency: 24hrs
                         </div>
                         </div>
-                        <b>00000000000000 SEN</b>
+                        <b><span>00000000000000</span> <span> SEN</span></b>
                         <small></small>
                         <span>Unpaid balance</span>
                     </div>

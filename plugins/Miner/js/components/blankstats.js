@@ -22,7 +22,7 @@ const BlankStats = () => {
                         Payout Frequency: 24hrs
                     </div>
                 </div>
-                <b>&#8211;</b>
+                <b><span>&#8211;</span><span> SEN</span></b>
                 <small></small>
                 <span>Unpaid balance</span>
             </div>

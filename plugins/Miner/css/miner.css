@@ -331,7 +331,15 @@
       .miner .data-cards .item b {
         font-size: 24px;
         font-weight: bold;
-        display: block; }
+        display: flex;
+        justify-content: center; }
+        .miner .data-cards .item b span {
+          font-size: inherit;
+          letter-spacing: 0; }
+          .miner .data-cards .item b span:first-child {
+            overflow: hidden;
+            padding: 0 5px 0 0;
+            text-overflow: ellipsis; }
       .miner .data-cards .item small {
         font-weight: bold;
         font-size: 10px;

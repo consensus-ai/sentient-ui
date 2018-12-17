@@ -53,20 +53,28 @@ class UnlockedWallet extends React.Component {
                     </div>
                 </div>
                 <div className="data-cards">
-                    <div className="item" disabled={ chartType !== 'hashrate' ? 'disabled' : '' } onClick={()=> this.changeChartType('hashrate')}>
-                        <b>{this.getHashRateForDisplay()}</b>
+                    <div className="item" disabled={ mining || chartType === 'hashrate' ? '' : 'disabled' } onClick={()=> this.changeChartType('hashrate')}>
+                        {mining && <b>{this.getHashRateForDisplay()}</b> }
+                        {!mining && <b>&#8211;</b> }
                         <small></small>
-                        <span>Current hash rate</span></div>
+                        <span>Current hash rate</span>
+                    </div>
                     <div className="item" hidden></div>
                     {miningType == 'pool' &&
-                        <div className="item" disabled={ chartType !== 'shares' ? 'disabled' : '' } onClick={()=> this.changeChartType('shares')}>
+                        <div className="item" disabled={ mining || chartType === 'shares' ? '' : 'disabled' } onClick={()=> this.changeChartType('shares')}>
+                        {mining && (<div>
                             <b>{accepted}%</b>
                             <small className="red">{rejected}% rejected</small>
+                        </div>)}
+                        {!mining && (<div>
+                            <b>&#8211;</b>
+                            <small></small>
+                        </div>)}
                             <span>Shares Efficiency</span>
                         </div>
                     }
                     {miningType == 'local' &&
-                        <div className="item" disabled={ chartType !== 'blocks' ? 'disabled' : '' } onClick={()=> this.changeChartType('blocks')}>
+                        <div hidden className="item" disabled={ chartType !== 'blocks' ? 'disabled' : '' }>
                             <b>1</b>
                             <small></small>
                             <span>Blocks Found</span>
@@ -80,7 +88,7 @@ class UnlockedWallet extends React.Component {
                             Payout Frequency: 24hrs
                         </div>
                         </div>
-                        <b>{ unpaidBalance } SEN</b>
+                        <b>00000000000000 SEN</b>
                         <small></small>
                         <span>Unpaid balance</span>
                     </div>

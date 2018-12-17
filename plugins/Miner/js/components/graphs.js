@@ -22,16 +22,25 @@ class Graphs extends React.Component {
     this.changeDuration ('24 hours')
   }
 
+  componentDidUpdate(nextProps) {
+    if (nextProps.chartType !== this.props.chartType) {
+      this.changeDuration(this.state.selectedDuration)
+    }
+  }
+
   changeDuration (label) {
-    const { actions } = this.props
+    const { actions, chartType } = this.props
     const duration = this.state.durations[label]
-    actions.getHashrateHistory(duration)
-    actions.getPoolStatsHistory(duration)
     this.setState((prevState) => {
       if (prevState.selectedDuration !== label){
         return { selectedDuration: label }
       }
     })
+    if (chartType === 'hashrate') {
+      actions.getHashrateHistory(duration)
+    } else {
+      actions.getPoolStatsHistory(duration)
+    }
   }
 
   render () {
@@ -43,9 +52,8 @@ class Graphs extends React.Component {
         { chartType == 'hashrate' && <HashRateGraph hashrateHistory={hashrateHistory} /> }
         { chartType == 'shares' && <PoolStatsGraph poolHistory={poolHistory} /> }
         <div className="footer">
-          {chartType == 'shares' && <span>Shares this session</span>}
-          {chartType == 'hashrate' && <span>Avarage {this.state.selectedDuration} hash rate</span>}
-          {chartType == 'blocks' && <span>Shares this session</span>}
+          { chartType == 'shares' && <span>Shares this session</span> }
+          { chartType == 'hashrate' && <span>Avarage {this.state.selectedDuration} hash rate</span> }
           <ul>
               {Object.keys(durations).map((label) => {
                 return <li

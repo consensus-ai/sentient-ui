@@ -3,11 +3,11 @@ import request from 'request'
 const { spawn } = require('child_process')
 import fs from 'graceful-fs'
 
-const poolBaseUrl = 'http://18.220.209.205:9910'
-let callOptions = {}
-callOptions.json = true
-callOptions.headers = {
-  'User-Agent': 'Sentient-Agent',
+let callOptions = {
+  json: true,
+  headers: {
+    'User-Agent': 'Sentient-Agent',
+  }
 }
 
 // sentientdCall: promisify Sentientd API calls.  Resolve the promise with `response` if the call was successful,
@@ -25,7 +25,7 @@ export const sentientdCall = (uri) => new Promise((resolve, reject) => {
 // poolServerCall: promisify PoolServer API calls.  Resolve the promise with `response` if the call was successful,
 // otherwise reject the promise with `err`.
 export const poolServerCall = (url) => new Promise((resolve, reject) => {
-  callOptions.url = poolBaseUrl + url
+  callOptions.url = SentientAPI.config.sentient_miner.pool_host + url
   console.log(`request: ${callOptions.url}`)
   request(callOptions, (err, res, body) => {
 		if (!err && (res.statusCode < 200 || res.statusCode > 299)) {
@@ -40,24 +40,25 @@ export const poolServerCall = (url) => new Promise((resolve, reject) => {
 
 // Start sentient-miner process and return PID
 export const startMiningProcess = () => {
-  const miningType = SentientAPI.config.attr('miningType')
-  const sentientConfig = SentientAPI.config.sentientd
+  const sentientConfig = SentientAPI.config
+  const miningType = sentientConfig.attr('miningType')
+
   const minerSetting = {
     SENTIENT_MINER_HASHRATES_LOG_MAX_LINES: 259200, //1 month
     SENTIENT_MINER_HASHRATES_LOG_FREQUENCY: 5,
-    SENTIENT_MINER_HASHRATES_LOG_PATH: `${sentientConfig.datadir}/hashrates.log`
+    SENTIENT_MINER_HASHRATES_LOG_PATH: sentientConfig.sentient_miner.hashrates_log_path
   }
 
   let args = ['-E=1,2']
 
   if (miningType === 'pool') {
     const payoutAddress = SentientAPI.config.attr('payoutAddress')
-    args = args.concat([`-user=${payoutAddress}.sentientapp`, "-url=stratum+tcp://pool.sentient.org:3333"])
+    args = args.concat([`-user=${payoutAddress}.sentientapp`, `-url=${sentientConfig.sentient_miner.stratum_host}`])
   } else {
-    args = args.concat([`-url=${sentientConfig.address}`])
+    args = args.concat([`-url=${sentientConfig.sentientd.address}`])
   }
 
-  const child = spawn('/Users/alexander/Downloads/sentient-miner-0.1.1-osx-amd64', args, { stdio: 'ignore', env: minerSetting })
+  const child = spawn(sentientConfig.sentient_miner.path, args, { stdio: 'ignore', env: minerSetting })
   return child.pid
 }
 
@@ -124,7 +125,7 @@ export const fetchHashrate = (timeOffset, fixedDuration) => {
 
 // Fetching history from log file
 export const fetchExisingData = (startTime, fixedDuration) => {
-  const logFilePath = `${SentientAPI.config.sentientd.datadir}/hashrates.log`
+  const logFilePath = SentientAPI.config.sentient_miner.hashrates_log_path
   const data = fs.readFileSync(logFilePath).toString().split("\n")
   const result = data.reduce((rv, line) => {
     let [timestamp, hashRate] = line.split(",")

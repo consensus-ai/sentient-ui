@@ -18,8 +18,8 @@ const PoolStatsGraph = ({poolHistory}) => {
     <div className="wrap">
       { poolHistory.length === 0 && <EmptyHistory /> }
       { poolHistory.length !== 0 && (
-        <ResponsiveContainer width="100%" height={230}>
-          <BarChart data={poolHistory} margin={{ top: 50 }}>
+        <ResponsiveContainer width="100%" height={220}>
+          <BarChart data={poolHistory} margin={{ top: 60 }}>
             <YAxis dataKey="baraccepted" />
             <Tooltip
               position={{ y: -35 }}
@@ -61,21 +61,17 @@ const PoolStatsGraph = ({poolHistory}) => {
 }
 
 const CustomTooltip = (props) => {
-  const { active, payload, external, label } = props;
-  const { width } = props.viewBox
-
-  let count = external.length
-  let oneBarWidth = width/count
-  let x = Math.floor(oneBarWidth*label) + Math.round(oneBarWidth/2-1)
+  const { active, payload, coordinate } = props
+  let { x } = coordinate
 
   if (active) {
     if (!payload || !payload.length)
-      return null;
+      return null
     const style = {
       color: '#0846A0',
       paddingBottom: '57px',
       background: 'transparent',
-      transform: `translateX(${x}px)`,
+      transform: `translateX(${x - 62}px)`,
       transition: `transform 400ms ease 0s`,
     }
 
@@ -95,7 +91,7 @@ const CustomTooltip = (props) => {
         </div>
     )
   }
-  return null;
+  return null
 }
 
 export default PoolStatsGraph

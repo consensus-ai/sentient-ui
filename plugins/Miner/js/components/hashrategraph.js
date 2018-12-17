@@ -1,6 +1,6 @@
 import React from 'react'
 import { unix } from 'moment'
-import { AreaChart, Area, Tooltip, ResponsiveContainer } from 'recharts'
+import { AreaChart, Area, Tooltip, ResponsiveContainer, YAxis } from 'recharts'
 
 import EmptyHistory from './emptyhistory'
 
@@ -10,8 +10,9 @@ const HashRateGraph = ({hashrateHistory}) => {
     <div className="wrap">
       { hashrateHistory.length === 0 && <EmptyHistory /> }
       { hashrateHistory.length !== 0 && (
-        <ResponsiveContainer width="100%" height={230}>
-          <AreaChart data={hashrateHistory} margin={{ top: 50 }} >
+        <ResponsiveContainer width="100%" height={220}>
+          <AreaChart data={hashrateHistory} margin={{ top: 60 }} >
+          <YAxis dataKey="hashrate" />
           <defs>
             <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="rgba(236, 241, 248,1)" />
@@ -47,25 +48,21 @@ const ActiveDot = (props) => {
   if (payload && payload.hashrate === "0.00")
     return null;
 
-  return  <circle r="4" cx={cx} cy={cy} fill="#FFFFFF" stroke="#0846A0" strokeWidth="2" />
+  return  <circle r="2" cx={cx} cy={cy} fill="#0846A0" stroke="#0846A0" strokeWidth="1" />
 }
 
 const CustomTooltip = (props) => {
-  const { active, payload, external, label } = props
-  const { width } = props.viewBox
-
-  let count = external.length
-  let oneBarWidth = width/count
-  let x = Math.floor(oneBarWidth*label) + Math.round(oneBarWidth/2-1)
+  const { active, payload, coordinate } = props
+  let { x } = coordinate
 
   if (active) {
     if (!payload || payload[0].value === '0.00')
-      return null;
+      return null
     const style = {
       color: '#0846A0',
       paddingBottom: '57px',
       background: 'transparent',
-      transform: `translateX(${x}px)`,
+      transform: `translateX(${x - 61}px)`,
       transition: `transform 400ms ease 0s`,
     }
 
@@ -76,7 +73,7 @@ const CustomTooltip = (props) => {
       </div>
     )
   }
-  return null;
+  return null
 }
 
 export default HashRateGraph

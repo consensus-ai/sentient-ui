@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import PoolDropdown from '../containers/pooldropdown'
-import BlankStats from './blankstats'
-import BlankGraph from './blankgraph'
 import Graphs from '../containers/graphs'
+import { toHumanSize } from '../sagas/helpers'
+
+const updatingHashrateInterval = 60000
 
 class UnlockedWallet extends React.Component {
 
@@ -13,7 +14,13 @@ class UnlockedWallet extends React.Component {
 
     getHashRateForDisplay () {
         const { hashRate } = this.props
-        return parseFloat(hashRate).toFixed(2) + " MH/s"
+        if (hashRate === '0.00 MH/s') {
+            return hashRate
+        } else {
+            // need to use the same format for hashrates
+            const humanSize = toHumanSize(hashRate)
+            return `${humanSize.hashrate} ${humanSize.unit}`
+        }
     }
 
     getAcceptedSharesEfficiency () {
@@ -29,10 +36,21 @@ class UnlockedWallet extends React.Component {
     }
 
     miningActionOnClick ()  {
-        const { mining, actions, miningpid } = this.props
+        const { mining, actions, miningpid, miningType } = this.props
         if (mining) {
+            if (miningType === 'local') {
+                clearInterval(this.interval)
+            }
             actions.stopMiner(miningpid)
         } else {
+            if (miningType === 'local') {
+                setTimeout(() => {
+                    actions.getCurrentHashrate()
+                }, 2000)
+                this.interval = setInterval(() => {
+                    actions.getCurrentHashrate()
+                }, updatingHashrateInterval)
+            }
             actions.startMiner()
         }
     }
@@ -80,7 +98,7 @@ class UnlockedWallet extends React.Component {
                             <span>Blocks Found</span>
                         </div>
                     }
-                    <div className="item">
+                    <div className="item" hidden={miningType === 'local'}>
                         <div className="balance"><i className="fa fa-info-circle"></i>
                         <div className="info">
                             Minimum payout: 25 SEN
@@ -88,7 +106,7 @@ class UnlockedWallet extends React.Component {
                             Payout Frequency: 24hrs
                         </div>
                         </div>
-                        <b><span>00000000000000</span> <span> SEN</span></b>
+                        <b><span>{ unpaidBalance }</span> <span> SEN</span></b>
                         <small></small>
                         <span>Unpaid balance</span>
                     </div>
@@ -102,6 +120,7 @@ class UnlockedWallet extends React.Component {
 UnlockedWallet.propTypes = {
     walletUnlocked: PropTypes.bool.isRequired,
     mining: PropTypes.bool.isRequired,
+    balance: PropTypes.object.isRequired,
 }
 
 export default UnlockedWallet

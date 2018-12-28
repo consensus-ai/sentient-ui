@@ -3,14 +3,16 @@ import Path from 'path'
 import { app } from 'electron'
 import { version } from '../../package.json'
 import semver from 'semver'
+import os from 'os'
 
 const defaultSentientdPath = Path.join(__dirname, '../sentient-network', (process.platform === 'win32' ? 'sentientd.exe' : 'sentientd'))
 const defaultSentientMinerPath =  Path.join(__dirname, '../sentient-miner', (process.platform === 'win32' ? 'sentient-miner.exe' : 'sentient-miner'))
 const defaultGenesisFile = Path.join(__dirname, '../sentient-network', 'config', 'genesis.json')
 const defaultDataDir = Path.join(app.getPath('userData'), 'data')
-const defaultHashratesLogPath = Path.join(defaultDataDir, 'hashrates.log')
-const defaultPoolHostUrl = 'http://18.220.209.205:9910'
-const defaultStratumHostUrl = 'stratum+tcp://18.220.209.205:3333'
+const defaultHashRateLogsUrl = 'http://localhost:5555/hashrate'
+const defaultPoolHostUrl = 'http://pool.sentient.org:9910'
+const defaultStratumHostUrl = 'stratum+tcp://pool.sentient.org:3333'
+const minerName = `${os.hostname()}-${os.platform()}`
 
 // The default settings
 const defaultConfig = {
@@ -26,7 +28,7 @@ const defaultConfig = {
 		path: process.env.SENTIENT_MINER_PATH || defaultSentientMinerPath,
 		pool_host: process.env.SENTIENT_POOL_HOST || defaultPoolHostUrl,
 		stratum_host: process.env.SENTIENT_STRATUM_HOST || defaultStratumHostUrl,
-		hashrates_log_path: process.env.SENTIENT_HASHRATES_LOG_PATH || defaultHashratesLogPath,
+		hashrate_host: defaultHashRateLogsUrl,
 	},
 	closeToTray: false,
 	width:	   1220,
@@ -34,6 +36,7 @@ const defaultConfig = {
 	x:		   0,
 	y:		   0,
 	version: version,
+	minerName: minerName,
 }
 
 /**
@@ -54,17 +57,11 @@ export default function configManager(filepath) {
 	if (typeof config.version === 'undefined') {
 		config.version = version
 		config.sentientd.path = defaultSentientdPath
-		config.sentient_miner.pool_host = defaultPoolHostUrl
-		config.sentient_miner.path = defaultSentientMinerPath
-		config.sentient_miner.stratum_host = defaultStratumHostUrl
-		config.sentient_miner.hashrates_log_path = defaultHashratesLogPath
+		config.sentient_miner = defaultConfig.sentient_miner
 	} else if (semver.lt(config.version, version)) {
 		config.version = version
 		config.sentientd.path = defaultSentientdPath
-		config.sentient_miner.pool_host = defaultPoolHostUrl
-		config.sentient_miner.path = defaultSentientMinerPath
-		config.sentient_miner.stratum_host = defaultStratumHostUrl
-		config.sentient_miner.hashrates_log_path = defaultHashratesLogPath
+		config.sentient_miner = defaultConfig.sentient_miner
 	}
 
 	// fill out default values if config is incomplete

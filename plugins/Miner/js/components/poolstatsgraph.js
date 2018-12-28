@@ -19,7 +19,7 @@ const PoolStatsGraph = ({poolHistory}) => {
       { poolHistory.length === 0 && <EmptyHistory /> }
       { poolHistory.length !== 0 && (
         <ResponsiveContainer width="100%" height={220}>
-          <BarChart data={poolHistory} margin={{ top: 60 }}>
+          <BarChart data={poolHistory} margin={{ top: 60, right: 5 }}>
             <YAxis dataKey="baraccepted" />
             <Tooltip
               position={{ y: -35 }}

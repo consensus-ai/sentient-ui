@@ -15,7 +15,9 @@ class PoolDropdown extends React.Component {
     }
 
     changeType (type) {
-        this.props.actions.changeMiningType(type)
+        const { actions } = this.props
+        actions.changeChartType('hashrate')
+        actions.changeMiningType(type)
         this.setState({ open: false })
     }
 
@@ -53,6 +55,7 @@ class PoolDropdown extends React.Component {
 
 PoolDropdown.propTypes = {
     miningType: PropTypes.string.isRequired,
+    walletUnlocked: PropTypes.bool.isRequired,
     mining: PropTypes.bool.isRequired,
 }
 

@@ -1,13 +1,14 @@
 // Helper functions for the miner plugin.  Mostly used in sagas.
 import request from 'request'
 const { spawn } = require('child_process')
-import fs from 'graceful-fs'
 
-let callOptions = {
-  json: true,
-  headers: {
-    'User-Agent': 'Sentient-Agent',
-  }
+// units: Constant for converting hashrates
+const units = {
+  'MH/s': 1000 * 1000 * 1000,
+  'GH/s': 1000 * 1000 * 1000 * 1000,
+  'TH/s': 1000 * 1000 * 1000 * 1000 * 1000,
+  'PH/s': 1000 * 1000 * 1000 * 1000 * 1000 * 1000,
+  'EH/s': 1000 * 1000 * 1000 * 1000 * 1000 * 1000 * 1000,
 }
 
 // sentientdCall: promisify Sentientd API calls.  Resolve the promise with `response` if the call was successful,
@@ -25,8 +26,14 @@ export const sentientdCall = (uri) => new Promise((resolve, reject) => {
 // poolServerCall: promisify PoolServer API calls.  Resolve the promise with `response` if the call was successful,
 // otherwise reject the promise with `err`.
 export const poolServerCall = (url) => new Promise((resolve, reject) => {
-  callOptions.url = SentientAPI.config.sentient_miner.pool_host + url
-  console.log(`request: ${callOptions.url}`)
+  let callOptions = {
+    json: true,
+    url: SentientAPI.config.sentient_miner.pool_host + url,
+    headers: {
+      'User-Agent': 'Sentient-Agent',
+    }
+  }
+
   request(callOptions, (err, res, body) => {
 		if (!err && (res.statusCode < 200 || res.statusCode > 299)) {
 			reject(body)
@@ -38,33 +45,44 @@ export const poolServerCall = (url) => new Promise((resolve, reject) => {
 	})
 })
 
-// Start sentient-miner process and return PID
+// getHashRate: Call local API for getting hastare
+export const getHashRate = () => new Promise((resolve, reject) => {
+  let callOptions = {
+    json: true,
+    url: SentientAPI.config.sentient_miner.hashrate_host,
+  }
+  request(callOptions, (err, res, body) => {
+		if (!err) {
+			resolve(body)
+		} else {
+			reject(err)
+		}
+	})
+})
+
+
+// startMiningProcess: Start sentient-miner process and return PID
 export const startMiningProcess = () => {
   const sentientConfig = SentientAPI.config
   const miningType = sentientConfig.attr('miningType')
 
-  const minerSetting = {
-    SENTIENT_MINER_HASHRATES_LOG_MAX_LINES: 259200, //1 month
-    SENTIENT_MINER_HASHRATES_LOG_FREQUENCY: 5,
-    SENTIENT_MINER_HASHRATES_LOG_PATH: sentientConfig.sentient_miner.hashrates_log_path
-  }
-
-  let args = ['-E=1,2']
+  let args = []
 
   if (miningType === 'pool') {
-    const payoutAddress = SentientAPI.config.attr('payoutAddress')
-    args = args.concat([`-user=${payoutAddress}.sentientapp`, `-url=${sentientConfig.sentient_miner.stratum_host}`])
+    const minerName = sentientConfig.attr('minerName')
+    const payoutAddress = sentientConfig.attr('payoutAddress')
+    args = args.concat([`-user=${payoutAddress}.${minerName}`, `-url=${sentientConfig.sentient_miner.stratum_host}`])
   } else {
     args = args.concat([`-url=${sentientConfig.sentientd.address}`])
   }
 
-  const child = spawn(sentientConfig.sentient_miner.path, args, { stdio: 'ignore', env: minerSetting })
+  const child = spawn(sentientConfig.sentient_miner.path, args, { stdio: 'ignore' })
   return child.pid
 }
 
-// Format pool stats for graph
+// formatHistory: Format pool stats for graph
 export const formatHistory = (data, timeOffset, fixedDuration) => {
-  const currentTime = Math.floor((Date.now() / 1000) / fixedDuration) * fixedDuration
+  const currentTime = Math.floor((Date.now() / 1000) / fixedDuration) * fixedDuration - fixedDuration
   const startTime = Math.floor(timeOffset / fixedDuration) * fixedDuration
   let endPeriod = startTime
   let result = []
@@ -86,7 +104,7 @@ export const formatHistory = (data, timeOffset, fixedDuration) => {
       return rv
     }, {prev_accepted: 0, prev_submitted: 0})
 
-    while (endPeriod <= currentTime) {
+    while (endPeriod < currentTime) {
       let currentPeriod = formatedData[endPeriod]
       if (!currentPeriod) {
         result.push({ time: endPeriod, accepted: 0, rejected: 0 })
@@ -99,49 +117,50 @@ export const formatHistory = (data, timeOffset, fixedDuration) => {
   return result
 }
 
-// Collect hashrates by time
-export const fetchHashrate = (timeOffset, fixedDuration) => {
+// formatHashrate: Format hashrates for graph
+export const formatHashrate = (data, timeOffset, fixedDuration) => {
+  const currentTime = Math.floor((Date.now() / 1000) / fixedDuration) * fixedDuration - fixedDuration
   const startTime = Math.floor(timeOffset / fixedDuration) * fixedDuration
-  const currentTime = Math.floor((Date.now() / 1000) / fixedDuration) * fixedDuration
-  const hashRateData = fetchExisingData(startTime, fixedDuration)
-
   let endPeriod = startTime
-  let resultHashRate = []
-
-  if (Object.keys(hashRateData).length) {
-      while (endPeriod <= currentTime) {
-          let currentPeriod = hashRateData[endPeriod]
-          if (currentPeriod) {
-              let avg = currentPeriod['hashrate']/currentPeriod['count']
-              resultHashRate.push({ hashrate: parseFloat(avg).toFixed(2), time: endPeriod })
-          } else {
-              resultHashRate.push({ hashrate: parseFloat(0).toFixed(2), time: endPeriod })
-          }
-          endPeriod = endPeriod + fixedDuration
+  let result = []
+  if(data.length) {
+    const formatedData = data.reduce((rv, hashrates) => {
+      let [time, hashrate] = hashrates
+      rv[time] = Object.assign({time: time}, toHumanSize(hashrate))
+      return rv
+    },{})
+    while (endPeriod < currentTime) {
+      let currentPeriod = formatedData[endPeriod]
+      if (currentPeriod) {
+        result.push(currentPeriod)
+      } else {
+        result.push({ orighashrate: parseFloat(0).toFixed(2), time: endPeriod })
       }
+      endPeriod = endPeriod + fixedDuration
+    }
   }
-  return resultHashRate
+  return result
 }
 
-// Fetching history from log file
-export const fetchExisingData = (startTime, fixedDuration) => {
-  const logFilePath = SentientAPI.config.sentient_miner.hashrates_log_path
-  const data = fs.readFileSync(logFilePath).toString().split("\n")
-  const result = data.reduce((rv, line) => {
-    let [timestamp, hashRate] = line.split(",")
-
-    hashRate = parseFloat(hashRate)
-    const groupTime = Math.floor(parseInt(timestamp) / fixedDuration) * fixedDuration
-    if (groupTime >= startTime) {
-      //group by minutes - round time to fixed period
-      if (typeof rv[groupTime] === 'undefined') {
-        rv[groupTime] = { count: 0, hashrate: 0 }
-      }
-      rv[groupTime]['count']++
-      rv[groupTime]['hashrate'] = rv[groupTime]['hashrate'] + hashRate
-    }
-    return rv
-  }, {})
-
-  return result
+// toHumanSize: Foramt hashrate to human readeble
+export const toHumanSize = (hashrate) => {
+  let unit
+  let denominator
+  let BreakException = {}
+  try {
+      Object.keys(units).forEach((value) => {
+        denominator = units[value]
+        unit = value
+        if (hashrate < denominator) {
+            throw BreakException
+        }
+      })
+  } catch (e) {
+      if (e !== BreakException) throw e
+  }
+  return {
+    hashrate: (parseFloat(hashrate) / (denominator / 1000)).toFixed(2),
+    orighashrate: (parseFloat(hashrate) / 1000000).toFixed(2),
+    unit: unit
+  }
 }

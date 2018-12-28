@@ -47,6 +47,7 @@
     "babel-polyfill": "^6.26.0",
     "bignumber.js": "^4.1.0",
     "electron": ">=2.0.8",
+    "electron-google-analytics": "^0.1.0",
     "graceful-fs": "^4.1.11",
     "hoist-non-react-statics": "^3.1.0",
     "immutable": "^3.8.1",
@@ -60,8 +61,7 @@
     "redux": "^3.7.2",
     "redux-saga": "^0.15.6",
     "semver": "^5.4.1",
-    "sentient.js": "file:../sentient-nodejs-bindings",
-    "zeromq": "^5.1.0"
+    "sentient.js": "file:../sentient-nodejs-bindings"
   },
   "scripts": {
     "start": "webpack && electron .",

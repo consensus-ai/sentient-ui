@@ -25,6 +25,11 @@ export const setHashrateHistory = (hashrateHistory) => ({
   hashrateHistory
 })
 
+export const getDataForDisplay = (duration) => ({
+  type: constants.GET_DATA_FOR_DISPLAY,
+  duration,
+})
+
 export const setPoolStatsHistory = (poolHistory) => ({
   type: constants.SET_POOL_STATS_HISTORY,
   poolHistory
@@ -62,7 +67,17 @@ export const setMiningType = (miningType) => ({
 
 export const setHashRate = (hashRate) => ({
   type: constants.UPDATE_HASH_RATE,
+  hashRate
+})
+
+export const setCurrentHashrate = (hashRate, timestamp) => ({
+  type: constants.UPDATE_CURRENT_HASH_RATE,
   hashRate,
+  timestamp,
+})
+
+export const getCurrentHashrate = () => ({
+  type: constants.GET_CURRENT_HASH_RATE
 })
 
 export const getMiningType = () => ({

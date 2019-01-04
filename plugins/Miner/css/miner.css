@@ -174,6 +174,36 @@
   box-sizing: border-box;
   height: auto;
   overflow-x: hidden; }
+  .miner .loading {
+    color: #0846A0;
+    padding: 9rem 0 3rem;
+    margin: 0 auto;
+    max-width: 1070px;
+    text-align: center; }
+    .miner .loading i {
+      display: block;
+      margin: 0 0 0.6rem 0;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: 1.2rem;
+      animation-name: spin;
+      animation-duration: 3000ms;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+      -webkit-animation-name: spin;
+      -webkit-animation-duration: 3000ms;
+      -webkit-animation-iteration-count: infinite;
+      -webkit-animation-timing-function: linear;
+      -moz-animation-name: spin;
+      -moz-animation-duration: 3000ms;
+      -moz-animation-iteration-count: infinite;
+      -moz-animation-timing-function: linear;
+      -ms-animation-name: spin;
+      -ms-animation-duration: 3000ms;
+      -ms-animation-iteration-count: infinite;
+      -ms-animation-timing-function: linear;
+      -o-transition: rotate(3600deg); }
+      .miner .loading i:before {
+        content: "\f110"; }
   .miner .content {
     display: flex;
     flex-direction: column;
@@ -407,6 +437,16 @@
     flex-direction: column;
     min-height: 350px;
     margin: .5rem 0 0; }
+    .miner .graph section {
+      color: #0846A0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); }
+      .miner .graph section .loading {
+        padding: 0;
+        font-size: 14px;
+        letter-spacing: -0.03em; }
     .miner .graph .footer {
       display: flex;
       justify-content: space-between;
@@ -519,3 +559,19 @@
 
 .recharts-tooltip-cursor {
   display: none; }
+
+@-moz-keyframes spin {
+  from {
+    -moz-transform: rotate(0deg); }
+  to {
+    -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg); } }
+@keyframes spin {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }

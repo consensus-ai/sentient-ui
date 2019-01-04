@@ -188,20 +188,7 @@
       animation-name: spin;
       animation-duration: 3000ms;
       animation-iteration-count: infinite;
-      animation-timing-function: linear;
-      -webkit-animation-name: spin;
-      -webkit-animation-duration: 3000ms;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-timing-function: linear;
-      -moz-animation-name: spin;
-      -moz-animation-duration: 3000ms;
-      -moz-animation-iteration-count: infinite;
-      -moz-animation-timing-function: linear;
-      -ms-animation-name: spin;
-      -ms-animation-duration: 3000ms;
-      -ms-animation-iteration-count: infinite;
-      -ms-animation-timing-function: linear;
-      -o-transition: rotate(3600deg); }
+      animation-timing-function: linear; }
       .miner .loading i:before {
         content: "\f110"; }
   .miner .content {
@@ -507,10 +494,7 @@
   width: 1px;
   height: 52px;
   bottom: 0;
-  background: -moz-linear-gradient(top, #0846a0 0%, rgba(8, 70, 160, 0) 100%);
-  background: -webkit-linear-gradient(top, #0846a0 0%, rgba(8, 70, 160, 0) 100%);
-  background: linear-gradient(to bottom, #0846a0 0%, rgba(8, 70, 160, 0) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0846a0', endColorstr='#000846a0', GradientType=0); }
+  background: linear-gradient(to bottom, #0846a0 0%, rgba(8, 70, 160, 0) 100%); }
 .recharts-tooltip-wrapper .area-chart-tooltip div {
   display: block;
   position: relative;
@@ -560,16 +544,6 @@
 .recharts-tooltip-cursor {
   display: none; }
 
-@-moz-keyframes spin {
-  from {
-    -moz-transform: rotate(0deg); }
-  to {
-    -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin {
-  from {
-    -webkit-transform: rotate(0deg); }
-  to {
-    -webkit-transform: rotate(360deg); } }
 @keyframes spin {
   from {
     transform: rotate(0deg); }

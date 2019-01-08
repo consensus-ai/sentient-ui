@@ -33,7 +33,7 @@ export const poolServerCall = (url) => new Promise((resolve, reject) => {
       'User-Agent': 'Sentient-Agent',
     }
   }
-
+  console.log(`request: ${callOptions.url}`)
   request(callOptions, (err, res, body) => {
 		if (!err && (res.statusCode < 200 || res.statusCode > 299)) {
 			reject(body)
@@ -66,23 +66,21 @@ export const startMiningProcess = () => {
   const sentientConfig = SentientAPI.config
   const miningType = sentientConfig.attr('miningType')
 
-  let args = []
+  let args = ['-I=18']
 
   if (miningType === 'pool') {
     const minerName = sentientConfig.attr('minerName')
     const payoutAddress = sentientConfig.attr('payoutAddress')
     args = args.concat([`-user=${payoutAddress}.${minerName}`, `-url=${sentientConfig.sentient_miner.stratum_host}`])
-  } else {
-    args = args.concat([`-url=${sentientConfig.sentientd.address}`])
   }
 
   const child = spawn(sentientConfig.sentient_miner.path, args, { stdio: 'ignore' })
-  return child.pid
+  return child
 }
 
 // formatHistory: Format pool stats for graph
 export const formatHistory = (data, timeOffset, fixedDuration) => {
-  const currentTime = Math.floor((Date.now() / 1000) / fixedDuration) * fixedDuration - fixedDuration
+  const currentTime = Math.floor((Date.now() / 1000) / fixedDuration) * fixedDuration
   const startTime = Math.floor(timeOffset / fixedDuration) * fixedDuration
   let endPeriod = startTime
   let result = []
@@ -119,7 +117,7 @@ export const formatHistory = (data, timeOffset, fixedDuration) => {
 
 // formatHashrate: Format hashrates for graph
 export const formatHashrate = (data, timeOffset, fixedDuration) => {
-  const currentTime = Math.floor((Date.now() / 1000) / fixedDuration) * fixedDuration - fixedDuration
+  const currentTime = Math.floor((Date.now() / 1000) / fixedDuration) * fixedDuration
   const startTime = Math.floor(timeOffset / fixedDuration) * fixedDuration
   let endPeriod = startTime
   let result = []

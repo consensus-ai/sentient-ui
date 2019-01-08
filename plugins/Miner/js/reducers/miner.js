@@ -28,14 +28,13 @@ export default function minerReducer(state = initialState, action) {
     return state
       .set('mining', action.miningStatus)
       .set('miningpid', action.miningPid)
-      .set('hashrate', '0.00 MH/s')
+      .set('hashrate', '0')
   case constants.START_MINER:
     return state.set('currenthashrate', [])
   case constants.SET_MINING_TYPE:
     return state.set('miningtype', action.miningType)
   case constants.UPDATE_HASH_RATE:
-    return state
-      .set('hashrate', action.hashRate * 1000000)
+    return state.set('hashrate', action.hashRate * 1000000)
   case constants.UPDATE_CURRENT_HASH_RATE:
     return state.set('currenthashrate', [...state.get('currenthashrate'), { time: action.timestamp, hashrate: action.hashRate * 1000000 }])
   case constants.SET_POOL_STATS_HISTORY:

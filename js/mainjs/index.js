@@ -25,17 +25,19 @@ global.analytics = analytics
 app.disableHardwareAcceleration()
 
 // Allow only one instance of Sentient-UI
-const shouldQuit = app.makeSingleInstance(() => {
-	if (mainWindow) {
-		if (mainWindow.isMinimized()) {
-			mainWindow.restore()
-		}
-		mainWindow.focus()
-	}
-})
+const gotTheLock = app.requestSingleInstanceLock()
 
-if (shouldQuit) {
+if (!gotTheLock) {
 	app.quit()
+} else {
+	app.on('second-instance', () => {
+		if (mainWindow) {
+			if (mainWindow.isMinimized()) {
+				mainWindow.restore()
+			}
+			mainWindow.focus()
+		}
+	})
 }
 
 // When Electron loading has finished, start Sentient-UI.

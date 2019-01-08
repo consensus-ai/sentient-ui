@@ -12,7 +12,8 @@ const defaultDataDir = Path.join(app.getPath('userData'), 'data')
 const defaultHashRateLogsUrl = 'http://localhost:5555/hashrate'
 const defaultPoolHostUrl = 'http://pool.sentient.org:9910'
 const defaultStratumHostUrl = 'stratum+tcp://pool.sentient.org:3333'
-const minerName = `${os.hostname()}-${os.platform()}`
+const minerName = `${os.hostname()}-${os.platform()}`.replace(/[^A-Z0-9]+/ig, '_')
+const miningType = 'pool'
 
 // The default settings
 const defaultConfig = {
@@ -37,6 +38,7 @@ const defaultConfig = {
 	y:		   0,
 	version: version,
 	minerName: minerName,
+	miningType: miningType,
 }
 
 /**

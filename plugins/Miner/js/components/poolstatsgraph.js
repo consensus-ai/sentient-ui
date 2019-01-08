@@ -2,9 +2,9 @@ import React from 'react'
 import { Tooltip, ResponsiveContainer, Bar, BarChart, Cell, YAxis } from 'recharts';
 import { unix } from 'moment'
 
-import EmptyHistory from './emptyhistory'
+import Loading from './loading'
 
-const PoolStatsGraph = ({poolHistory}) => {
+const PoolStatsGraph = ({poolHistory, mining}) => {
 
   const mouseEnter = (index) => {
     document.querySelectorAll(`.bar-${index}`).forEach(e => e.classList.add('active'))
@@ -16,8 +16,8 @@ const PoolStatsGraph = ({poolHistory}) => {
 
   return(
     <div className="wrap">
-      { poolHistory.length === 0 && <EmptyHistory /> }
-      { poolHistory.length !== 0 && (
+      { mining && poolHistory.length === 0 && <Loading /> }
+      { poolHistory.length > 0 && (
         <ResponsiveContainer width="100%" height={220}>
           <BarChart data={poolHistory} margin={{ top: 60, right: 5 }}>
             <YAxis dataKey="baraccepted" />

@@ -4,7 +4,8 @@ import PoolDropdown from '../containers/pooldropdown'
 import Graphs from '../containers/graphs'
 import { toHumanSize } from '../sagas/helpers'
 
-const updatingHashrateInterval = 60000
+const updateLocalHashrateInterval = 60000
+const updatePoolHashrateInterval = 10000
 
 class UnlockedWallet extends React.Component {
 
@@ -38,18 +39,19 @@ class UnlockedWallet extends React.Component {
     miningActionOnClick ()  {
         const { mining, actions, miningpid, miningType } = this.props
         if (mining) {
-            if (miningType === 'local') {
-                clearInterval(this.interval)
-            }
+            clearInterval(this.interval)
             actions.stopMiner(miningpid)
         } else {
-            if (miningType === 'local') {
-                setTimeout(() => {
-                    actions.getCurrentHashrate()
-                }, 2000)
+            if (miningType == 'pool') {
+                this.changeChartType('hashrate')
                 this.interval = setInterval(() => {
                     actions.getCurrentHashrate()
-                }, updatingHashrateInterval)
+                }, updatePoolHashrateInterval)
+            } else {
+                setTimeout(() => actions.getCurrentHashrate(), 5000)
+                this.interval = setInterval(() => {
+                    actions.getCurrentHashrate()
+                }, updateLocalHashrateInterval)
             }
             actions.startMiner()
         }
@@ -71,23 +73,26 @@ class UnlockedWallet extends React.Component {
                     </div>
                 </div>
                 <div className="data-cards">
-                    <div className="item" disabled={ mining || chartType === 'hashrate' ? '' : 'disabled' } onClick={()=> this.changeChartType('hashrate')}>
-                        {mining && <b>{this.getHashRateForDisplay()}</b> }
-                        {!mining && <b>&#8211;</b> }
+                    <div style={{cursor: 'pointer'}} className="item" disabled={ mining || chartType === 'hashrate' ? '' : 'disabled' } onClick={()=> this.changeChartType('hashrate')}>
+                        {mining ? (<b>{this.getHashRateForDisplay()}</b>) : (<b>&#8211;</b>) }
                         <small></small>
                         <span>Current hash rate</span>
                     </div>
                     <div className="item" hidden></div>
                     {miningType == 'pool' &&
-                        <div className="item" disabled={ mining || chartType === 'shares' ? '' : 'disabled' } onClick={()=> this.changeChartType('shares')}>
-                        {mining && (<div>
-                            <b>{accepted}%</b>
-                            <small className="red">{rejected}% rejected</small>
-                        </div>)}
-                        {!mining && (<div>
-                            <b>&#8211;</b>
-                            <small></small>
-                        </div>)}
+                        <div style={{cursor: 'pointer'}} className="item" disabled={ mining || chartType === 'shares' ? '' : 'disabled' } onClick={()=> this.changeChartType('shares')}>
+                            { mining ? (
+                                    <div>
+                                        <b>{accepted}%</b>
+                                        <small className="red">{rejected}% rejected</small>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <b>&#8211;</b>
+                                        <small></small>
+                                    </div>
+                                )
+                            }
                             <span>Shares Efficiency</span>
                         </div>
                     }

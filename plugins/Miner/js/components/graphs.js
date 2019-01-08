@@ -5,18 +5,18 @@ import HashRateGraph from './hashrategraph'
 import PoolStatsGraph from './poolstatsgraph'
 import CurrentHashRateGraph from './currenthashrategraph'
 
-const updatingDataForDisplayInterval = 60 * 10 * 1000 // 10 minutes
+const dataUpdateInterval = 300000 // 5 minutes
 
 class Graphs extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedDuration: '24 hours',
+      selectedDuration: '1 Day',
       durations: {
-        '24 hours': 86400, // 24 * 60 * 60
-        '3 days': 259200,  // 3 * 24 * 60 * 60
-        '1 week': 604800,  // 7 * 24 * 60 * 60
-        '1 month': 2592000 // 30 * 24 * 60 * 60
+        'Current': 0,
+        '1 Day': 86400, // 24 * 60 * 60
+        '1 Week': 604800,  // 7 * 24 * 60 * 60
+        '1 Month': 2592000 // 30 * 24 * 60 * 60
       }
     }
   }
@@ -24,19 +24,27 @@ class Graphs extends React.Component {
   componentDidMount () {
     const { actions } = this.props
     actions.getDataForDisplay(this.state.durations[this.state.selectedDuration])
-    this.interval = setInterval(() => {
+    this.dataInterval = setInterval(() => {
       actions.getDataForDisplay(this.state.durations[this.state.selectedDuration])
-    }, updatingDataForDisplayInterval)
+    }, dataUpdateInterval)
   }
 
-  componentDidUpdate(nextProps) {
-    if (nextProps.chartType !== this.props.chartType) {
-      this.changeDuration(this.state.selectedDuration)
+  componentDidUpdate(prevProps) {
+    const { chartType, mining } =  this.props
+    if (prevProps.chartType !== chartType) {
+      let { selectedDuration } = this.state
+      if (selectedDuration === 'Current' && chartType === 'shares') {
+        selectedDuration = '1 Day'
+      }
+      this.changeDuration(selectedDuration)
+    }
+    if (mining && !prevProps.mining) {
+      this.changeDuration('Current')
     }
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval)
+    clearInterval(this.dataInterval)
   }
 
   changeDuration (label) {
@@ -47,26 +55,40 @@ class Graphs extends React.Component {
         return { selectedDuration: label }
       }
     })
-    if (chartType === 'hashrate') {
-      actions.getHashrateHistory(duration)
+    if (label === 'Current') {
+      if (chartType === 'shares') {
+        actions.changeChartType('hashrate')
+      }
     } else {
-      actions.getPoolStatsHistory(duration)
+      if (chartType === 'hashrate') {
+        actions.getHashrateHistory(duration)
+      } else {
+        actions.getPoolStatsHistory(duration)
+      }
     }
   }
 
   render () {
-    const { chartType, poolHistory, currentHashrate, hashrateHistory, miningType } = this.props
+    const { chartType, poolHistory, currentHashrate, mining, miningType, hashrateHistory } = this.props
     const { durations, selectedDuration } = this.state
 
     return (
       <div className="graph">
-        { chartType === 'hashrate' && miningType === 'local' && <CurrentHashRateGraph currentHashrate={currentHashrate} /> }
-        { chartType === 'hashrate' && miningType !== 'local' && <HashRateGraph hashrateHistory={hashrateHistory} /> }
-        { chartType === 'shares' && miningType !== 'local' && <PoolStatsGraph poolHistory={poolHistory} /> }
+        { chartType === 'hashrate' && miningType === 'local' && (
+          <CurrentHashRateGraph currentHashrate={currentHashrate} offset={4 * 60 * 60} interval={60} mining={mining} />
+        )}
+        { chartType === 'hashrate' && miningType !== 'local' && (selectedDuration === 'Current' ? (
+          <CurrentHashRateGraph currentHashrate={currentHashrate} offset={60 * 60} interval={10} mining={mining}/>
+        ) : (
+          <HashRateGraph hashrateHistory={hashrateHistory} mining={mining} />
+        ))}
+        { chartType === 'shares' && miningType !== 'local' && (
+          <PoolStatsGraph poolHistory={poolHistory} mining={mining} />
+        )}
         <div className="footer">
-          { chartType === 'shares' && miningType !== 'local' && <span>Shares this session</span> }
-          { chartType === 'hashrate' && miningType !== 'local' && <span>Avarage {this.state.selectedDuration} hash rate</span> }
-          { chartType === 'hashrate' && miningType === 'local' && <span>Average last 4 hours hash rate</span> }
+          { chartType === 'shares' && miningType !== 'local' && <span>{`${this.state.selectedDuration} Shares`}</span> }
+          { chartType === 'hashrate' && miningType !== 'local' && <span>{`${this.state.selectedDuration} Average Hash Rate`}</span> }
+          { chartType === 'hashrate' && miningType === 'local' && <span>Last 4 Hours Average Hash Rate</span> }
           { miningType !== 'local' && (
             <ul>
                 {Object.keys(durations).map((label) => {

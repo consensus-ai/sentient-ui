@@ -3,10 +3,17 @@ import Path from 'path'
 import { app } from 'electron'
 import { version } from '../../package.json'
 import semver from 'semver'
+import os from 'os'
 
 const defaultSentientdPath = Path.join(__dirname, '../sentient-network', (process.platform === 'win32' ? 'sentientd.exe' : 'sentientd'))
+const defaultSentientMinerPath =  Path.join(__dirname, '../sentient-miner', (process.platform === 'win32' ? 'sentient-miner.exe' : 'sentient-miner'))
 const defaultGenesisFile = Path.join(__dirname, '../sentient-network', 'config', 'genesis.json')
 const defaultDataDir = Path.join(app.getPath('userData'), 'data')
+const defaultHashRateLogsUrl = 'http://localhost:5555/hashrate'
+const defaultPoolHostUrl = 'http://pool.sentient.org:9910'
+const defaultStratumHostUrl = 'stratum+tcp://pool.sentient.org:3333'
+const minerName = `${os.hostname()}-${os.platform()}`.replace(/[^A-Z0-9]+/ig, '_')
+const miningType = 'pool'
 
 // The default settings
 const defaultConfig = {
@@ -18,12 +25,20 @@ const defaultConfig = {
 		rpcaddr: process.env.SENTIENTD_RPC_ADDR || ':9911',
 		detached: false,
 	},
+	sentient_miner: {
+		path: process.env.SENTIENT_MINER_PATH || defaultSentientMinerPath,
+		pool_host: process.env.SENTIENT_POOL_HOST || defaultPoolHostUrl,
+		stratum_host: process.env.SENTIENT_STRATUM_HOST || defaultStratumHostUrl,
+		hashrate_host: defaultHashRateLogsUrl,
+	},
 	closeToTray: false,
 	width:	   1220,
 	height:	  800,
 	x:		   0,
 	y:		   0,
 	version: version,
+	minerName: minerName,
+	miningType: miningType,
 }
 
 /**
@@ -44,9 +59,11 @@ export default function configManager(filepath) {
 	if (typeof config.version === 'undefined') {
 		config.version = version
 		config.sentientd.path = defaultSentientdPath
+		config.sentient_miner = defaultConfig.sentient_miner
 	} else if (semver.lt(config.version, version)) {
 		config.version = version
 		config.sentientd.path = defaultSentientdPath
+		config.sentient_miner = defaultConfig.sentient_miner
 	}
 
 	// fill out default values if config is incomplete

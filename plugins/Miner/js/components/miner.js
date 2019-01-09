@@ -1,73 +1,44 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-
-import { ToastContainer, Slide } from 'react-toastify'
+import {ToastContainer, Zoom} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-const Miner = ({walletLocked, miningStatus, actions }) => {
-  const getHashRateForDisplay = () => {
-    if (!miningStatus.cpumining) {
-      return "0 KH/s"
-    }
-    return (miningStatus.cpuhashrate / 1000).toFixed(2) + " KH/s"
-  }
+import LockedWallet from './lockedwallet'
+import UnlockedWallet from '../containers/unlockedwallet'
 
-  const miningActionOnClick = (e) => {
-    if (miningStatus.cpumining) {
-      actions.stopMiner()
-    } else {
-      actions.startMiner()
-    }
-  }
+const Miner = ({walletUnlocked, confirmedBalance, actions}) => {
+    let formattedConfirmedBalance = confirmedBalance.replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
 
-  return (
-    <div className="miner">
-      <div className="content">
-        { walletLocked &&
-          <div className="locked-status-container">
-            <i className="fa fa-exclamation-triangle"></i>
-            <span>Wallet is locked. You must unlock it before mining.</span>
-          </div>
-        }
-
-        { !walletLocked &&
-          <div className="wallet-controls-container">
-            <div className="row blocks-mined-container">
-              <div className="col col-1 label blocks-mined-label">Blocks Mined:</div>
-              <div className="col col-2 value blocks-mined-value">{miningStatus.blocksmined}</div>
-            </div>
-            <div className="row stale-blocks-container">
-              <div className="col col-1 label stale-blocks-label">Stale Blocks Mined:</div>
-              <div className="col col-2 value stale-blocks-value">{miningStatus.staleblocksmined}</div>
+    return (
+        <div className="miner">
+            <div className="balance-info-container">
+                <div className="balance-info">
+                    <div className="balance-info-icon balance-info-synced-icon" title=""></div>
+                    <div className="balance-info-amount-container" title="0 SEN pending">
+                        <span className="balance-info-amount">{formattedConfirmedBalance}</span>
+                        <span className="balance-info-currency">SEN</span>
+                    </div>
+                </div>
             </div>
 
-            <div className="divider"></div>
-
-            <div className="row miner-status-container">
-              <div className="col col-1 label miner-status-label">CPU Mining:</div>
-              <div className={"col col-2 value miner-status-value " + (miningStatus.cpumining ? "enabled" : "disabled")}>
-                {miningStatus.cpumining ? "ON" : "OFF"}
-              </div>
-            </div>
-
-            <div className="row hash-rate-container">
-              <div className="col col-1 label hash-rate-label">CPU Hash Rate:</div>
-              <div className="col col-2 value hash-rate-value">{getHashRateForDisplay()}</div>
-            </div>
-
-            <div className={"button mining-action-button " + (miningStatus.cpumining ? "stop" : "start")} onClick={miningActionOnClick}>
-              {miningStatus.cpumining ? "Stop CPU Miner" : "Start CPU Miner"}
-            </div>
-          </div>
-        }
-      </div>
-    </div>
-  )
+            {!walletUnlocked && <LockedWallet/>}
+            {walletUnlocked && <UnlockedWallet />}
+            <ToastContainer
+                className='sen-toast-container'
+                toastClassName='sen-toast'
+                bodyClassName='sen-toast-body'
+                closeButtonClassName='sen-toast-close-button'
+                progressClassName='sen-toast-progress'
+                transition={Zoom}
+                position='top-center'
+            />
+        </div>
+    )
 }
 
 Miner.propTypes = {
-  walletLocked: PropTypes.bool.isRequired,
-  miningStatus: PropTypes.object.isRequired,
+    confirmedBalance: PropTypes.string.isRequired,
+    walletUnlocked: PropTypes.bool.isRequired,
 }
 
 export default Miner

@@ -3,6 +3,7 @@ import Path from 'path'
 import * as Sentientd from 'sentient.js'
 import loadingScreen from './loadingScreen.js'
 import { remote, ipcRenderer } from 'electron'
+import find from 'find-process'
 import { unloadPlugins, loadPlugin, setCurrentPlugin, getOrderedPlugins, getPluginName } from './plugins.js'
 
 const App = remote.app
@@ -68,6 +69,11 @@ const shutdown = async () => {
 			await sleep(200)
 		}
 	}
+	// Kill all miner process on exit app
+	let processName = (process.platform === 'win32' ? 'sentient-miner.exe' : 'sentient-miner')
+	await find('name', processName, true).then((list) => {
+		list.forEach((minerProcess) => { process.kill(minerProcess.pid) })
+	})
 
 	mainWindow.destroy()
 }

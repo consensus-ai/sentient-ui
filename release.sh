@@ -10,7 +10,7 @@ set -e
 # being the Sentient version, and third being the electron version.
 
 if [[ -z $1 || -z $2 ]]; then
-	echo "Usage: $0 PRIVATE_KEY PUBLIC_KEY [UI_VERSION] [SENTIENT-NETWORK_VERSION] [ELECTRON_VERSION]"
+	echo "Usage: $0 PRIVATE_KEY PUBLIC_KEY [UI_VERSION] [SENTIENT-NETWORK_VERSION] [ELECTRON_VERSION] [SENTIENT-MINER_VERSION]"
 	exit 1
 fi
 
@@ -24,9 +24,10 @@ npm run build-production
 
 keyFile=$1
 pubkeyFile=$2
-uiVersion=${3:-v0.0.1}
+uiVersion=${3:-v0.1.2}
 senVersion=${4:-v0.0.1}
-electronVersion=${5:-v2.0.2}
+electronVersion=${5:-v3.0.9}
+minerVersion=${6:-0.1.2}
 
 electronOSX="https://github.com/electron/electron/releases/download/${electronVersion}/electron-${electronVersion}-darwin-x64.zip"
 electronLinux="https://github.com/electron/electron/releases/download/${electronVersion}/electron-${electronVersion}-linux-x64.zip"
@@ -35,6 +36,10 @@ electronWindows="https://github.com/electron/electron/releases/download/${electr
 senOSXFileName="sentient-network-${senVersion}-darwin-amd64.zip"
 senLinuxFileName="sentient-network-${senVersion}-linux-amd64.zip"
 senWindowsFileName="sentient-network-${senVersion}-windows-amd64.zip"
+
+minerOSXFileName="sentient-miner-${minerVersion}-osx-amd64.zip"
+minerLinuxFileName="sentient-miner-${minerVersion}-linux-amd64.zip"
+minerWindowsFileName="sentient-miner-${minerVersion}-windows-amd64.zip"
 
 rm -rf release/*
 
@@ -60,6 +65,34 @@ installSentientNetwork() {
 	# install into app dir
 	mv sentient-network-v* $appDir/sentient-network
 	mv $appDir/sentient-network/config/genesis* $appDir/sentient-network/config/genesis.json
+}
+
+installSentientMiner() {
+	platform=$1
+
+	if [ $platform = 'osx' ]; then
+		releaseFileName=$minerOSXFileName
+		appDir="Sentient-UI.app/Contents/Resources/app/"
+	elif [ $platform = 'linux' ]; then
+		releaseFileName=$minerLinuxFileName
+		appDir="resources/app/"
+	elif [ $platform = 'windows' ]; then
+		releaseFileName=$minerWindowsFileName
+		appDir="resources/app/"
+	fi
+
+	# get the release
+	cp $HOME/$releaseFileName `pwd`
+	unzip `pwd`/$releaseFileName
+	rm -f `pwd`/$releaseFileName
+
+	# install into app dir
+	mkdir $appDir/sentient-miner
+	bin=''
+	if [ $platform = 'windows' ]; then
+		bin='.exe'
+	fi
+	mv sentient-miner-* $appDir/sentient-miner/sentient-miner${bin}
 }
 
 # package copies all the required javascript, html, and assets into an electron package.
@@ -97,6 +130,8 @@ buildOSX() {
 
 	# install sentient-network
 	installSentientNetwork "osx"
+	# install sentient-miner
+	installSentientMiner "osx"
 }
 
 buildLinux() {
@@ -117,6 +152,8 @@ buildLinux() {
 
 	# install sentient-network
 	installSentientNetwork "linux"
+	# install sentient-miner
+	installSentientMiner "linux"
 }
 
 buildWindows() {
@@ -140,6 +177,8 @@ buildWindows() {
 
 	# install sentient-network
 	installSentientNetwork "windows"
+	# install sentient-miner
+	installSentientMiner "windows"
 }
 
 # make osx release

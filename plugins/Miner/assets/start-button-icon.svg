@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.3 (67297) - http://www.bohemiancoding.com/sketch -->
+    <title>Start icon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Miner-v3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Miner-v3-–-Never-started-with-select-field" transform="translate(-1065.000000, -111.000000)" fill="#FFFFFF">
+            <g id="Top-row" transform="translate(886.000000, 102.000000)">
+                <g id="Start-button" transform="translate(165.000000, 0.000000)">
+                    <path d="M23,27 C18.0294373,27 14,22.9705627 14,18 C14,13.0294373 18.0294373,9 23,9 C27.9705627,9 32,13.0294373 32,18 C32,22.9705627 27.9705627,27 23,27 Z M26.6432027,18.8479983 C26.7719718,18.7675176 26.8807214,18.6587681 26.9612021,18.5299989 C27.2539124,18.0616624 27.1115392,17.444712 26.6432027,17.1520017 L21.5299989,13.9562493 C21.3710673,13.8569171 21.1874197,13.8042476 21,13.8042476 C20.4477153,13.8042476 20,14.2519629 20,14.8042476 L20,21.1957524 C20,21.3831721 20.0526694,21.5668197 20.1520017,21.7257513 C20.444712,22.1940878 21.0616624,22.336461 21.5299989,22.0437507 L26.6432027,18.8479983 Z" id="Start-icon"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

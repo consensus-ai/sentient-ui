@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="11px" viewBox="0 0 21 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Triangle</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M96.1401844,0.23177872 L102,5.11495839 L89,5.11495839 L94.8598156,0.23177872 C95.2306616,-0.0772595735 95.7693384,-0.0772595735 96.1401844,0.23177872 Z" id="path-1"></path>
+        <filter x="-34.6%" y="-68.4%" width="169.2%" height="276.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="1" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="1" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.564705882   0 0 0 0 0.635294118   0 0 0 0 0.737254902  0 0 0 0.16 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Miner-v3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Miner-v3-–-Never-started-with-popover" transform="translate(-1156.000000, -141.000000)">
+            <g id="Top-row" transform="translate(1030.000000, 102.000000)">
+                <g id="Popover" transform="translate(41.000000, 41.000000)">
+                    <g id="Triangle">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <path stroke="#EDEDED" stroke-width="1" d="M96.4602766,-0.152331919 L103.381025,5.61495839 L87.618975,5.61495839 L94.5397234,-0.152331919 C95.0959923,-0.61588936 95.9040077,-0.61588936 96.4602766,-0.152331919 Z" fill="#FFFFFF" fill-rule="evenodd"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

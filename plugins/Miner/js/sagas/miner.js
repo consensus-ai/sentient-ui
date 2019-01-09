@@ -201,7 +201,7 @@ function* getPoolStatsHistorySaga(action) {
 function* getCurrentHashRateSaga() {
 	try {
 		const data = yield getHashRate()
-		if (isNaN(parseInt(data.hashrate))) {
+		if (!isNaN(parseInt(data.hashrate))) {
 			hashrates.push(data.hashrate)
 			yield put(actions.setHashRate(data.hashrate))
 		}

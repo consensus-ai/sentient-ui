@@ -89,14 +89,11 @@ function* startMinerSaga() {
 		yield put(actions.setMiningStatus(true, process.pid))
 		const channel = eventChannel(emitter => {
 			process.on('error', (err) => {
-				sendError(err)
+				sendError('Sentient Miner process is crashed')
 				emitter({ stop:  true })
 				emitter(END)
 			})
 			process.on('exit', (code) => {
-				if (code && code !== 0) {
-					sendError('Sentient Miner process is crashed')
-				}
 				emitter({ stop:  true })
 				emitter(END)
 			})
@@ -204,8 +201,10 @@ function* getPoolStatsHistorySaga(action) {
 function* getCurrentHashRateSaga() {
 	try {
 		const data = yield getHashRate()
-		hashrates.push(data.hashrate)
-		yield put(actions.setHashRate(data.hashrate))
+		if (isNaN(parseInt(data.hashrate))) {
+			hashrates.push(data.hashrate)
+			yield put(actions.setHashRate(data.hashrate))
+		}
 	} catch(e) {
 		console.log('error getting hashrate: ' + e.toString())
 	}
@@ -214,9 +213,11 @@ function* getCurrentHashRateSaga() {
 // Getting current hashrate for displaying in the local miner graph
 function* getCurrentHashrateForGraphSaga() {
 	try {
-		let hashrateForDisplay = hashrates.reduce((a, b) => a + b, 0) / hashrates.length
-		hashrates = []
-		yield put(actions.setCurrentHashrate(hashrateForDisplay, Math.floor(Date.now() / 1000)))
+		if (hashrates.length) {
+			let hashrateForDisplay = hashrates.reduce((a, b) => a + b, 0) / hashrates.length
+			hashrates = []
+			yield put(actions.setCurrentHashrate(hashrateForDisplay, Math.floor(Date.now() / 1000)))
+		}
 	} catch(e) {
 		console.log('error getting current hashrate: ' + e.toString())
 	}

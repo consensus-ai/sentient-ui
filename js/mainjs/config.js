@@ -103,6 +103,9 @@ export default function configManager(filepath) {
 	config.defaultSentientdPath = defaultSentientdPath
 	config.defaultGenesisFile = defaultGenesisFile
 
+	// expose the default miner path
+	config.defaultSentientMinerPath = defaultSentientMinerPath
+
 	// Save to disk immediately when loaded
 	try {
 		config.save()

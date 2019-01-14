@@ -15,7 +15,7 @@ const LockedWallet = () => {
                 <PoolDropdown />
                 <div className="button miner-button start-button" onClick={startMinerOnClick}>
                     <div className="button-icon"></div>
-                    <span>Start miner</span>
+                    <span>Start Miner</span>
                 </div>
             </div>
             <BlankStats />

@@ -69,14 +69,14 @@ class UnlockedWallet extends React.Component {
                     <PoolDropdown />
                     <div className={`button miner-button ${mining ? "stop" : "start"}-button`} onClick={() => this.miningActionOnClick()}>
                         <div className="button-icon"></div>
-                        <span>{mining ?  "Stop miner" : "Start miner" }</span>
+                        <span>{mining ?  "Stop Miner" : "Start Miner" }</span>
                     </div>
                 </div>
                 <div className="data-cards">
                     <div style={{cursor: 'pointer'}} className="item" disabled={ mining || chartType === 'hashrate' ? '' : 'disabled' } onClick={()=> this.changeChartType('hashrate')}>
                         {mining ? (<b>{this.getHashRateForDisplay()}</b>) : (<b>&#8211;</b>) }
                         <small></small>
-                        <span>Current hash rate</span>
+                        <span>Current Hash Rate</span>
                     </div>
                     <div className="item" hidden></div>
                     {miningType == 'pool' &&
@@ -106,14 +106,14 @@ class UnlockedWallet extends React.Component {
                     <div className="item" hidden={miningType === 'local'}>
                         <div className="balance"><i className="fa fa-info-circle"></i>
                         <div className="info">
-                            Minimum payout: 25 SEN
+                            Minimum Payout: 25 SEN
                             <br/>
                             Payout Frequency: 24hrs
                         </div>
                         </div>
                         <b><span>{ unpaidBalance }</span> <span> SEN</span></b>
                         <small></small>
-                        <span>Unpaid balance</span>
+                        <span>Unpaid Balance</span>
                     </div>
                 </div>
                 <Graphs />

@@ -89,7 +89,7 @@ function* startMinerSaga() {
 		yield put(actions.setMiningStatus(true, process.pid))
 		const channel = eventChannel(emitter => {
 			process.on('error', (err) => {
-				sendError('Sentient Miner process is crashed')
+				sendError('Sentient Miner has experienced a fatal error')
 				emitter({ stop:  true })
 				emitter(END)
 			})

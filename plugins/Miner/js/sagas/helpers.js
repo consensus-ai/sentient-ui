@@ -74,7 +74,7 @@ export const startMiningProcess = () => {
     args = args.concat([`-user=${payoutAddress}.${minerName}`, `-url=${sentientConfig.sentient_miner.stratum_host}`])
   }
 
-  const child = spawn(sentientConfig.sentient_miner.path, args, { stdio: 'ignore' })
+  const child = spawn(sentientConfig.defaultSentientMinerPath, args, { stdio: 'ignore' })
   return child
 }
 

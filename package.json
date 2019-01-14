@@ -18,6 +18,8 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "css-loader": "^0.28.11",
+    "electron": "3.0.9",
+    "electron-builder": "^20.38.4",
     "electron-debug": "^2.0.0",
     "electron-react-devtools": "^0.5.3",
     "enzyme": "^2.8.0",
@@ -46,7 +48,6 @@
     "ajv": "^6.5.5",
     "babel-polyfill": "^6.26.0",
     "bignumber.js": "^4.1.0",
-    "electron": "3.0.9",
     "electron-google-analytics": "^0.1.0",
     "find-process": "^1.2.1",
     "graceful-fs": "^4.1.11",
@@ -65,6 +66,8 @@
     "sentient.js": "file:../sentient-nodejs-bindings"
   },
   "scripts": {
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder -mw",
     "start": "webpack && electron .",
     "debug": "webpack -d && electron --remote-debugging-port=9222 .",
     "build-production": "webpack --config ./webpack.production.config.js",
@@ -76,6 +79,32 @@
     "test": "npm run lint && npm run build && npm run test-args",
     "lint": "eslint --max-warnings 0 ./index.js ./plugins ./js ./test",
     "lint-fix": "eslint --fix ./index.js ./plugins ./js ./test"
+  },
+  "build": {
+    "appId": "Sentient-UI.app",
+    "productName": "Sentient UI",
+    "directories": {
+      "output": "build"
+    },
+    "files": {
+			"filter": [
+        "assets/**",
+        "css/**",
+        "dist/**  ",
+        "js/**",
+        "plugins/**",
+        "index.html",
+        "package.json"
+      ]
+    },
+    "mac": {
+      "category": "Sentient-UI.app.category.type",
+      "icon": "assets/icon.icns"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    }
   },
   "repository": {
     "type": "git",

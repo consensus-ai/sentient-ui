@@ -94,7 +94,7 @@ html, body {
 
     color: #3D4B66;
     margin-left: 3px;
-    padding-left: 37px;
+    padding-left: 48px;
 }
 
 .sidebar-button:hover {
@@ -178,7 +178,7 @@ html, body {
 }
 
 .button .text {
-    padding: 4px;
+    padding: 4px 4px 4px 6px;
 }
 
 /* Mainbar */

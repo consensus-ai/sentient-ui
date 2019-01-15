@@ -14,15 +14,10 @@ class UnlockedWallet extends React.Component {
         super(props)
     }
 
-    getHashRateForDisplay () {
-        const { hashRate } = this.props
-        if (hashRate === '0.00 MH/s') {
-            return hashRate
-        } else {
-            // need to use the same format for hashrates
-            const humanSize = toHumanSize(hashRate)
-            return `${humanSize.hashrate} ${humanSize.unit}`
-        }
+    getHashRateForDisplay (value) {
+        // need to use the same format for hashrates
+        const humanSize = toHumanSize(value)
+        return `${humanSize.hashrate} ${humanSize.unit}`
     }
 
     getAcceptedSharesEfficiency () {
@@ -63,7 +58,7 @@ class UnlockedWallet extends React.Component {
     }
 
     render () {
-        const { miningType, mining, chartType, balance } = this.props
+        const { miningType, mining, chartType, balance, hashRate, poolHashRate } = this.props
         const accepted = this.getAcceptedSharesEfficiency()
         const rejected = accepted && (100 - accepted).toFixed(2) || 0
         const unpaidBalance = balance && balance.unpaid || 0
@@ -79,11 +74,15 @@ class UnlockedWallet extends React.Component {
                 </div>
                 <div className="data-cards">
                     <div style={{cursor: 'pointer'}} className="item" disabled={ mining || chartType === 'hashrate' ? '' : 'disabled' } onClick={()=> this.changeChartType('hashrate')}>
-                        {mining ? (<b>{this.getHashRateForDisplay()}</b>) : (<b>&#8211;</b>) }
+                        {mining ? (<b>{this.getHashRateForDisplay(hashRate)}</b>) : (<b>&#8211;</b>) }
                         <small></small>
                         <span>Current Hash Rate</span>
                     </div>
-                    <div className="item" hidden></div>
+                    <div className="item" hidden={miningType === 'local'}>
+                        <b>{this.getHashRateForDisplay(poolHashRate)}</b>
+                        <small></small>
+                        <span>Pool Hash Rate</span>
+                    </div>
                     {miningType == 'pool' &&
                         <div style={{cursor: 'pointer'}} className="item" disabled={ mining || chartType === 'shares' ? '' : 'disabled' } onClick={()=> this.changeChartType('shares')}>
                             { mining ? (

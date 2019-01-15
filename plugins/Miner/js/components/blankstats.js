@@ -7,7 +7,11 @@ const BlankStats = () => {
                 <b>&#8211;</b>
                 <small></small>
                 <span>Current Hash Rate</span></div>
-            <div className="item" hidden></div>
+            <div className="item" disabled>
+                <b>&#8211;</b>
+                <small></small>
+                <span>Pool Hash Rate</span>
+            </div>
             <div className="item" disabled>
                 <b><b>&#8211;</b></b>
                 <small></small>

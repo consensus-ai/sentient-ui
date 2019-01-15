@@ -143,7 +143,16 @@ function* getSharesEfficiency(address) {
 	try {
 		return yield poolServerCall(`/pool/clients/${address}/shares/stats`)
 	} catch (e) {
-		return { submitted: 0, accepted: 0, rejected: 0, stale:0 }
+		return { submitted: 0, accepted: 0, rejected: 0, stale: 0 }
+	}
+}
+
+// Get Pool HashRate
+function* getPoolHashRate() {
+	try {
+		return yield poolServerCall(`/pool/hashrate`)
+	} catch (e) {
+		return { hashrate: 0 }
 	}
 }
 
@@ -154,11 +163,13 @@ function* getDataForDisplaySaga(action) {
 
 		const balance = yield call(getUnpaidBalance, payoutAddress)
 		const sharesEfficiency = yield call(getSharesEfficiency, payoutAddress)
+		const poolHashRate =  yield call(getPoolHashRate)
 
 		yield getHashrateHistorySaga(action)
 		yield getPoolStatsHistorySaga(action)
 		yield put(actions.updateSharesEfficiency(sharesEfficiency))
 		yield put(actions.updateUnpaidBalance(balance))
+		yield put(actions.updatePoolHashRate(poolHashRate.hashrate))
 	} catch (e) {
 		console.error('error fetching data for display')
 		console.error(e)

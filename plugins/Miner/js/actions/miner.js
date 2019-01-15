@@ -60,6 +60,11 @@ export const updateUnpaidBalance = (balance) => ({
   balance,
 })
 
+export const updatePoolHashRate = (hashRate) => ({
+  type: constants.UPDATE_POOL_HASH_RATE,
+  hashRate,
+})
+
 export const setMiningType = (miningType) => ({
   type: constants.SET_MINING_TYPE,
   miningType,

@@ -7,6 +7,7 @@ const mapStateToProps = (state) => ({
   miningType: state.miner.get('miningtype'),
   walletUnlocked: state.miner.get('walletunlocked'),
   hashRate: state.miner.get('hashrate'),
+  poolHashRate: state.miner.get('poolhashrate'),
   mining: state.miner.get('mining'),
   miningpid: state.miner.get('miningpid'),
   chartType: state.miner.get('charttype'),

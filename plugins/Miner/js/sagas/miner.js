@@ -231,7 +231,6 @@ export function* dataFetcher() {
 	while (true) {
 		let tasks = []
 		tasks = tasks.concat(yield fork(getWalletBalanceSaga))
-		tasks = tasks.concat(yield fork(getCurrentHashRateSaga))
 		yield join(...tasks)
 		yield race({
 			task: call(delay, 2000),
@@ -274,4 +273,8 @@ export function* watchGetCurrentHashrate() {
 
 export function* watchGetPoolStatsHistory() {
 	yield* takeEvery(constants.GET_POOL_STATS_HISTORY, getPoolStatsHistorySaga)
+}
+
+export function* watchGetCurrentHashRate() {
+	yield* takeEvery(constants.GET_HASH_RATE, getCurrentHashRateSaga)
 }

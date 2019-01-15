@@ -80,6 +80,10 @@ export const getCurrentHashrate = () => ({
   type: constants.GET_CURRENT_HASH_RATE
 })
 
+export const getHashRate = () => ({
+  type: constants.GET_HASH_RATE
+})
+
 export const getMiningType = () => ({
   type: constants.GET_MINING_TYPE,
 })

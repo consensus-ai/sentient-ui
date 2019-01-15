@@ -6,6 +6,7 @@ import { toHumanSize } from '../sagas/helpers'
 
 const updateLocalHashrateInterval = 60000
 const updatePoolHashrateInterval = 10000
+const updateHashRateInterval = 2000
 
 class UnlockedWallet extends React.Component {
 
@@ -40,8 +41,12 @@ class UnlockedWallet extends React.Component {
         const { mining, actions, miningpid, miningType } = this.props
         if (mining) {
             clearInterval(this.interval)
+            clearInterval(this.hashRateInterval)
             actions.stopMiner(miningpid)
         } else {
+            this.hashRateInterval = setInterval(() => {
+                actions.getHashRate()
+            }, updateHashRateInterval)
             if (miningType == 'pool') {
                 this.changeChartType('hashrate')
                 this.interval = setInterval(() => {

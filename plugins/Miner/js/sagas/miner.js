@@ -3,6 +3,8 @@ import { takeEvery, delay, eventChannel, END } from 'redux-saga'
 import { sentientdCall, startMiningProcess, poolServerCall, formatHashrate, formatHistory, getHashRate } from './helpers.js'
 import * as actions from '../actions/miner.js'
 import * as constants from '../constants/miner.js'
+import { remote } from 'electron'
+const analytics = remote.getGlobal('analytics')
 import { List } from 'immutable'
 const groupOptions = {
 	86400: 600, // 10 minutes
@@ -85,7 +87,8 @@ function* getPayoutAddress() {
 function* startMinerSaga() {
 	try {
 		const process = yield startMiningProcess()
-		SentientAPI.sentientMinerPid = process.pid
+		// Send GA on open APP
+		analytics.event('App', 'start-miner', { clientID: SentientAPI.config.userid })
 		yield put(actions.setMiningStatus(true, process.pid))
 		const channel = eventChannel(emitter => {
 			process.on('error', (err) => {

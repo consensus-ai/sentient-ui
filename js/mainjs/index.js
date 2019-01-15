@@ -4,6 +4,8 @@ import loadConfig from './config.js'
 import initWindow from './initWindow.js'
 import { v4 as uuid } from 'uuid'
 import Analytics from 'electron-google-analytics'
+import os from 'os'
+import { version } from '../../package.json'
 
 // load config.json manager
 const basePath = process.env.SENTIENTD_DATA_DIR || app.getPath('userData')
@@ -44,6 +46,8 @@ if (!gotTheLock) {
 app.on('ready', () => {
 	// Send GA on open APP
 	analytics.event('App', 'open', { clientID: config.userid })
+	analytics.event('Platform', os.platform(), { clientID: config.userid })
+	analytics.event('Version', version, { clientID: config.userid })
 	// Load mainWindow
 	mainWindow = initWindow(config)
 })

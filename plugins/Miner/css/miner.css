@@ -319,8 +319,10 @@
         .miner .top-row .miner-button.stop-button .button-icon {
           background-image: url(../assets/stop-button-icon.svg); }
   .miner .data-cards {
+    position: relative;
+    z-index: 1;
     display: flex;
-    padding: 2rem 0 1rem 0;
+    padding: 1.4rem 0 1rem 0;
     justify-content: space-between;
     flex-wrap: wrap; }
     .miner .data-cards .item {
@@ -330,16 +332,10 @@
       text-align: center;
       color: #0846A0;
       border-radius: 0.4em;
-      padding: 2em 1em 1em;
+      padding: 1.4em 1em 1em;
       border: 1px solid #EDEDED;
       background: #fff;
       margin: 0.5rem 0; }
-      @media (max-width: 767px) {
-        .miner .data-cards .item {
-          width: calc(50% - .7em); } }
-      @media (max-width: 560px) {
-        .miner .data-cards .item {
-          width: 100%; } }
       .miner .data-cards .item[hidden] {
         visibility: hidden;
         display: block !important;
@@ -361,9 +357,55 @@
         font-weight: bold;
         font-size: 10px;
         display: block;
-        min-height: 16px; }
+        min-height: 16px;
+        margin-bottom: 8px; }
         .miner .data-cards .item small.red {
           color: #CC4555; }
+      .miner .data-cards .item .progress {
+        height: 4px;
+        margin: 6px 0 14px 0;
+        border-radius: 2px;
+        background: #EDEDED; }
+        .miner .data-cards .item .progress div {
+          background: #0846A0;
+          height: 4px;
+          border-radius: 2px; }
+      .miner .data-cards .item .description {
+        position: absolute;
+        top: 100%;
+        padding: 1.4em 2em;
+        border: 1px solid #EDEDED;
+        border-radius: .4em;
+        width: 100%;
+        left: 0;
+        right: 0;
+        font-size: 10px;
+        color: #35445E;
+        box-sizing: border-box;
+        text-align: left;
+        background: #fff;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        transition: opacity .3s 0s, visibility 0s .3s, top .3s 0s;
+        opacity: 0;
+        visibility: hidden; }
+        .miner .data-cards .item .description:before {
+          content: "";
+          position: absolute;
+          top: -7px;
+          right: 50%;
+          width: 13px;
+          height: 7px;
+          background: url(../assets/Triangle.svg) no-repeat top center;
+          transform: scale(1, -1) rotate(180deg) translateX(-50%); }
+        .miner .data-cards .item .description b {
+          font-weight: bold;
+          font-size: 10px;
+          display: inline; }
+      .miner .data-cards .item:hover .description {
+        opacity: 1;
+        visibility: visible;
+        top: calc(100% - 10px);
+        transition: opacity .3s 0s, visibility 0s 0s, top .3s 0s; }
       .miner .data-cards .item span {
         display: block;
         font-size: 14px;
@@ -439,12 +481,6 @@
       justify-content: space-between;
       font-size: 14px;
       letter-spacing: -0.03em; }
-      @media (max-width: 767px) {
-        .miner .graph .footer {
-          font-size: 12px; } }
-      @media (max-width: 560px) {
-        .miner .graph .footer {
-          font-size: 10px; } }
       .miner .graph .footer span {
         padding: 1.6em 2em;
         color: #0846A0; }
@@ -486,6 +522,18 @@
       letter-spacing: -0.03em;
       box-sizing: border-box; }
 
+@media (max-width: 767px) {
+  .miner .data-cards .item {
+    width: calc(50% - .7em); } }
+@media (max-width: 560px) {
+  .miner .data-cards .item {
+    width: 100%; } }
+@media (max-width: 767px) {
+  .miner .graph .footer {
+    font-size: 12px; } }
+@media (max-width: 560px) {
+  .miner .graph .footer {
+    font-size: 10px; } }
 .recharts-tooltip-wrapper .area-chart-tooltip:before {
   left: 1px;
   content: "";

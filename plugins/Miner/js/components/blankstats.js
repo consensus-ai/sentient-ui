@@ -18,14 +18,6 @@ const BlankStats = () => {
                 <span>Shares Efficiency</span>
             </div>
             <div className="item" disabled>
-                <div className="balance">
-                    <i className="fa fa-info-circle"></i>
-                    <div className="info">
-                        Minimum Payout: 25 SEN
-                        <br/>
-                        Payout Frequency: 24hrs
-                    </div>
-                </div>
                 <b><span>&#8211;</span><span> SEN</span></b>
                 <small></small>
                 <span>Unpaid Balance</span>

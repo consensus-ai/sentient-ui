@@ -199,7 +199,9 @@
   .miner .top-row {
     display: flex;
     justify-content: flex-end;
-    align-items: center; }
+    align-items: center;
+    position: relative;
+    z-index: 2; }
     .miner .top-row .exclamation {
       color: #90A2BC;
       display: flex;

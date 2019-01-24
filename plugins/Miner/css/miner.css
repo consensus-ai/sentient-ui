@@ -319,6 +319,8 @@
         .miner .top-row .miner-button.stop-button .button-icon {
           background-image: url(../assets/stop-button-icon.svg); }
   .miner .data-cards {
+    position: relative;
+    z-index: 1;
     display: flex;
     padding: 2rem 0 1rem 0;
     justify-content: space-between;
@@ -364,6 +366,61 @@
         min-height: 16px; }
         .miner .data-cards .item small.red {
           color: #CC4555; }
+        .miner .data-cards .item .progress {
+            height: 4px;
+            margin: 6px 0;
+            border-radius: 2px;
+            background: #EDEDED;
+        }
+            .miner .data-cards .item .progress div{
+                background: #0846A0;
+                height:4px;
+                border-radius: 2px;
+            }
+
+        .miner .data-cards .item .description {
+            position: absolute;
+            top: calc(100% - 10px);
+            padding: 1em;
+            border: 1px solid #EDEDED;
+            border-radius: .4em;
+            width: 100%;
+            left: 0;
+            right: 0;
+            font-size: 10px;
+            color: #35445E;
+            box-sizing: border-box;
+            text-align: left;
+            background: #fff;
+            box-shadow: 0 1px 2px rgba(144, 162, 189, 0.16);
+            transition: opacity .3s 0s, visibility 0s .3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+            .miner .data-cards .item .description:before {
+                content: "";
+                position: absolute;
+                top: -7px;
+                right: 50%;
+                width: 13px;
+                height: 7px;
+                background: url(../assets/Triangle.svg) no-repeat top center;
+                transform: scale(1, -1) rotate(180deg) translateX(-50%);
+            }
+            .miner .data-cards .item .description b {
+                font-weight: bold;
+                font-size: 10px;
+                display: inline;
+            }
+
+        .miner .data-cards .item:hover .description {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity .3s 0s, visibility 0s 0s;
+        }
+
+
       .miner .data-cards .item span {
         display: block;
         font-size: 14px;

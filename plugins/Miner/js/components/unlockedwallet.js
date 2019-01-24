@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import PoolDropdown from '../containers/pooldropdown'
+import UnpaidBalance from '../containers/unpaidbalance'
+import PoolHashRate from '../containers/poolhashrate'
 import Graphs from '../containers/graphs'
 import { toHumanSize } from '../sagas/helpers'
 
@@ -58,10 +60,9 @@ class UnlockedWallet extends React.Component {
     }
 
     render () {
-        const { miningType, mining, chartType, balance, hashRate, poolHashRate } = this.props
+        const { miningType, mining, chartType, hashRate } = this.props
         const accepted = this.getAcceptedSharesEfficiency()
         const rejected = accepted && (100 - accepted).toFixed(2) || 0
-        const unpaidBalance = balance && balance.unpaid || 0
 
         return(
             <div className="content space-between">
@@ -78,11 +79,7 @@ class UnlockedWallet extends React.Component {
                         <small></small>
                         <span>Current Hash Rate</span>
                     </div>
-                    <div className="item" hidden={miningType === 'local'}>
-                        <b>{this.getHashRateForDisplay(poolHashRate)}</b>
-                        <small></small>
-                        <span>Pool Hash Rate</span>
-                    </div>
+                    <PoolHashRate />
                     {miningType == 'pool' &&
                         <div style={{cursor: 'pointer'}} className="item" disabled={ mining || chartType === 'shares' ? '' : 'disabled' } onClick={()=> this.changeChartType('shares')}>
                             { mining ? (
@@ -107,18 +104,7 @@ class UnlockedWallet extends React.Component {
                             <span>Blocks Found</span>
                         </div>
                     }
-                    <div className="item" hidden={miningType === 'local'}>
-                        <b><span>{ unpaidBalance }</span> <span> SEN</span></b>
-                        <div className="progress">
-                            <div style={ {width: '35%'} }></div>
-                        </div>
-                        <span>Unpaid balance</span>
-                        <div className="description">
-                            <div>Minimum Payout: <b>25 SEN</b></div>
-                            <div>Payout Frequency: <b>24 hrs</b></div>
-                            <div>Payout Minimum Progress: <b>25.3%</b></div>
-                        </div>
-                    </div>
+                    <UnpaidBalance />
                 </div>
                 <Graphs />
             </div>
@@ -129,7 +115,6 @@ class UnlockedWallet extends React.Component {
 UnlockedWallet.propTypes = {
     walletUnlocked: PropTypes.bool.isRequired,
     mining: PropTypes.bool.isRequired,
-    balance: PropTypes.object.isRequired,
 }
 
 export default UnlockedWallet

@@ -1,5 +1,6 @@
 # Generated Items
 release
+tools
 node_modules
 npm-debug.log
 config.json

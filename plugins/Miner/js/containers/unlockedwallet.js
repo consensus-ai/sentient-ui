@@ -5,12 +5,8 @@ import { startMiner, stopMiner, changeChartType, getCurrentHashrate, getHashRate
 
 const mapStateToProps = (state) => ({
   miningType: state.miner.get('miningtype'),
-  walletUnlocked: state.miner.get('walletunlocked'),
-  hashRate: state.miner.get('hashrate'),
   mining: state.miner.get('mining'),
   miningpid: state.miner.get('miningpid'),
-  chartType: state.miner.get('charttype'),
-  sharesEfficiency: state.miner.get('sharesefficiency'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -7,38 +7,11 @@ import request from 'request'
 export default function () {
     autoUpdater.on('error', (err) => {
 		dialog.showMessageBox({
-			type: 'info',
+			type: 'error',
 			defaultId: 0,
 			icon: iconPath,
 			message: 'Error during update',
 			detail: err.toString()
-		})
-	})
-	autoUpdater.on('checking-for-update', () => {
-		dialog.showMessageBox({
-			type: 'info',
-			defaultId: 0,
-			icon: iconPath,
-			message: 'Error during update',
-			detail: 'checking-for-update'
-		})
-	})
-	autoUpdater.on('update-available', () => {
-		dialog.showMessageBox({
-			type: 'info',
-			defaultId: 0,
-			icon: iconPath,
-			message: 'Error during update',
-			detail: 'update-available'
-		})
-	})
-	autoUpdater.on('update-not-available', () => {
-		dialog.showMessageBox({
-			type: 'info',
-			defaultId: 0,
-			icon: iconPath,
-			message: 'Error during update',
-			detail: 'update-available'
 		})
 	})
 
@@ -66,7 +39,7 @@ export default function () {
 					}
 				})
 		})
-	});
+	})
 	// init for updates
-	autoUpdater.checkForUpdates();
+	autoUpdater.checkForUpdates()
 }

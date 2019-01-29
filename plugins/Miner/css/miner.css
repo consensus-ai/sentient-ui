@@ -223,12 +223,9 @@
       align-items: center;
       font-size: 14px;
       transition: box-shadow .3s; }
-      .miner .top-row .intensity:hover {
-        box-shadow: 0 2px 8px rgba(61, 75, 102, 0.53); }
       .miner .top-row .intensity .label {
         padding: 0 1rem;
-        font-weight: 500;
-        color: #90A2BC; }
+        font-weight: 500; }
       .miner .top-row .intensity .range-slider {
         display: flex;
         align-items: center;
@@ -246,8 +243,6 @@
           .miner .top-row .intensity .range-slider input[type="range"]:active, .miner .top-row .intensity .range-slider input[type="range"]:focus {
             outline: none;
             box-shadow: none; }
-          .miner .top-row .intensity .range-slider input[type="range"]:hover {
-            opacity: 1; }
           .miner .top-row .intensity .range-slider input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -266,6 +261,16 @@
         border-left: 1px solid #EDEDED;
         line-height: 34px;
         margin-left: 1rem; }
+      .miner .top-row .intensity.disabled {
+        color: #90A2BC; }
+        .miner .top-row .intensity.disabled .range-slider input[type="range"]::-webkit-slider-thumb {
+          cursor: auto; }
+        .miner .top-row .intensity.disabled .range-slider input[type="range"]::-moz-range-thumb {
+          cursor: auto; }
+      .miner .top-row .intensity:not(.disabled):hover {
+        box-shadow: 0 2px 8px rgba(61, 75, 102, 0.53); }
+      .miner .top-row .intensity:not(.disabled) .range-slider input[type="range"]:hover {
+        opacity: 1; }
     .miner .top-row .dropdown {
       position: relative;
       margin-left: 14px; }

@@ -55,6 +55,15 @@ class UnlockedWallet extends React.Component {
         return(
             <div className="content space-between">
                 <div className="top-row">
+
+                    <div className="intensity">
+                        <div className="label">Intencity</div>
+                        <div className="range-slider">
+                            <input type={'range'} min={'1'} max={'30'} value={'16'}/>
+                        </div>
+                        <div className="value">16</div>
+                    </div>
+
                     <PoolDropdown />
                     <div className={`button miner-button ${mining ? "stop" : "start"}-button`} onClick={() => this.miningActionOnClick()}>
                         <div className="button-icon"></div>

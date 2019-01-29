@@ -210,8 +210,65 @@
       .miner .top-row .exclamation i {
         font-size: 2.2rem;
         padding-right: 1rem; }
+    .miner .top-row .intensity {
+      display: flex;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(61, 75, 102, 0.23);
+      border-radius: 4px;
+      letter-spacing: -0.03em;
+      color: #0846A0;
+      background-color: #fff;
+      height: 34px;
+      font-family: "Open Sans";
+      align-items: center;
+      font-size: 14px;
+      transition: box-shadow .3s; }
+      .miner .top-row .intensity:hover {
+        box-shadow: 0 2px 8px rgba(61, 75, 102, 0.53); }
+      .miner .top-row .intensity .label {
+        padding: 0 1rem;
+        font-weight: 500;
+        color: #90A2BC; }
+      .miner .top-row .intensity .range-slider {
+        display: flex;
+        align-items: center;
+        justify-content: center; }
+        .miner .top-row .intensity .range-slider input[type="range"] {
+          -webkit-appearance: none;
+          width: 103px;
+          height: 1px;
+          background: #EDEDED;
+          outline: none;
+          opacity: 0.7;
+          -webkit-transition: .2s;
+          transition: opacity .2s;
+          border: 0; }
+          .miner .top-row .intensity .range-slider input[type="range"]:active, .miner .top-row .intensity .range-slider input[type="range"]:focus {
+            outline: none;
+            box-shadow: none; }
+          .miner .top-row .intensity .range-slider input[type="range"]:hover {
+            opacity: 1; }
+          .miner .top-row .intensity .range-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 13px;
+            height: 15px;
+            cursor: pointer;
+            background: url(../assets/range-slider_thumb.svg) no-repeat top center; }
+          .miner .top-row .intensity .range-slider input[type="range"]::-moz-range-thumb {
+            width: 13px;
+            height: 15px;
+            cursor: pointer;
+            background: url(../assets/range-slider_thumb.svg) no-repeat top center; }
+      .miner .top-row .intensity .value {
+        padding: 0 1rem;
+        font-weight: 500;
+        border-left: 1px solid #EDEDED;
+        line-height: 34px;
+        margin-left: 1rem; }
     .miner .top-row .dropdown {
-      position: relative; }
+      position: relative;
+      margin-left: 14px; }
       .miner .top-row .dropdown ul {
         background: #fff;
         position: absolute;

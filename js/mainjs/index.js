@@ -2,6 +2,7 @@ import { app } from 'electron'
 import Path from 'path'
 import loadConfig from './config.js'
 import initWindow from './initWindow.js'
+import appUpdater from './appUpdater.js'
 import { v4 as uuid } from 'uuid'
 import Analytics from 'electron-google-analytics'
 import os from 'os'
@@ -11,7 +12,6 @@ import { version } from '../../package.json'
 const basePath = process.env.SENTIENTD_DATA_DIR || app.getPath('userData')
 global.config = loadConfig(Path.join(basePath, 'config.json'))
 let mainWindow
-
 // initialize GA objects
 const analytics = new Analytics('UA-131311702-2')
 
@@ -44,6 +44,7 @@ if (!gotTheLock) {
 
 // When Electron loading has finished, start Sentient-UI.
 app.on('ready', () => {
+	appUpdater()
 	// Send GA on open APP
 	analytics.event('App', 'open', { clientID: config.userid })
 	analytics.event('Platform', os.platform(), { clientID: config.userid })

@@ -3,6 +3,8 @@ import React from 'react'
 import PoolDropdown from '../containers/pooldropdown'
 import UnpaidBalance from '../containers/unpaidbalance'
 import PoolHashRate from '../containers/poolhashrate'
+import HashRate from '../containers/hashrate'
+import PoolStats from '../containers/poolstats'
 import Graphs from '../containers/graphs'
 import { toHumanSize } from '../sagas/helpers'
 
@@ -22,18 +24,6 @@ class UnlockedWallet extends React.Component {
         return `${humanSize.hashrate} ${humanSize.unit}`
     }
 
-    getAcceptedSharesEfficiency () {
-        const { sharesEfficiency } = this.props
-        if (!sharesEfficiency) return 0
-        const { accepted, submitted } = sharesEfficiency
-        return submitted && (accepted * 100 / submitted).toFixed(2) || 0
-    }
-
-    changeChartType (type) {
-        const { actions } = this.props
-        actions.changeChartType(type)
-    }
-
     miningActionOnClick ()  {
         const { mining, actions, miningpid, miningType } = this.props
         if (mining) {
@@ -45,7 +35,7 @@ class UnlockedWallet extends React.Component {
                 actions.getHashRate()
             }, updateHashRateInterval)
             if (miningType == 'pool') {
-                this.changeChartType('hashrate')
+                actions.changeChartType('hashrate')
                 this.interval = setInterval(() => {
                     actions.getCurrentHashrate()
                 }, updatePoolHashrateInterval)
@@ -60,9 +50,7 @@ class UnlockedWallet extends React.Component {
     }
 
     render () {
-        const { miningType, mining, chartType, hashRate } = this.props
-        const accepted = this.getAcceptedSharesEfficiency()
-        const rejected = accepted && (100 - accepted).toFixed(2) || 0
+        const { mining } = this.props
 
         return(
             <div className="content space-between">
@@ -74,36 +62,9 @@ class UnlockedWallet extends React.Component {
                     </div>
                 </div>
                 <div className="data-cards">
-                    <div style={{cursor: 'pointer'}} className="item" disabled={ mining || chartType === 'hashrate' ? '' : 'disabled' } onClick={()=> this.changeChartType('hashrate')}>
-                        {mining ? (<b>{this.getHashRateForDisplay(hashRate)}</b>) : (<b>&#8211;</b>) }
-                        <small></small>
-                        <span>Current Hash Rate</span>
-                    </div>
+                    <HashRate />
                     <PoolHashRate />
-                    {miningType == 'pool' &&
-                        <div style={{cursor: 'pointer'}} className="item" disabled={ mining || chartType === 'shares' ? '' : 'disabled' } onClick={()=> this.changeChartType('shares')}>
-                            { mining ? (
-                                    <div>
-                                        <b>{accepted}%</b>
-                                        <small className="red">{rejected}% rejected</small>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        <b>&#8211;</b>
-                                        <small></small>
-                                    </div>
-                                )
-                            }
-                            <span>Shares Efficiency</span>
-                        </div>
-                    }
-                    {miningType == 'local' &&
-                        <div hidden className="item" disabled={ chartType !== 'blocks' ? 'disabled' : '' }>
-                            <b>1</b>
-                            <small></small>
-                            <span>Blocks Found</span>
-                        </div>
-                    }
+                    <PoolStats />
                     <UnpaidBalance />
                 </div>
                 <Graphs />
@@ -113,7 +74,6 @@ class UnlockedWallet extends React.Component {
 }
 
 UnlockedWallet.propTypes = {
-    walletUnlocked: PropTypes.bool.isRequired,
     mining: PropTypes.bool.isRequired,
 }
 

@@ -65,8 +65,9 @@ export const getHashRate = () => new Promise((resolve, reject) => {
 export const startMiningProcess = () => {
   const sentientConfig = SentientAPI.config
   const miningType = sentientConfig.attr('miningType')
+  const intensity = sentientConfig.attr('intensity')
 
-  let args = ['-I=18']
+  let args = [`-I=${intensity}`]
 
   if (miningType === 'pool') {
     const minerName = sentientConfig.attr('minerName')

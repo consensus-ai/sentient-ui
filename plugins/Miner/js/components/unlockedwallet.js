@@ -5,6 +5,7 @@ import UnpaidBalance from '../containers/unpaidbalance'
 import PoolHashRate from '../containers/poolhashrate'
 import HashRate from '../containers/hashrate'
 import PoolStats from '../containers/poolstats'
+import IntensityRange from '../containers/intensityrange'
 import Graphs from '../containers/graphs'
 import { toHumanSize } from '../sagas/helpers'
 
@@ -24,11 +25,17 @@ class UnlockedWallet extends React.Component {
         return `${humanSize.hashrate} ${humanSize.unit}`
     }
 
+    componentDidUpdate(prevProps) {
+        const { mining } =  this.props
+        if (!mining && prevProps.mining) {
+            clearInterval(this.interval)
+            clearInterval(this.hashRateInterval)
+        }
+      }
+
     miningActionOnClick ()  {
         const { mining, actions, miningpid, miningType } = this.props
         if (mining) {
-            clearInterval(this.interval)
-            clearInterval(this.hashRateInterval)
             actions.stopMiner(miningpid)
         } else {
             this.hashRateInterval = setInterval(() => {
@@ -55,15 +62,7 @@ class UnlockedWallet extends React.Component {
         return(
             <div className="content space-between">
                 <div className="top-row">
-
-                    <div className="intensity">
-                        <div className="label">Intencity</div>
-                        <div className="range-slider">
-                            <input type={'range'} min={'1'} max={'30'} value={'16'}/>
-                        </div>
-                        <div className="value">16</div>
-                    </div>
-
+                    <IntensityRange />
                     <PoolDropdown />
                     <div className={`button miner-button ${mining ? "stop" : "start"}-button`} onClick={() => this.miningActionOnClick()}>
                         <div className="button-icon"></div>
@@ -84,6 +83,7 @@ class UnlockedWallet extends React.Component {
 
 UnlockedWallet.propTypes = {
     mining: PropTypes.bool.isRequired,
+    miningType: PropTypes.string.isRequired,
 }
 
 export default UnlockedWallet

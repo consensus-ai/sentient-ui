@@ -65,6 +65,24 @@ function* getMiningTypeSaga() {
 	yield put(actions.setMiningType(miningType))
 }
 
+// Load mining type from config
+function* getIntensitySaga() {
+	let intensity = SentientAPI.config.attr('intensity')
+	yield put(actions.setIntensity(intensity))
+}
+
+// Save intensity type from config
+function* setIntensitySaga(action) {
+	const intensity = action.intensity
+	try {
+		SentientAPI.config.attr('intensity', intensity)
+		SentientAPI.config.save()
+	} catch (e) {
+		console.error(`error saving config: ${e.toString()}`)
+	}
+	yield put(actions.setIntensity(intensity))
+}
+
 // Checking for Miner Payout Address, create a new if null
 function* getPayoutAddress() {
 	let payoutAddress = SentientAPI.config.attr('payoutAddress')
@@ -97,6 +115,9 @@ function* startMinerSaga() {
 				emitter(END)
 			})
 			process.on('exit', (code) => {
+				if (code === 2) {
+					sendError('Sentient Miner has experienced a fatal error')
+				}
 				emitter({ stop:  true })
 				emitter(END)
 			})
@@ -272,6 +293,14 @@ export function* watchDataForDisplay() {
 
 export function* watchGetMiningType() {
 	yield* takeEvery(constants.GET_MINING_TYPE, getMiningTypeSaga)
+}
+
+export function* watchGetIntensity() {
+	yield* takeEvery(constants.GET_INTENSITY, getIntensitySaga)
+}
+
+export function* watchSetIntensity() {
+	yield* takeEvery(constants.CHANGE_INTENSITY, setIntensitySaga)
 }
 
 export function* watchGetHashrateHistory() {

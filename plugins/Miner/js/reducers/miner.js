@@ -7,6 +7,7 @@ const initialState = Map({
   walletunlocked: true,
   confirmedbalance: '0',
   miningtype: 'pool',
+  intensity: 0,
   hashrate: '0',
   poolhashrate: '0',
   mining: false,
@@ -34,6 +35,8 @@ export default function minerReducer(state = initialState, action) {
     return state.set('currenthashrate', [])
   case constants.SET_MINING_TYPE:
     return state.set('miningtype', action.miningType)
+  case constants.SET_INTENSITY:
+    return state.set('intensity', action.intensity)
   case constants.UPDATE_HASH_RATE:
     return state.set('hashrate', action.hashRate * 1000000)
   case constants.UPDATE_POOL_HASH_RATE:

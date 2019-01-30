@@ -14,6 +14,7 @@ const defaultPoolHostUrl = 'http://pool.sentient.org:9910'
 const defaultStratumHostUrl = 'stratum+tcp://pool.sentient.org:3333'
 const minerName = `${os.hostname()}-${os.platform()}`.replace(/[^A-Z0-9]+/ig, '_')
 const miningType = 'pool'
+const intensity = 18
 
 // The default settings
 const defaultConfig = {
@@ -39,6 +40,7 @@ const defaultConfig = {
 	version: version,
 	minerName: minerName,
 	miningType: miningType,
+	intensity: intensity,
 }
 
 /**

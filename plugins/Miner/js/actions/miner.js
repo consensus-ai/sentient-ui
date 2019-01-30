@@ -65,11 +65,6 @@ export const updatePoolHashRate = (hashRate) => ({
   hashRate,
 })
 
-export const setMiningType = (miningType) => ({
-  type: constants.SET_MINING_TYPE,
-  miningType,
-})
-
 export const setHashRate = (hashRate) => ({
   type: constants.UPDATE_HASH_RATE,
   hashRate
@@ -89,6 +84,11 @@ export const getHashRate = () => ({
   type: constants.GET_HASH_RATE
 })
 
+export const setMiningType = (miningType) => ({
+  type: constants.SET_MINING_TYPE,
+  miningType,
+})
+
 export const getMiningType = () => ({
   type: constants.GET_MINING_TYPE,
 })
@@ -105,4 +105,18 @@ export const startMiner = () => ({
 export const stopMiner = (pid) => ({
   type: constants.STOP_MINER,
   pid,
+})
+
+export const setIntensity = (intensity) => ({
+  type: constants.SET_INTENSITY,
+  intensity,
+})
+
+export const changeIntensity = (intensity) => ({
+  type: constants.CHANGE_INTENSITY,
+  intensity,
+})
+
+export const getIntensity = () => ({
+  type: constants.GET_INTENSITY,
 })

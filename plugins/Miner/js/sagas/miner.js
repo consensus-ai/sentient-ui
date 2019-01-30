@@ -3,6 +3,7 @@ import { takeEvery, delay, eventChannel, END } from 'redux-saga'
 import { sentientdCall, startMiningProcess, poolServerCall, formatHashrate, formatHistory, getHashRate } from './helpers.js'
 import * as actions from '../actions/miner.js'
 import * as constants from '../constants/miner.js'
+import * as errors from '../constants/error.js'
 import { remote } from 'electron'
 const analytics = remote.getGlobal('analytics')
 import { List } from 'immutable'
@@ -116,7 +117,7 @@ function* startMinerSaga() {
 			})
 			process.on('exit', (code) => {
 				if (code === 2) {
-					sendError('Sentient Miner has experienced a fatal error')
+					sendError(errors.MINER_ERROR)
 				}
 				emitter({ stop:  true })
 				emitter(END)

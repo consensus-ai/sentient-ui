@@ -256,17 +256,23 @@
             cursor: pointer;
             background: url(../assets/range-slider_thumb.svg) no-repeat top center; }
       .miner .top-row .intensity .value {
-        padding: 0 1rem;
         font-weight: 500;
         border-left: 1px solid #EDEDED;
         line-height: 34px;
-        margin-left: 1rem; }
+        margin-left: 1rem;
+        width: 48px;
+        text-align: center;
+        box-sizing: border-box; }
       .miner .top-row .intensity.disabled {
         color: #90A2BC; }
-        .miner .top-row .intensity.disabled .range-slider input[type="range"]::-webkit-slider-thumb {
-          cursor: auto; }
-        .miner .top-row .intensity.disabled .range-slider input[type="range"]::-moz-range-thumb {
-          cursor: auto; }
+        .miner .top-row .intensity.disabled .range-slider input[type="range"] {
+          pointer-events: none; }
+          .miner .top-row .intensity.disabled .range-slider input[type="range"]::-webkit-slider-thumb {
+            cursor: auto;
+            pointer-events: auto; }
+          .miner .top-row .intensity.disabled .range-slider input[type="range"]::-moz-range-thumb {
+            cursor: auto;
+            pointer-events: auto; }
       .miner .top-row .intensity:not(.disabled):hover {
         box-shadow: 0 2px 8px rgba(61, 75, 102, 0.53); }
       .miner .top-row .intensity:not(.disabled) .range-slider input[type="range"]:hover {

@@ -4,6 +4,7 @@ import { remote, shell } from 'electron'
 import request from 'request'
 const dialog = remote.dialog
 const fs = remote.require('fs')
+const consensusUrl = 'https://consensus.ai/?utm_source=Sentient-UI'
 
 // Set UI version via package.json.
 document.getElementsByClassName('ui-version')[0].innerHTML += VERSION
@@ -120,4 +121,7 @@ function updateCheck() {
 document.getElementsByClassName('check-update-button')[0].onclick = updateCheck
 document.getElementsByClassName('open-data-button')[0].onclick = () => {
 	shell.showItemInFolder(SentientAPI.config.sentientd.datadir)
+}
+document.querySelector('.logo img').onclick = () => {
+	shell.openExternal(consensusUrl)
 }

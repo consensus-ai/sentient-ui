@@ -126,8 +126,3 @@ select:hover {
 .button:active {
   	transform: translateX(2px) translateY(2px);
 }
-
-* {
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}

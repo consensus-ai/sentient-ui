@@ -13,6 +13,7 @@ const groupOptions = {
 	2592000: 18000, // 5 hours
 }
 let hashrates = []
+let stopFromAction
 
 // Send an error notification.
 const sendError = (e) => {
@@ -105,6 +106,7 @@ function* getPayoutAddress() {
 // Executing start miner command
 function* startMinerSaga() {
 	try {
+		stopFromAction = false
 		const process = yield startMiningProcess()
 		// Send GA on open APP
 		analytics.event('App', 'start-miner', { clientID: SentientAPI.config.userid })
@@ -116,7 +118,7 @@ function* startMinerSaga() {
 				emitter(END)
 			})
 			process.on('exit', (code) => {
-				if (code === 2) {
+				if (!stopFromAction && (code === 2 || code === 1)) {
 					sendError(errors.MINER_ERROR)
 				}
 				emitter({ stop:  true })
@@ -144,6 +146,7 @@ function* stopMinerSaga(action) {
 	try {
 		yield put(actions.setMiningStatus(false, null))
 		if(action) {
+			stopFromAction = true
 			process.kill(action.pid)
 		}
 	} catch (e) {

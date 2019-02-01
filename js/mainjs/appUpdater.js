@@ -1,4 +1,4 @@
-import { app, dialog } from 'electron'
+import { dialog } from 'electron'
 import { autoUpdater } from "electron-updater"
 import Path from 'path'
 const iconPath = Path.join(__dirname, '../', 'assets', 'icon.png')
@@ -6,12 +6,16 @@ import request from 'request'
 
 export default function () {
     autoUpdater.on('error', (err) => {
+		let message = err.toString()
+		if (/ERR_INTERNET_DISCONNECTED/.test(message)){
+			message = "Sentient UI currently is unable to connect to the update server. Please check your connection settings or try checking for an update later"
+		}
 		dialog.showMessageBox({
 			type: 'error',
 			defaultId: 0,
 			icon: iconPath,
 			message: 'Error during update',
-			detail: err.toString()
+			detail: message
 		})
 	})
 

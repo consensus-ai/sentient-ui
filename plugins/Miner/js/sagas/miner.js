@@ -109,7 +109,7 @@ function* startMinerSaga() {
 		stopFromAction = false
 		const process = yield startMiningProcess()
 		// Send GA on open APP
-		analytics.event('App', 'start-miner', { clientID: SentientAPI.config.userid })
+		analytics.event('App', 'start-miner', {p: '/miner'}).send()
 		yield put(actions.setMiningStatus(true, process.pid))
 		const channel = eventChannel(emitter => {
 			process.on('error', (err) => {

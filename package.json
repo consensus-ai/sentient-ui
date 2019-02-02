@@ -49,7 +49,6 @@
     "ajv": "^6.5.5",
     "babel-polyfill": "^6.26.0",
     "bignumber.js": "^4.1.0",
-    "electron-google-analytics": "^0.1.0",
     "electron-updater": "^4.0.6",
     "find-process": "^1.2.1",
     "graceful-fs": "^4.1.11",
@@ -65,13 +64,14 @@
     "redux": "^3.7.2",
     "redux-saga": "^0.15.6",
     "semver": "^5.4.1",
-    "sentient.js": "file:../sentient-nodejs-bindings"
+    "sentient.js": "file:../sentient-nodejs-bindings",
+    "universal-analytics": "^0.4.20"
   },
   "scripts": {
     "pack": "electron-builder --dir",
     "dist": "electron-builder -w --publish always",
     "dist1": "electron-builder -wm",
-    "dist2": "npm run build-production && electron-builder -m",
+    "dist2": "npm run build-production && electron-builder -mw",
     "release": "build",
     "start": "webpack && electron .",
     "debug": "webpack -d && electron --remote-debugging-port=9222 .",
@@ -88,7 +88,7 @@
   "build": {
     "appId": "Sentient-UI.app",
     "artifactName": "sentient-ui-${version}-${os}.${ext}",
-    "productName": "Sentient UI",
+    "productName": "Sentient-UI",
     "directories": {
       "output": "release"
     },
@@ -105,13 +105,15 @@
         ]
       }
     ],
-    "extraResources": [{
-      "from": "tools/${os}/sentient-miner",
-      "to": "sentient-miner"
-    }, {
-      "from": "tools/${os}/sentient-network",
-      "to": "sentient-network"
-    }
+    "extraResources": [
+      {
+        "from": "tools/${os}/sentient-miner",
+        "to": "sentient-miner"
+      },
+      {
+        "from": "tools/${os}/sentient-network",
+        "to": "sentient-network"
+      }
     ],
     "mac": {
       "category": "Sentient-UI.app.category.type",
@@ -119,7 +121,9 @@
       "identity": null
     },
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "assets/icon.ico"
     },
     "linux": {

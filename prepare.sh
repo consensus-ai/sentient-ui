@@ -39,5 +39,5 @@ installResources() {
 }
 
 installResources "osx" "mac"
-# installResources "linux" "linux"
+installResources "linux" "linux"
 installResources "windows" "win"

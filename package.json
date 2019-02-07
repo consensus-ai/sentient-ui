@@ -69,9 +69,9 @@
   },
   "scripts": {
     "pack": "electron-builder --dir",
-    "dist": "electron-builder -w --publish always",
-    "dist1": "electron-builder -wm",
-    "dist2": "npm run build-production && electron-builder -mw",
+    "dist": "electron-builder -wml --publish always",
+    "dist1": "electron-builder -l",
+    "dist2": "./prepare.sh && npm run build-production && npm run dist",
     "release": "build",
     "start": "webpack && electron .",
     "debug": "webpack -d && electron --remote-debugging-port=9222 .",
@@ -127,7 +127,8 @@
       "icon": "assets/icon.ico"
     },
     "linux": {
-      "icon": "assets/icon.png"
+      "icon": "assets/linux-icon.png",
+      "category": "System"
     },
     "publish": [
       {

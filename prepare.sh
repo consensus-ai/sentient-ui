@@ -3,6 +3,14 @@
 # error output terminates this script
 set -e
 
+# ensure we have a clean node_modules
+rm -rf ./node_modules
+npm install
+
+# build the UI's js
+rm -rf ./dist
+
+# clean up folders
 rm -rf release/*
 rm -rf tools
 mkdir tools

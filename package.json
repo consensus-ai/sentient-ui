@@ -70,9 +70,7 @@
   "scripts": {
     "pack": "electron-builder --dir",
     "dist": "electron-builder -wml --publish always",
-    "dist1": "electron-builder -l",
-    "dist2": "./prepare.sh && npm run build-production && npm run dist",
-    "release": "build",
+    "release": "./prepare.sh && npm run build-production && npm run dist",
     "start": "webpack && electron .",
     "debug": "webpack -d && electron --remote-debugging-port=9222 .",
     "build-production": "webpack --config ./webpack.production.config.js",
@@ -87,7 +85,7 @@
   },
   "build": {
     "appId": "Sentient-UI.app",
-    "artifactName": "sentient-ui-${version}-${os}.${ext}",
+    "artifactName": "sentient-ui-v${version}-${os}.${ext}",
     "productName": "Sentient-UI",
     "directories": {
       "output": "release"

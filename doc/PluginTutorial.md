@@ -713,6 +713,3 @@ document.getElementById('create-address').onclick = function() {
 	IPCRenderer.sendToHost('api-call', '/wallet/address', 'new-address');
 };
 ```
-
-Which will make this tooltip appear on click as such:
-

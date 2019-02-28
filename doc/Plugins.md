@@ -16,3 +16,4 @@ plugin:
 
 1. It must be self-contained in a directory of its name.
 2. It must have an index.html in this directory.
+3. It must have own css folder.

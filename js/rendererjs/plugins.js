@@ -1,8 +1,8 @@
 // This module handles the construction of Sentient-UI plugins.
 import { List } from 'immutable'
 import Path from 'path'
-import fs from 'graceful-fs'
 import { remote } from 'electron'
+const analytics = remote.getGlobal('analytics')
 
 const devtoolsShortcut = 'Ctrl+Shift+P'
 
@@ -74,7 +74,10 @@ export const setCurrentPlugin = (pluginName) => {
 // Construct a plugin button element from an icon path and title
 const hookUpPluginButton = (title) => {
 	const elem = document.getElementById(title+'-button')
-	elem.onclick = () => setCurrentPlugin(title)
+	elem.onclick = () => {
+		analytics.pageview(`/${title.toLowerCase()}`, "http://sentient-ui.consensus.ai", title).send()
+		setCurrentPlugin(title)
+	}
 	return elem
 }
 

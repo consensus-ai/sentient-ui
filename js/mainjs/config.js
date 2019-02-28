@@ -5,20 +5,21 @@ import { version } from '../../package.json'
 import semver from 'semver'
 import os from 'os'
 
-const defaultSentientdPath = Path.join(__dirname, '../sentient-network', (process.platform === 'win32' ? 'sentientd.exe' : 'sentientd'))
-const defaultSentientMinerPath =  Path.join(__dirname, '../sentient-miner', (process.platform === 'win32' ? 'sentient-miner.exe' : 'sentient-miner'))
-const defaultGenesisFile = Path.join(__dirname, '../sentient-network', 'config', 'genesis.json')
+const defaultSentientdPath = process.env.SENTIENTD_PATH || Path.join(app.getAppPath(), '../sentient-network', (process.platform === 'win32' ? 'sentientd.exe' : 'sentientd'))
+const defaultSentientMinerPath =  process.env.SENTIENT_MINER_PATH || Path.join(app.getAppPath(), '../sentient-miner', (process.platform === 'win32' ? 'sentient-miner.exe' : 'sentient-miner'))
+const defaultGenesisFile = Path.join(app.getAppPath(), '../sentient-network', 'config', 'genesis.json')
 const defaultDataDir = Path.join(app.getPath('userData'), 'data')
 const defaultHashRateLogsUrl = 'http://localhost:5555/hashrate'
 const defaultPoolHostUrl = 'http://pool.sentient.org:9910'
 const defaultStratumHostUrl = 'stratum+tcp://pool.sentient.org:3333'
 const minerName = `${os.hostname()}-${os.platform()}`.replace(/[^A-Z0-9]+/ig, '_')
 const miningType = 'pool'
+const intensity = 18
 
 // The default settings
 const defaultConfig = {
 	sentientd: {
-		path: process.env.SENTIENTD_PATH || defaultSentientdPath,
+		path: defaultSentientdPath,
 		datadir: process.env.SENTIENTD_DATA_DIR || defaultDataDir,
 		genesisfile: process.env.SENTIENTD_GENESIS_FILE || defaultGenesisFile,
 		address: process.env.SENTIENTD_API_ADDR || '127.0.0.1:9910',
@@ -26,7 +27,7 @@ const defaultConfig = {
 		detached: false,
 	},
 	sentient_miner: {
-		path: process.env.SENTIENT_MINER_PATH || defaultSentientMinerPath,
+		path: defaultSentientMinerPath,
 		pool_host: process.env.SENTIENT_POOL_HOST || defaultPoolHostUrl,
 		stratum_host: process.env.SENTIENT_STRATUM_HOST || defaultStratumHostUrl,
 		hashrate_host: defaultHashRateLogsUrl,
@@ -39,6 +40,7 @@ const defaultConfig = {
 	version: version,
 	minerName: minerName,
 	miningType: miningType,
+	intensity: intensity,
 }
 
 /**
@@ -102,6 +104,9 @@ export default function configManager(filepath) {
 	// expose the default sentientd path
 	config.defaultSentientdPath = defaultSentientdPath
 	config.defaultGenesisFile = defaultGenesisFile
+
+	// expose the default miner path
+	config.defaultSentientMinerPath = defaultSentientMinerPath
 
 	// Save to disk immediately when loaded
 	try {

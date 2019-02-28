@@ -1,6 +1,6 @@
 {
   "name": "sentient-ui",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/main.js",
   "author": "Consensus AI",
   "description": "A UI application for interfacing with Sentient Network",
@@ -18,7 +18,10 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "css-loader": "^0.28.11",
+    "electron": "3.0.9",
+    "electron-builder": "^20.38.4",
     "electron-debug": "^2.0.0",
+    "electron-log": "^2.2.17",
     "electron-react-devtools": "^0.5.3",
     "enzyme": "^2.8.0",
     "eslint": "^3.18.0",
@@ -46,8 +49,7 @@
     "ajv": "^6.5.5",
     "babel-polyfill": "^6.26.0",
     "bignumber.js": "^4.1.0",
-    "electron": "3.0.9",
-    "electron-google-analytics": "^0.1.0",
+    "electron-updater": "^4.0.6",
     "find-process": "^1.2.1",
     "graceful-fs": "^4.1.11",
     "hoist-non-react-statics": "^3.1.0",
@@ -62,9 +64,13 @@
     "redux": "^3.7.2",
     "redux-saga": "^0.15.6",
     "semver": "^5.4.1",
-    "sentient.js": "file:../sentient-nodejs-bindings"
+    "sentient.js": "file:../sentient-nodejs-bindings",
+    "universal-analytics": "^0.4.20"
   },
   "scripts": {
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder -wml --publish always",
+    "release": "./prepare.sh && npm run build-production && npm run dist",
     "start": "webpack && electron .",
     "debug": "webpack -d && electron --remote-debugging-port=9222 .",
     "build-production": "webpack --config ./webpack.production.config.js",
@@ -76,6 +82,59 @@
     "test": "npm run lint && npm run build && npm run test-args",
     "lint": "eslint --max-warnings 0 ./index.js ./plugins ./js ./test",
     "lint-fix": "eslint --fix ./index.js ./plugins ./js ./test"
+  },
+  "build": {
+    "appId": "Sentient-UI.app",
+    "artifactName": "sentient-ui-v${version}-${os}.${ext}",
+    "productName": "Sentient-UI",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      {
+        "from": ".",
+        "filter": [
+          "assets",
+          "css",
+          "dist",
+          "js",
+          "plugins",
+          "index.html"
+        ]
+      }
+    ],
+    "extraResources": [
+      {
+        "from": "tools/${os}/sentient-miner",
+        "to": "sentient-miner"
+      },
+      {
+        "from": "tools/${os}/sentient-network",
+        "to": "sentient-network"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.finance",
+      "icon": "assets/icon.icns"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "linux": {
+      "icon": "assets/linux-icon.png",
+      "category": "Economy"
+    },
+    "publish": [
+      {
+        "provider": "s3",
+        "region": "us-east-2",
+        "bucket": "consensus-ai-releases",
+        "path": "sentient-ui"
+      }
+    ]
   },
   "repository": {
     "type": "git",

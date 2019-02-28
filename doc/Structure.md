@@ -16,6 +16,7 @@ The full root level structure is as follows
  ├── plugins/             // Plugins give the UI its functionality
 +├── release/             // Release bundles are placed here
  ├── test/                // Testing scripts ran with mocha
++├── tools/               // Binaries are placed here
  ├── LICENSE              // MIT Open Source License
  ├── README.md            // Readme doc
  ├── index.html           // The first markup page that loads
@@ -71,6 +72,9 @@ users
 
 ## [test/](/doc/Testing.md)
 Tests written using [spectron](https://github.com/kevinsawicki/spectron).
+
+## tools/
+Created upon running `./prepare.sh`. Contains binaries for sentientd and sentient-miner.
 
 ## index.html
 The starting point of the renderer process. This file structures the layout of

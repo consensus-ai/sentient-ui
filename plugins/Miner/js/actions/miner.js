@@ -60,9 +60,9 @@ export const updateUnpaidBalance = (balance) => ({
   balance,
 })
 
-export const setMiningType = (miningType) => ({
-  type: constants.SET_MINING_TYPE,
-  miningType,
+export const updatePoolHashRate = (hashRate) => ({
+  type: constants.UPDATE_POOL_HASH_RATE,
+  hashRate,
 })
 
 export const setHashRate = (hashRate) => ({
@@ -78,6 +78,15 @@ export const setCurrentHashrate = (hashRate, timestamp) => ({
 
 export const getCurrentHashrate = () => ({
   type: constants.GET_CURRENT_HASH_RATE
+})
+
+export const getHashRate = () => ({
+  type: constants.GET_HASH_RATE
+})
+
+export const setMiningType = (miningType) => ({
+  type: constants.SET_MINING_TYPE,
+  miningType,
 })
 
 export const getMiningType = () => ({
@@ -96,4 +105,18 @@ export const startMiner = () => ({
 export const stopMiner = (pid) => ({
   type: constants.STOP_MINER,
   pid,
+})
+
+export const setIntensity = (intensity) => ({
+  type: constants.SET_INTENSITY,
+  intensity,
+})
+
+export const changeIntensity = (intensity) => ({
+  type: constants.CHANGE_INTENSITY,
+  intensity,
+})
+
+export const getIntensity = () => ({
+  type: constants.GET_INTENSITY,
 })

@@ -1,11 +1,17 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import PoolDropdown from '../containers/pooldropdown'
+import UnpaidBalance from '../containers/unpaidbalance'
+import PoolHashRate from '../containers/poolhashrate'
+import HashRate from '../containers/hashrate'
+import PoolStats from '../containers/poolstats'
+import IntensityRange from '../containers/intensityrange'
 import Graphs from '../containers/graphs'
 import { toHumanSize } from '../sagas/helpers'
 
 const updateLocalHashrateInterval = 60000
 const updatePoolHashrateInterval = 10000
+const updateHashRateInterval = 2000
 
 class UnlockedWallet extends React.Component {
 
@@ -13,37 +19,30 @@ class UnlockedWallet extends React.Component {
         super(props)
     }
 
-    getHashRateForDisplay () {
-        const { hashRate } = this.props
-        if (hashRate === '0.00 MH/s') {
-            return hashRate
-        } else {
-            // need to use the same format for hashrates
-            const humanSize = toHumanSize(hashRate)
-            return `${humanSize.hashrate} ${humanSize.unit}`
+    getHashRateForDisplay (value) {
+        // need to use the same format for hashrates
+        const humanSize = toHumanSize(value)
+        return `${humanSize.hashrate} ${humanSize.unit}`
+    }
+
+    componentDidUpdate(prevProps) {
+        const { mining } =  this.props
+        if (!mining && prevProps.mining) {
+            clearInterval(this.interval)
+            clearInterval(this.hashRateInterval)
         }
-    }
-
-    getAcceptedSharesEfficiency () {
-        const { sharesEfficiency } = this.props
-        if (!sharesEfficiency) return 0
-        const { accepted, submitted } = sharesEfficiency
-        return submitted && (accepted * 100 / submitted).toFixed(2) || 0
-    }
-
-    changeChartType (type) {
-        const { actions } = this.props
-        actions.changeChartType(type)
-    }
+      }
 
     miningActionOnClick ()  {
         const { mining, actions, miningpid, miningType } = this.props
         if (mining) {
-            clearInterval(this.interval)
             actions.stopMiner(miningpid)
         } else {
+            this.hashRateInterval = setInterval(() => {
+                actions.getHashRate()
+            }, updateHashRateInterval)
             if (miningType == 'pool') {
-                this.changeChartType('hashrate')
+                actions.changeChartType('hashrate')
                 this.interval = setInterval(() => {
                     actions.getCurrentHashrate()
                 }, updatePoolHashrateInterval)
@@ -58,63 +57,23 @@ class UnlockedWallet extends React.Component {
     }
 
     render () {
-        const { miningType, mining, chartType, balance } = this.props
-        const accepted = this.getAcceptedSharesEfficiency()
-        const rejected = accepted && (100 - accepted).toFixed(2) || 0
-        const unpaidBalance = balance && balance.unpaid || 0
+        const { mining } = this.props
 
         return(
             <div className="content space-between">
                 <div className="top-row">
+                    <IntensityRange />
                     <PoolDropdown />
                     <div className={`button miner-button ${mining ? "stop" : "start"}-button`} onClick={() => this.miningActionOnClick()}>
                         <div className="button-icon"></div>
-                        <span>{mining ?  "Stop miner" : "Start miner" }</span>
+                        <span>{mining ?  "Stop Miner" : "Start Miner" }</span>
                     </div>
                 </div>
                 <div className="data-cards">
-                    <div style={{cursor: 'pointer'}} className="item" disabled={ mining || chartType === 'hashrate' ? '' : 'disabled' } onClick={()=> this.changeChartType('hashrate')}>
-                        {mining ? (<b>{this.getHashRateForDisplay()}</b>) : (<b>&#8211;</b>) }
-                        <small></small>
-                        <span>Current hash rate</span>
-                    </div>
-                    <div className="item" hidden></div>
-                    {miningType == 'pool' &&
-                        <div style={{cursor: 'pointer'}} className="item" disabled={ mining || chartType === 'shares' ? '' : 'disabled' } onClick={()=> this.changeChartType('shares')}>
-                            { mining ? (
-                                    <div>
-                                        <b>{accepted}%</b>
-                                        <small className="red">{rejected}% rejected</small>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        <b>&#8211;</b>
-                                        <small></small>
-                                    </div>
-                                )
-                            }
-                            <span>Shares Efficiency</span>
-                        </div>
-                    }
-                    {miningType == 'local' &&
-                        <div hidden className="item" disabled={ chartType !== 'blocks' ? 'disabled' : '' }>
-                            <b>1</b>
-                            <small></small>
-                            <span>Blocks Found</span>
-                        </div>
-                    }
-                    <div className="item" hidden={miningType === 'local'}>
-                        <div className="balance"><i className="fa fa-info-circle"></i>
-                        <div className="info">
-                            Minimum payout: 25 SEN
-                            <br/>
-                            Payout Frequency: 24hrs
-                        </div>
-                        </div>
-                        <b><span>{ unpaidBalance }</span> <span> SEN</span></b>
-                        <small></small>
-                        <span>Unpaid balance</span>
-                    </div>
+                    <HashRate />
+                    <PoolHashRate />
+                    <PoolStats />
+                    <UnpaidBalance />
                 </div>
                 <Graphs />
             </div>
@@ -123,9 +82,8 @@ class UnlockedWallet extends React.Component {
 }
 
 UnlockedWallet.propTypes = {
-    walletUnlocked: PropTypes.bool.isRequired,
     mining: PropTypes.bool.isRequired,
-    balance: PropTypes.object.isRequired,
+    miningType: PropTypes.string.isRequired,
 }
 
 export default UnlockedWallet

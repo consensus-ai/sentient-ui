@@ -3,6 +3,9 @@ import { takeEvery, delay, eventChannel, END } from 'redux-saga'
 import { sentientdCall, startMiningProcess, poolServerCall, formatHashrate, formatHistory, getHashRate } from './helpers.js'
 import * as actions from '../actions/miner.js'
 import * as constants from '../constants/miner.js'
+import * as errors from '../constants/error.js'
+import { remote } from 'electron'
+const analytics = remote.getGlobal('analytics')
 import { List } from 'immutable'
 const groupOptions = {
 	86400: 600, // 10 minutes
@@ -10,6 +13,7 @@ const groupOptions = {
 	2592000: 18000, // 5 hours
 }
 let hashrates = []
+let stopFromAction
 
 // Send an error notification.
 const sendError = (e) => {
@@ -63,6 +67,24 @@ function* getMiningTypeSaga() {
 	yield put(actions.setMiningType(miningType))
 }
 
+// Load mining type from config
+function* getIntensitySaga() {
+	let intensity = SentientAPI.config.attr('intensity')
+	yield put(actions.setIntensity(intensity))
+}
+
+// Save intensity type from config
+function* setIntensitySaga(action) {
+	const intensity = action.intensity
+	try {
+		SentientAPI.config.attr('intensity', intensity)
+		SentientAPI.config.save()
+	} catch (e) {
+		console.error(`error saving config: ${e.toString()}`)
+	}
+	yield put(actions.setIntensity(intensity))
+}
+
 // Checking for Miner Payout Address, create a new if null
 function* getPayoutAddress() {
 	let payoutAddress = SentientAPI.config.attr('payoutAddress')
@@ -84,16 +106,21 @@ function* getPayoutAddress() {
 // Executing start miner command
 function* startMinerSaga() {
 	try {
+		stopFromAction = false
 		const process = yield startMiningProcess()
-		SentientAPI.sentientMinerPid = process.pid
+		// Send GA on open APP
+		analytics.event('App', 'start-miner', {p: '/miner'}).send()
 		yield put(actions.setMiningStatus(true, process.pid))
 		const channel = eventChannel(emitter => {
 			process.on('error', (err) => {
-				sendError('Sentient Miner process is crashed')
+				sendError('Sentient Miner has experienced a fatal error')
 				emitter({ stop:  true })
 				emitter(END)
 			})
 			process.on('exit', (code) => {
+				if (!stopFromAction && (code === 2 || code === 1)) {
+					sendError(errors.MINER_ERROR)
+				}
 				emitter({ stop:  true })
 				emitter(END)
 			})
@@ -119,6 +146,7 @@ function* stopMinerSaga(action) {
 	try {
 		yield put(actions.setMiningStatus(false, null))
 		if(action) {
+			stopFromAction = true
 			process.kill(action.pid)
 		}
 	} catch (e) {
@@ -140,7 +168,16 @@ function* getSharesEfficiency(address) {
 	try {
 		return yield poolServerCall(`/pool/clients/${address}/shares/stats`)
 	} catch (e) {
-		return { submitted: 0, accepted: 0, rejected: 0, stale:0 }
+		return { submitted: 0, accepted: 0, rejected: 0, stale: 0 }
+	}
+}
+
+// Get Pool HashRate
+function* getPoolHashRate() {
+	try {
+		return yield poolServerCall(`/pool/hashrate`)
+	} catch (e) {
+		return { hashrate: 0 }
 	}
 }
 
@@ -151,11 +188,13 @@ function* getDataForDisplaySaga(action) {
 
 		const balance = yield call(getUnpaidBalance, payoutAddress)
 		const sharesEfficiency = yield call(getSharesEfficiency, payoutAddress)
+		const poolHashRate =  yield call(getPoolHashRate)
 
 		yield getHashrateHistorySaga(action)
 		yield getPoolStatsHistorySaga(action)
 		yield put(actions.updateSharesEfficiency(sharesEfficiency))
 		yield put(actions.updateUnpaidBalance(balance))
+		yield put(actions.updatePoolHashRate(poolHashRate.hashrate))
 	} catch (e) {
 		console.error('error fetching data for display')
 		console.error(e)
@@ -228,7 +267,6 @@ export function* dataFetcher() {
 	while (true) {
 		let tasks = []
 		tasks = tasks.concat(yield fork(getWalletBalanceSaga))
-		tasks = tasks.concat(yield fork(getCurrentHashRateSaga))
 		yield join(...tasks)
 		yield race({
 			task: call(delay, 2000),
@@ -261,6 +299,14 @@ export function* watchGetMiningType() {
 	yield* takeEvery(constants.GET_MINING_TYPE, getMiningTypeSaga)
 }
 
+export function* watchGetIntensity() {
+	yield* takeEvery(constants.GET_INTENSITY, getIntensitySaga)
+}
+
+export function* watchSetIntensity() {
+	yield* takeEvery(constants.CHANGE_INTENSITY, setIntensitySaga)
+}
+
 export function* watchGetHashrateHistory() {
 	yield* takeEvery(constants.GET_HASHRATE_HISTORY, getHashrateHistorySaga)
 }
@@ -271,4 +317,8 @@ export function* watchGetCurrentHashrate() {
 
 export function* watchGetPoolStatsHistory() {
 	yield* takeEvery(constants.GET_POOL_STATS_HISTORY, getPoolStatsHistorySaga)
+}
+
+export function* watchGetCurrentHashRate() {
+	yield* takeEvery(constants.GET_HASH_RATE, getCurrentHashRateSaga)
 }

@@ -1,12 +1,16 @@
 # Technologies
 
 We use three major tools in this application and they follow this hierarchy:
-Javascript -> Node/NPM -> Electron. 
+Javascript -> Node/NPM -> Electron.
 
 ### Javascript
 
 This should be familiar to most webdevs. We mostly adhere to [certain style
 conventions](http://javascript.crockford.com/code.html)
+
+### [Reactjs](https://github.com/facebook/react/)
+
+React is a JavaScript library for building user interfaces.
 
 ### [NPM](https://www.npmjs.com/)
 
@@ -37,7 +41,7 @@ for creating cross-platform desktop applications.
 
 Making this a desktop application instead of a webapp gives us libraries to
 access filepaths and other OS resources (via Node libraries) that a webapp
-would be limited from. 
+would be limited from.
 
 The code does not have to adhere to compatibility for all browsers (looking
 at you, Internet Explorer) because electron is run on chromium. This extends
@@ -46,3 +50,8 @@ from JS to CSS (with the use of -webkit- rules when applicable).
 We do occasionally use ES2015 and ES2016 conventions and syntax in the code
 base with no worries for the same reason
 
+### [Recharts](https://github.com/recharts/recharts)
+
+Recharts is a Redefined chart library built with React and D3. The main purpose of
+this library is to help you to write charts in React applications without any pain.
+It is using for displaying poll stats history and hashrate history graphs in the Sentient-UI.

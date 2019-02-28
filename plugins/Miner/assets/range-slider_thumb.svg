@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13px" height="15px" viewBox="0 0 13 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.3 (67297) - http://www.bohemiancoding.com/sketch -->
+    <title>Polygon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Miner-v3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1" transform="translate(-743.000000, -114.000000)" fill="#90A2BC" fill-rule="nonzero">
+            <g id="Top-row" transform="translate(605.000000, 102.000000)">
+                <g id="Select">
+                    <path d="M146.080679,12.7566795 L149.580679,14.9264141 C150.463141,15.4734735 151,16.4379347 151,17.4762087 L151,21.5237913 C151,22.5620653 150.463141,23.5265265 149.580679,24.0735859 L146.080679,26.2433205 C145.112377,26.8435942 143.887623,26.8435942 142.919321,26.2433205 L139.419321,24.0735859 C138.536859,23.5265265 138,22.5620653 138,21.5237913 L138,17.4762087 C138,16.4379347 138.536859,15.4734735 139.419321,14.9264141 L142.919321,12.7566795 C143.887623,12.1564058 145.112377,12.1564058 146.080679,12.7566795 Z" id="Polygon"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

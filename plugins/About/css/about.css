@@ -8,8 +8,9 @@
     background-color: #FFFFFF;
     background-repeat: no-repeat;
     padding: 60px 40px 40px;
-
     height: auto;
+    min-height: 100%;
+    box-sizing: border-box;
     position: absolute;
     bottom: 0;
     top: 0;
@@ -32,12 +33,12 @@
     border-radius: 6px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     background: white;
-
     width: 100%;
     height: 100%;
     padding: 70px;
 
     box-sizing: border-box;
+    overflow-y: auto;
 }
 
 .about .content.space-between {
@@ -65,16 +66,27 @@
     align-content: center;
     justify-content: center;
     align-items: center;
-    /*margin-bottom: 15px;*/
-
     cursor: pointer;
-
-    margin: 0 auto 15px;
     transition: .3s;
 }
 
 .about .button:hover {
     background-color: #396AB0;
+}
+
+.about .button.check-update-button {
+    margin: 0 auto 40px;
+}
+
+.about .logo {
+    letter-spacing: -0.03em;
+    padding-bottom: 30px;
+}
+
+.about .logo img {
+    width: 190px;
+    display: block;
+    margin: 0 auto 23px;
 }
 
 .button:active {
@@ -129,7 +141,7 @@
     content: "";
     width: 20px;
     height: 15px;
-    background-image: url(../assets/open-data-button.png);
+    background-image: url('../assets/open-data-button.png');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -186,29 +198,15 @@
     position: relative;
     background: url('../assets/load.svg') no-repeat center;
     background-size: cover;
-    -webkit-animation-name: spin;
-    -webkit-animation-duration: 3000ms;
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-timing-function: linear;
-    -moz-animation-name: spin;
-    -moz-animation-duration: 3000ms;
-    -moz-animation-iteration-count: infinite;
-    -moz-animation-timing-function: linear;
-    -ms-animation-name: spin;
-    -ms-animation-duration: 3000ms;
-    -ms-animation-iteration-count: infinite;
-    -ms-animation-timing-function: linear;
-    -o-transition: rotate(3600deg);
+    animation-name: spin;
+    animation-duration: 3000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
-@-moz-keyframes spin {
-    from { -moz-transform: rotate(0deg); }
-    to { -moz-transform: rotate(360deg); }
-}
-@-webkit-keyframes spin {
-    from { -webkit-transform: rotate(0deg); }
-    to { -webkit-transform: rotate(360deg); }
-}
+
 @keyframes spin {
-    from {transform:rotate(0deg);}
-    to {transform:rotate(360deg);}
+    from {
+        transform: rotate(0deg); }
+    to {
+        transform: rotate(360deg); }
 }

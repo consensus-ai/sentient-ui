@@ -3,6 +3,7 @@
 ## Prerequisites
 
 - [sentientd](https://github.com/consensus-ai/sentient-network)
+- [sentient-miner](https://github.com/consensus-ai/sentient-miner)
 - [node & npm 6.9.0 LTS](https://nodejs.org/download/)
 Earlier node versions may work, but they do not have guaranteed support.
 - `libxss` is a required dependency for Electron on Debian, it can be installed with `sudo apt-get install libxss1`.
@@ -15,26 +16,18 @@ Earlier node versions may work, but they do not have guaranteed support.
 
 Run from source
 
-0. Install dependencies mentioned above
-1. Download or `git clone` the repository
-2. `npm install`
-3. `npm start`
+1. Install dependencies mentioned above
+2. Download or `git clone` the repository
+3. `npm install`
+4. `npm start`
+
+`NOTE` if you are running from source please specify path to sentientd and sentient-miner using these environment variables: _SENTIENTD_PATH_ and _SENTIENT_MINER_PATH_.
 
 ## Build new release
 
-### Prerequisites
-
-For Mac OS
-
-0. brew install wine
-1. brew install gnu-sed --with-default-names
-2. brew install wget
-
-Steps for bulding new release
-
-0. Download latest [Sentient Network](https://github.com/consensus-ai/sentient-network/releases) files and put to home directory.
-1. Bump [version](https://github.com/consensus-ai/sentient-ui/blob/26c672315cff0380e7481def00852455c974b6d6/package.json#L3)
-2. Run from working directory `./release.sh PRIVATE_KEY PUBLIC_KEY [UI_VERSION] [SENTIENT-NETWORK_VERSION] [ELECTRON_VERSION]`
+1. Bump [version](https://github.com/consensus-ai/sentient-ui/blob/master/package.json#L3)
+2. Run commad `npm run release`. This command will upload all needed files to S3 bucket for auto-updating app.
+3. From working directory `./sign.sh PRIVATE_KEY PUBLIC_KEY [UI_VERSION]`. This command will create a signed archive for github release files.
 
 ## [Contributing](doc/Developers.md)
 

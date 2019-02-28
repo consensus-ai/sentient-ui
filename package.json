@@ -115,8 +115,7 @@
     ],
     "mac": {
       "category": "Sentient-UI.app.category.type",
-      "icon": "assets/icon.icns",
-      "identity": null
+      "icon": "assets/icon.icns"
     },
     "win": {
       "target": [

@@ -114,7 +114,7 @@
       }
     ],
     "mac": {
-      "category": "Sentient-UI.app.category.type",
+      "category": "public.app-category.finance",
       "icon": "assets/icon.icns"
     },
     "win": {
@@ -125,7 +125,7 @@
     },
     "linux": {
       "icon": "assets/linux-icon.png",
-      "category": "System"
+      "category": "Economy"
     },
     "publish": [
       {

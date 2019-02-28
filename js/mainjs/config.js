@@ -5,8 +5,8 @@ import { version } from '../../package.json'
 import semver from 'semver'
 import os from 'os'
 
-const defaultSentientdPath = Path.join(app.getAppPath(), '../sentient-network', (process.platform === 'win32' ? 'sentientd.exe' : 'sentientd'))
-const defaultSentientMinerPath =  Path.join(app.getAppPath(), '../sentient-miner', (process.platform === 'win32' ? 'sentient-miner.exe' : 'sentient-miner'))
+const defaultSentientdPath = process.env.SENTIENTD_PATH || Path.join(app.getAppPath(), '../sentient-network', (process.platform === 'win32' ? 'sentientd.exe' : 'sentientd'))
+const defaultSentientMinerPath =  process.env.SENTIENT_MINER_PATH || Path.join(app.getAppPath(), '../sentient-miner', (process.platform === 'win32' ? 'sentient-miner.exe' : 'sentient-miner'))
 const defaultGenesisFile = Path.join(app.getAppPath(), '../sentient-network', 'config', 'genesis.json')
 const defaultDataDir = Path.join(app.getPath('userData'), 'data')
 const defaultHashRateLogsUrl = 'http://localhost:5555/hashrate'
@@ -19,7 +19,7 @@ const intensity = 18
 // The default settings
 const defaultConfig = {
 	sentientd: {
-		path: process.env.SENTIENTD_PATH || defaultSentientdPath,
+		path: defaultSentientdPath,
 		datadir: process.env.SENTIENTD_DATA_DIR || defaultDataDir,
 		genesisfile: process.env.SENTIENTD_GENESIS_FILE || defaultGenesisFile,
 		address: process.env.SENTIENTD_API_ADDR || '127.0.0.1:9910',
@@ -27,7 +27,7 @@ const defaultConfig = {
 		detached: false,
 	},
 	sentient_miner: {
-		path: process.env.SENTIENT_MINER_PATH || defaultSentientMinerPath,
+		path: defaultSentientMinerPath,
 		pool_host: process.env.SENTIENT_POOL_HOST || defaultPoolHostUrl,
 		stratum_host: process.env.SENTIENT_STRATUM_HOST || defaultStratumHostUrl,
 		hashrate_host: defaultHashRateLogsUrl,

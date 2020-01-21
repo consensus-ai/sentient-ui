@@ -159,7 +159,7 @@ export const toHumanSize = (hashrate) => {
   }
   return {
     hashrate: (parseFloat(hashrate) / (denominator / 1000)).toFixed(2),
-    orighashrate: (parseFloat(hashrate) / 1000000).toFixed(2),
+    orighashrate: parseFloat(hashrate) / 1000000,
     unit: unit
   }
 }

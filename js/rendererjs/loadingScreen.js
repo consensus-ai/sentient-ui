@@ -120,7 +120,7 @@ export default async function loadingScreen(initUI) {
 	// check sentientdConfig.path, and ask for a new path if sentientd doesn't exist.
 	if (!await sentientdExists()) {
 		// config.path doesn't exist.  Prompt the user for sentientd's location
-		dialog.showErrorBox('Sentientd not found', 'Sentient-UI couldn\'t locate sentientd.  Please navigate to sentientd.')
+		dialog.showErrorBox('Sentientd not found', 'Sentient Hub couldn\'t locate sentientd.  Please navigate to sentientd.')
 		const sentientdPath = dialog.showOpenDialog({
 			title: 'Please locate sentientd.',
 			properties: ['openFile'],
@@ -143,7 +143,7 @@ export default async function loadingScreen(initUI) {
 	// check sentientdConfig.genesisfile, and ask for a new genesisfile if it doesn't exist.
 	if (!await genesisFileExists()) {
 		// config.genesisfile doesn't exist. Prompt the user for location
-		dialog.showErrorBox('Genesis file not found', 'Sentient-UI couldn\'t locate the genesis file.  Please navigate to it.')
+		dialog.showErrorBox('Genesis file not found', 'Sentient Hub couldn\'t locate the genesis file.  Please navigate to it.')
 		const genesisFilePaths = dialog.showOpenDialog({
 			title: 'Please locate the genesis file.',
 			properties: ['openFile'],

@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 // Send an error notification.
 const sendError = (e) => {
 	SentientAPI.showError({
-		title: 'Sentient-UI Wallet Error',
+		title: 'Sentient Hub Wallet Error',
 		content: userFriendlyError(e),
 	})
 }

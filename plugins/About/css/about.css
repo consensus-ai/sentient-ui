@@ -74,6 +74,13 @@
     background-color: #396AB0;
 }
 
+.about .row-bottom {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .about .button.check-update-button {
     margin: 0 auto 40px;
 }

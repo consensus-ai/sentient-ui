@@ -86,8 +86,8 @@ class Graphs extends React.Component {
           <PoolStatsGraph poolHistory={poolHistory} mining={mining} />
         )}
         <div className="footer">
-          { chartType === 'shares' && miningType !== 'local' && <span>{`${this.state.selectedDuration} Shares`}</span> }
-          { chartType === 'hashrate' && miningType !== 'local' && <span>{`${this.state.selectedDuration} Average Hash Rate`}</span> }
+          { chartType === 'shares' && miningType !== 'local' && <span>{`${selectedDuration} Shares`}</span> }
+          { chartType === 'hashrate' && miningType !== 'local' && <span>{`${selectedDuration} Average Hash Rate`}</span> }
           { chartType === 'hashrate' && miningType === 'local' && <span>Last 4 Hours Average Hash Rate</span> }
           { miningType !== 'local' && (
             <ul>

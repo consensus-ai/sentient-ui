@@ -19,7 +19,7 @@ installResources() {
 	platform=$1
 	os=$2
 
-	wget "https://s3.us-east-2.amazonaws.com/consensus-ai-releases/sentient-network-tools/sentient-network-tools-${platform}-amd64.zip"
+	wget "https://s3.us-east-2.amazonaws.com/consensus-ai-releases/sentient-network-tools-new/sentient-network-tools-${platform}-amd64.zip"
 
 	unzip "sentient-network-tools-${platform}-amd64.zip" -d tools
 
@@ -32,7 +32,7 @@ installResources() {
 	fi
 
 	unzip tools/sentient-miner-*.zip -d tools/${os}/sentient-miner
-	mv tools/${os}/sentient-miner/sentient-miner-* tools/${os}/sentient-miner/${bin}
+	mv tools/${os}/sentient-miner/sentient-miner* tools/${os}/sentient-miner/${bin}
 
 	# moving miner code to the correct folder
 	unzip tools/sentient-network-*.zip -d tools/${os}

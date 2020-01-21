@@ -18,7 +18,7 @@ let stopFromAction
 // Send an error notification.
 const sendError = (e) => {
 	SentientAPI.showError({
-		title: 'Sentient-UI Wallet Error',
+		title: 'Sentient Hub Wallet Error',
 		content: typeof e.message !== 'undefined' ? e.message : e.toString(),
 	})
 }

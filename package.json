@@ -1,6 +1,6 @@
 {
   "name": "sentient-ui",
-  "version": "1.1.1",
+  "version": "1.1.0",
   "main": "dist/main.js",
   "author": "Consensus AI",
   "description": "A UI application for interfacing with Sentient Network",
@@ -131,7 +131,7 @@
       "target": [
         "nsis"
       ],
-      "icon": "assets/app-icon.png"
+      "icon": "assets/icon.ico"
     },
     "linux": {
       "icon": "assets/app-icon.png",

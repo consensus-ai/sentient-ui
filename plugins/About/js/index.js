@@ -5,7 +5,7 @@ import yaml from 'js-yaml'
 import request from 'request'
 const dialog = remote.dialog
 const fs = remote.require('fs')
-const consensusUrl = 'https://consensus.ai/?utm_source=Sentient-UI'
+const consensusUrl = 'https://sentient.org/?utm_source=Sentient-UI'
 
 // Set UI version via package.json.
 document.getElementsByClassName('ui-version')[0].innerHTML += VERSION

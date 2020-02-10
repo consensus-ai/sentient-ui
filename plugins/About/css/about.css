@@ -85,15 +85,10 @@
     margin: 0 auto 40px;
 }
 
-.about .logo {
-    letter-spacing: -0.03em;
-    padding-bottom: 30px;
-}
-
 .about .logo img {
-    width: 190px;
+    width: 130px;
     display: block;
-    margin: 0 auto 23px;
+    margin: 0 auto;
 }
 
 .button:active {

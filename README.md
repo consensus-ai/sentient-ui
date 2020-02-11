@@ -4,7 +4,7 @@
 
 - [sentientd](https://github.com/consensus-ai/sentient-network)
 - [sentient-miner](https://github.com/consensus-ai/sentient-miner)
-- [node & npm 6.9.0 LTS](https://nodejs.org/download/)
+- [node 10.16.3 & npm 6.9.0 LTS](https://nodejs.org/download/)
 Earlier node versions may work, but they do not have guaranteed support.
 - `libxss` is a required dependency for Electron on Debian, it can be installed with `sudo apt-get install libxss1`.
 
@@ -26,7 +26,7 @@ Run from source
 ## Build new release
 
 1. Bump [version](https://github.com/consensus-ai/sentient-ui/blob/master/package.json#L3)
-2. Run commad `npm run release`. This command will upload all needed files to S3 bucket for auto-updating app.
+2. Run commad `APPLE_ID=<REDACTED> APPLE_PW=<REDACTED> npm run release`. This command will upload all needed files to S3 bucket for auto-updating app.
 3. From working directory `./sign.sh PRIVATE_KEY PUBLIC_KEY [UI_VERSION]`. This command will create a signed archive for github release files.
 
 ## [Contributing](doc/Developers.md)

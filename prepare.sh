@@ -19,7 +19,7 @@ installResources() {
 	platform=$1
 	os=$2
 
-	wget "https://s3.us-east-2.amazonaws.com/consensus-ai-releases/sentient-network-tools-new/sentient-network-tools-${platform}-amd64.zip"
+	wget "https://s3.us-east-2.amazonaws.com/consensus-ai-releases/sentient-network-tools/sentient-network-tools-${platform}-amd64.zip"
 
 	unzip "sentient-network-tools-${platform}-amd64.zip" -d tools
 

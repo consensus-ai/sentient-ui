@@ -5,7 +5,7 @@ import { shell } from 'electron'
 
 const TransactionList = ({ transactions, ntransactions, actions, filter }) => {
 
-	const explorerUrl = 'https://explorer.sentient.org/transaction/'
+	const explorerUrl = 'https://sentient.org/network-explorer/transaction/'
 
 	if (transactions.size === 0) {
 		return (

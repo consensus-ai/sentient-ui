@@ -18,7 +18,7 @@ let stopFromAction
 // Send an error notification.
 const sendError = (e) => {
 	SentientAPI.showError({
-		title: 'Sentient-UI Wallet Error',
+		title: 'Sentient Hub Wallet Error',
 		content: typeof e.message !== 'undefined' ? e.message : e.toString(),
 	})
 }
@@ -166,7 +166,8 @@ function* getUnpaidBalance(address) {
 // Getting Shares Efficiency
 function* getSharesEfficiency(address) {
 	try {
-		return yield poolServerCall(`/pool/clients/${address}/shares/stats`)
+		const minerName = SentientAPI.config.attr('minerName')
+		return yield poolServerCall(`/pool/clients/${address}/workers/${minerName}/shares/stats`)
 	} catch (e) {
 		return { submitted: 0, accepted: 0, rejected: 0, stale: 0 }
 	}

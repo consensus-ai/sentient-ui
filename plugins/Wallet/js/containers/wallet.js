@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import { showSendView } from '../actions/wallet.js'
 
 const mapStateToProps = (state) => ({
-	senfundbalance: state.wallet.get('senfundbalance'),
   showTransactionListView: state.wallet.get('showTransactionListView'),
 	showReceiveView: state.wallet.get('showReceiveView'),
 	showSendView: state.wallet.get('showSendView'),

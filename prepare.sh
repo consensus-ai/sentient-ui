@@ -32,7 +32,7 @@ installResources() {
 	fi
 
 	unzip tools/sentient-miner-*.zip -d tools/${os}/sentient-miner
-	mv tools/${os}/sentient-miner/sentient-miner-* tools/${os}/sentient-miner/${bin}
+	mv tools/${os}/sentient-miner/sentient-miner* tools/${os}/sentient-miner/${bin}
 
 	# moving miner code to the correct folder
 	unzip tools/sentient-network-*.zip -d tools/${os}

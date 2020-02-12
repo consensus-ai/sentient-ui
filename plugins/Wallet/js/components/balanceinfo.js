@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const BalanceInfo = ({synced, confirmedbalance, unconfirmedbalance, senfundbalance, senclaimbalance}) => {
+const BalanceInfo = ({synced, confirmedbalance, unconfirmedbalance}) => {
 	let walletIconClassName = synced ? 'balance-info-synced-icon' : 'balance-info-not-synced-icon'
 	walletIconClassName = 'balance-info-icon ' + walletIconClassName
 
@@ -28,8 +28,6 @@ BalanceInfo.propTypes = {
 	synced: PropTypes.bool.isRequired,
 	confirmedbalance: PropTypes.string.isRequired,
 	unconfirmedbalance: PropTypes.string.isRequired,
-	senfundbalance: PropTypes.string.isRequired,
-	senclaimbalance: PropTypes.string.isRequired,
 }
 export default BalanceInfo
 

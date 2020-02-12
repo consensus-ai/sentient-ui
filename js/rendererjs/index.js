@@ -70,10 +70,9 @@ const shutdown = async () => {
 		}
 	}
 	// Kill all miner process on exit app
-	let processName = (process.platform === 'win32' ? 'sentient-miner.exe' : 'sentient-miner')
-	await find('name', processName, true).then((list) => {
-		list.forEach((minerProcess) => { process.kill(minerProcess.pid) })
-	})
+	const processName = (process.platform === 'win32' ? 'sentient-miner.exe' : 'sentient-miner')
+	const list = await find('name', processName)
+	list.forEach((minerProcess) => process.kill(minerProcess.pid))
 
 	mainWindow.destroy()
 }
@@ -106,7 +105,7 @@ window.onbeforeunload = () => {
 
 		if (process.platform === 'win32' && !hasClosed) {
 			mainWindow.tray.displayBalloon({
-				title: 'Sentient-UI information',
+				title: 'Sentient Hub information',
 				content: 'Sentient is still running.  Right click this tray icon to quit or restore Sentient.',
 			})
 			hasClosed = true

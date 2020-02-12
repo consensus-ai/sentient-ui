@@ -21,7 +21,7 @@ export default function(config) {
 	const iconPath = Path.join(__dirname, '../', 'assets', 'icon.png')
 	const mainWindow = new BrowserWindow({
 		icon:   iconPath,
-		title:  'Sentient-UI',
+		title:  'Sentient Hub',
 	})
 	// Set mainWindow's closeToTray flag from config.
 	// This should be used in the renderer to cancel close() events using window.onbeforeunload
@@ -51,7 +51,7 @@ export default function(config) {
 
 		// Set the about panel's properties
 		app.setAboutPanelOptions({
-			applicationName: 'Sentient-UI',
+			applicationName: 'Sentient Hub',
 			applicationVersion: version,
 			copyright: 'Consensus Foundation.',
 			version: releaseName,

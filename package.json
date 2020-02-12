@@ -1,6 +1,6 @@
 {
   "name": "sentient-ui",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "main": "dist/main.js",
   "author": "Consensus AI",
   "description": "A UI application for interfacing with Sentient Network",
@@ -24,7 +24,7 @@
     "electron-log": "^2.2.17",
     "electron-react-devtools": "^0.5.3",
     "enzyme": "^2.8.0",
-    "eslint": "^3.18.0",
+    "eslint": ">=4.18.2",
     "eslint-plugin-babel": "^4.1.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-react": "^7.0.1",
@@ -49,11 +49,13 @@
     "ajv": "^6.5.5",
     "babel-polyfill": "^6.26.0",
     "bignumber.js": "^4.1.0",
+    "electron-notarize": "^0.2.1",
     "electron-updater": "^4.0.6",
     "find-process": "^1.2.1",
     "graceful-fs": "^4.1.11",
     "hoist-non-react-statics": "^3.1.0",
     "immutable": "^3.8.1",
+    "js-yaml": "^3.13.1",
     "mkdirp": "^0.5.1",
     "moment": "^2.22.2",
     "react": "^15.6.2",
@@ -84,9 +86,9 @@
     "lint-fix": "eslint --fix ./index.js ./plugins ./js ./test"
   },
   "build": {
-    "appId": "Sentient-UI.app",
+    "appId": "SentientHub.app",
     "artifactName": "sentient-ui-v${version}-${os}.${ext}",
-    "productName": "Sentient-UI",
+    "productName": "Sentient Hub",
     "directories": {
       "output": "release"
     },
@@ -103,6 +105,10 @@
         ]
       }
     ],
+    "afterSign": "build/afterSignHook.js",
+    "dmg": {
+      "sign": false
+    },
     "extraResources": [
       {
         "from": "tools/${os}/sentient-miner",
@@ -115,7 +121,11 @@
     ],
     "mac": {
       "category": "public.app-category.finance",
-      "icon": "assets/icon.icns"
+      "icon": "assets/icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
     },
     "win": {
       "target": [
@@ -124,7 +134,7 @@
       "icon": "assets/icon.ico"
     },
     "linux": {
-      "icon": "assets/linux-icon.png",
+      "icon": "assets/app-icon.png",
       "category": "Economy"
     },
     "publish": [

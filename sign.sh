@@ -16,6 +16,7 @@ uiVersion=${3:-v1.0.3}
 cd release
 mkdir -p github
 cd github
+cp ../../LICENSE LICENSE
 
 # make signed zip archives for each release
 for os in darwin linux windows; do
@@ -29,8 +30,9 @@ for os in darwin linux windows; do
 			releaseFileName="sentient-ui-$uiVersion-linux.AppImage"
 			chmod +x ../$releaseFileName
 		fi
-
-		zip -r $zipFileName ../../LICENSE ../$releaseFileName
+		cp ../$releaseFileName $releaseFileName
+		zip -r $zipFileName LICENSE $releaseFileName
+		rm $releaseFileName
 
 		openssl dgst -sha256 -sign $keyFile -out $zipFileName.sig $zipFileName
 		if [[ -n $pubkeyFile ]]; then

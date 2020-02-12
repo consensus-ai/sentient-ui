@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 // Send an error notification.
 const sendError = (e) => {
 	SentientAPI.showError({
-		title: 'Sentient-UI Wallet Error',
+		title: 'Sentient Hub Wallet Error',
 		content: userFriendlyError(e),
 	})
 }
@@ -174,14 +174,13 @@ function* getBalanceSaga() {
 	try {
 		const response = yield sentientdCall('/wallet')
 		const confirmed = SentientAPI.hastingsToSen(response.confirmedsenbalance)
-		const senclaimbalance = SentientAPI.hastingsToSen(response.senclaimbalance)
 		const unconfirmedIncoming = SentientAPI.hastingsToSen(response.unconfirmedincomingsen)
 		const unconfirmedOutgoing = SentientAPI.hastingsToSen(response.unconfirmedoutgoingsen)
 		const unconfirmed = unconfirmedIncoming.minus(unconfirmedOutgoing)
 
 		const consensusResponse = yield sentientdCall('/consensus')
 		const synced = consensusResponse.synced
-		yield put(actions.setBalance(synced, confirmed.round(2).toString(), unconfirmed.round(2).toString(), response.senfundbalance, senclaimbalance.round(2).toString()))
+		yield put(actions.setBalance(synced, confirmed.round(2).toString(), unconfirmed.round(2).toString()))
 	} catch (e) {
 		console.error('error fetching balance: ' + e.toString())
 	}

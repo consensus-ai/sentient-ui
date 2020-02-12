@@ -11,8 +11,6 @@ const initialState = Map({
 	recovering: false,
 	confirmedbalance: '0',
 	unconfirmedbalance: '0',
-	senfundbalance: '0',
-	senclaimbalance: '0',
 	transactions: List(),
 	ntransactions: 30,
 	filter: true,
@@ -89,8 +87,6 @@ export default function walletReducer(state = initialState, action) {
 			.set('synced', action.synced)
 			.set('confirmedbalance', action.confirmed)
 			.set('unconfirmedbalance', action.unconfirmed)
-			.set('senfundbalance', action.senfunds)
-			.set('senclaimbalance', action.senclaimbalance)
 	case constants.SHOW_MORE_TRANSACTIONS:
 		return state.set(
 			'ntransactions',

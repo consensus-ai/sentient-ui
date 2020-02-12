@@ -21,7 +21,7 @@ import { ToastContainer, Zoom } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 
-const Wallet = ({showBackupPrompt, senfundbalance, showTransactionListView, showReceiveView, showChangePasswordDialog, showSendView, showNewWalletDialog, showRecoveryDialog, unlocked, actions }) => {
+const Wallet = ({showBackupPrompt, showTransactionListView, showReceiveView, showChangePasswordDialog, showSendView, showNewWalletDialog, showRecoveryDialog, unlocked, actions }) => {
 	return (
 		<div className="wallet">
 			<div className="balance-info-container">
@@ -56,7 +56,6 @@ const Wallet = ({showBackupPrompt, senfundbalance, showTransactionListView, show
 }
 
 Wallet.propTypes = {
-	senfundbalance: PropTypes.string.isRequired,
 	showNewWalletDialog: PropTypes.bool,
 	showTransactionListView: PropTypes.bool,
 	showSendView: PropTypes.bool,

@@ -87,21 +87,17 @@ export const formatHistory = (data, timeOffset, fixedDuration) => {
   let result = []
   if(data.length) {
     const formatedData = data.reduce((rv, stats) => {
-      let [time, submitted, accepted, stale] = stats
-      let acceptedOffset = accepted - rv["prev_accepted"]
-      let submittedOffset = submitted - rv["prev_submitted"]
-      let accepted_percent = (acceptedOffset * 100 / submittedOffset).toFixed(2)
+      let [time, submitted, accepted] = stats
+      let accepted_percent = (accepted * 100 / submitted).toFixed(2)
       rv[time] = {
         time: time,
         accepted: accepted_percent,
         rejected: (100 - accepted_percent).toFixed(2),
-        baraccepted: acceptedOffset,
-        barrejected: (submittedOffset - acceptedOffset)
+        baraccepted: accepted,
+        barrejected: (submitted - accepted)
       }
-      rv["prev_accepted"] = accepted
-      rv["prev_submitted"] = submitted
       return rv
-    }, {prev_accepted: 0, prev_submitted: 0})
+    }, {})
 
     while (endPeriod < currentTime) {
       let currentPeriod = formatedData[endPeriod]

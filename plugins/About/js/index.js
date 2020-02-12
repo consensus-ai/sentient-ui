@@ -19,11 +19,11 @@ SentientAPI.call('/daemon/version', (err, result) => {
 	}
 })
 
-function genDownloadLink(version) {
+const genDownloadLink = version => {
 	return `https://s3.us-east-2.amazonaws.com/consensus-ai-releases/sentient-ui/${genFileName(version)}`
 }
 
-async function getVersion() {
+const getVersion = async () => {
 	try {
 		const response = await new Promise((resolve, reject) => {
 			request('https://s3.us-east-2.amazonaws.com/consensus-ai-releases/sentient-ui-test/latest-mac.yml', (err, resp, body) => {
@@ -37,7 +37,7 @@ async function getVersion() {
 	}
 }
 
-function genFileName(version) {
+const genFileName = version => {
 	let releaseFileName = `sentient-ui-v${version}-mac.dmg`
 	const os = platform()
 	if (os === 'linux') {
@@ -48,31 +48,31 @@ function genFileName(version) {
 	return releaseFileName
 }
 
-function showError(err) {
+const showError = err => {
 	let errorMessage = typeof err.message !== 'undefined' ? err.message : err.toString()
 	document.getElementsByClassName("error-container")[0].style.display = 'block'
 	document.getElementsByClassName("error-container")[0].innerHTML = errorMessage
 }
 
-function hideError() {
+const hideError = () => {
 	document.getElementsByClassName("error-container")[0].style.display = 'none'
 	document.getElementsByClassName("error-container")[0].innerHTML = ""
 }
 
-function showProgressBar(version) {
+const showProgressBar = version => {
 	document.getElementsByClassName('mt-60')[0].style.display = 'block'
 	document.getElementsByClassName("mt-60")[0].innerHTML = `A new version ${version} is downloading`
 	document.getElementsByClassName("progress-bar")[0].style.display = 'block'
 }
 
-function showInfoContainer(){
+const showInfoContainer = () =>{
 	document.getElementsByClassName('info-container')[0].style.display = ''
-	setTimeout(function(){
+	setTimeout(() => {
 		document.getElementsByClassName('info-container')[0].style.display = 'none'
 	}, 3000)
 }
 
-function hideInstallButton(version) {
+const hideInstallButton = version => {
 	document.getElementsByClassName('check-update-button')[0].style.display = ''
 	document.querySelector('.progress-bar span').style.display = 'none'
 	document.getElementsByClassName("mt-60")[0].innerHTML = `Something went wrong and version ${version} was not downloaded`
@@ -80,7 +80,7 @@ function hideInstallButton(version) {
 	document.getElementsByClassName("install-update-button")[0].style.display = 'none'
 }
 
-function showInstallButton(filename, version) {
+const showInstallButton = (filename, version) => {
 	document.getElementsByClassName("mt-60")[0].style.display = 'block'
 	document.getElementsByClassName("mt-60")[0].innerHTML = "Version  " + version + "  is ready for install"
 	document.getElementsByClassName("install-update-button")[0].style.display = ''
@@ -92,7 +92,7 @@ function showInstallButton(filename, version) {
 	}
 }
 
-function saveFile(filename, file_url, version) {
+const saveFile = (filename, file_url, version) => {
 	showProgressBar(version)
 	let received_bytes = 0
 	let total_bytes = 0
@@ -112,12 +112,12 @@ function saveFile(filename, file_url, version) {
 	})
 }
 
-function showProgress(received, total) {
+const showProgress = (received, total) => {
 	let percentage = (received * 100) / total
 	document.querySelector('.progress-bar span').style.width = percentage + '%'
 }
 
-async function updateCheck() {
+const updateCheck = async () => {
 	document.getElementsByClassName('load')[0].style.display = 'block'
 	document.getElementsByClassName('check-update-button')[0].style.display = 'none'
 	hideError()

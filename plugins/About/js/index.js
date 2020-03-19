@@ -2,6 +2,7 @@
 import { platform } from 'os'
 import { remote, shell } from 'electron'
 import yaml from 'js-yaml'
+import semver from 'semver'
 import request from 'request'
 const dialog = remote.dialog
 const fs = remote.require('fs')
@@ -26,7 +27,7 @@ const genDownloadLink = version => {
 const getVersion = async () => {
 	try {
 		const response = await new Promise((resolve, reject) => {
-			request('https://s3.us-east-2.amazonaws.com/consensus-ai-releases/sentient-ui-test/latest-mac.yml', (err, resp, body) => {
+			request('https://s3.us-east-2.amazonaws.com/consensus-ai-releases/sentient-ui/latest-mac.yml', (err, resp, body) => {
 				if (err) reject(err)
 				resolve(body)
 			})
@@ -123,7 +124,7 @@ const updateCheck = async () => {
 	hideError()
 	const version = await getVersion()
 	document.getElementsByClassName('load')[0].style.display = 'none'
-	if (version !== VERSION) {
+	if (semver.lt(VERSION, version)) {
 		try {
 			document.getElementsByClassName('info-container')[0].style.display = 'none'
 				dialog.showSaveDialog({

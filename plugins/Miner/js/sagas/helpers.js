@@ -88,11 +88,12 @@ export const formatHistory = (data, timeOffset, fixedDuration) => {
   if(data.length) {
     const formatedData = data.reduce((rv, stats) => {
       let [time, submitted, accepted] = stats
-      let accepted_percent = (accepted * 100 / submitted).toFixed(2)
+      let acceptedPercent = (accepted * 100 / submitted).toFixed(2)
       rv[time] = {
         time: time,
-        accepted: accepted_percent,
-        rejected: (100 - accepted_percent).toFixed(2),
+        accepted: acceptedPercent,
+        rejected: (100 - acceptedPercent).toFixed(2),
+        barsubmitted: submitted,
         baraccepted: accepted,
         barrejected: (submitted - accepted)
       }

@@ -20,7 +20,7 @@ const PoolStatsGraph = ({poolHistory, mining}) => {
       { poolHistory.length > 0 && (
         <ResponsiveContainer width="100%" height={220}>
           <BarChart data={poolHistory} margin={{ top: 60, right: 5 }}>
-            <YAxis dataKey="baraccepted" />
+            <YAxis dataKey="barsubmitted" />
             <Tooltip
               position={{ y: -35 }}
               offset={0}

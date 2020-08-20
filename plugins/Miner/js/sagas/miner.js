@@ -42,9 +42,11 @@ const saveMiningType = (miningType) => {
 function* getWalletBalanceSaga() {
 	try {
 		const wallet    = yield sentientdCall('/wallet')
-		const confirmed = SentientAPI.hastingsToSen(wallet.confirmedsenbalance)
-		const unlocked  = wallet.unlocked
-		yield put(actions.setWalletBalance(confirmed.round(2).toString(), unlocked))
+		if (wallet.unlocked) {
+			const confirmed = SentientAPI.hastingsToSen(wallet.confirmedsenbalance)
+			const unlocked  = wallet.unlocked
+			yield put(actions.setWalletBalance(confirmed.round(2).toString(), unlocked))
+		}
 	} catch (e) {
 		console.error('error fetching lock status: ' + e.toString())
 	}

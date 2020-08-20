@@ -11,6 +11,7 @@ const defaultGenesisFile = Path.join(app.getAppPath(), '../sentient-network', 'c
 const defaultDataDir = Path.join(app.getPath('userData'), 'data')
 const defaultHashRateLogsUrl = 'http://localhost:5555/hashrate'
 const defaultPoolHostUrl = 'http://pool.sentient.org:9910'
+const defaultOffchainApiUrl = 'https://3.12.97.210:8496'
 const defaultStratumHostUrl = 'stratum+tcp://pool.sentient.org:3333'
 const minerName = `${os.hostname()}-${os.platform()}`.replace(/[^A-Z0-9]+/ig, '_')
 const miningType = 'pool'
@@ -41,6 +42,10 @@ const defaultConfig = {
 	minerName: minerName,
 	miningType: miningType,
 	intensity: intensity,
+	offchain_api: {
+		url: process.env.SENTIENT_POOL_HOST || defaultOffchainApiUrl,
+		group: process.env.OPEN_GROUP || "8d1c53e391da4a3f167040802bb95c9b5c1ebc5ef80f97271d1387030609576e",
+	}
 }
 
 /**

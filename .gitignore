@@ -9,6 +9,7 @@ doc/Sentient-UI
 errors.log
 dist
 sen-testing
+dev-app-update.yml
 
 #VSCode
 .vscode

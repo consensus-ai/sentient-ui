@@ -4,8 +4,9 @@
  *
  */
  .balance-info-container {
-  height: 66px;
-  display: flex; }
+  width: 100%;
+	height: 66px;
+	display: flex; }
 
 .balance-info {
   text-align: right;
@@ -101,20 +102,30 @@
 /*
  * END CUSTOM TOAST STYLE
  */
+.app {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 .topic {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: flex-start;
-  background-image: url("../assets/background.png");
+  background-image: url(../assets/background.png);
   background-size: 378px 295px;
   background-position: top right;
   background-color: #FFFFFF;
   background-repeat: no-repeat;
   padding: 40px;
-  min-height: 100vh;
-  box-sizing: border-box;
   height: auto;
-  overflow-x: hidden;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .topic-toolbar {
@@ -147,24 +158,39 @@
  */
 .new-topic-div {
   padding: 10px;
+  width: 90%;
+  margin: 0 auto;
 }
 
 .topic-container {
-	padding: 0 70px;
-	overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 }
 
-.topic-container label {
-	color: #3D4B66;
-	margin-left: 14px;
+.topic-container label { color: #3D4B66; }
+
+.sen-reward { margin-bottom: 15px; }
+
+.option-wrapper { position: relative; }
+
+.close-button {
+  position: absolute;
+  right: 10px;
+  top: 33px;
 }
 
-.topic-container input {
+.close-button:hover { cursor: pointer; }
+
+.topic-container input, .topic-container textarea {
+  resize: none;
 	box-sizing: border-box;
 	width: 100%;
 	height: 40px;
 	padding: 0 15px;
-	margin-top: 5px;
+  margin-top: 5px;
+  margin-bottom: 15px;
 
 	line-height: 40px;
 	font-size: 14px;
@@ -179,7 +205,15 @@
 	overflow: hidden;
 }
 
-.topic-container input:placeholder {
+.topic-container .question-input {
+  height: 100%;
+  word-wrap: break-word;
+  white-space: normal;
+  padding: 15px;
+  line-height: 25px;
+}
+
+.topic-container input:placeholder, .topic-container textarea:placeholder {
 	color: rgba(61,75,102,0.40);
 }
 
@@ -214,7 +248,7 @@
 }
 
 .submit-topic {
-	margin-top: 20px !important;
+	margin-top: 40px !important;
 }
 
 .topic-container .button {
@@ -237,7 +271,11 @@
 .topic-container .add-option {
   width: 130px;
   margin-top: 10px;
-  margin-left: 0;
+  margin-right: 0;
+}
+
+.topic-container .topic-duration-container {
+  margin-top: 20px;
 }
 
 .topic-container .button .active:hover {
@@ -251,12 +289,195 @@
 
 .topic-container .topic-options {
   display: flex;
+  flex-direction: column;
+}
+
+.topic-container .topic-body{
+  width: 60%;
+  padding-right: 20px;
+}
+
+.topic-container .topic-content {
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 /*
  * END NEW TOPIC FORM
  */
+
+/*
+ * TABS STYLES
+*/
+/* Style the tab */
+button:active {
+	transform: translateX(2px) translateY(2px);
+}
+.tab {
+	font-size: 14px;
+	color: rgba(255,255,255,0.87);
+	letter-spacing: 0;
+  line-height: 38px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: #C7C9CD;
+	box-shadow: 0 2px 8px 0 rgba(61,75,102,0.53);
+  border-radius: 4px;
+  width: 150px;
+	height: 40px;
+
+	margin: 0 auto;
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
+}
+
+.tab button.radius {
+  box-shadow: none;
+  height: 40px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  margin-top: 8px;
+  margin-right: 2px;
+}
+
+.tab button.new {
+  background: #0aa400;
+  width: 130px;
+  font-weight: 500;
+}
+.tab button.new:hover {
+  background: #0aa400;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #0043A4;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background: #0043A4;
+  font-weight: 500;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.topic-list-view {
+  flex: 1 1 auto;
+  font-size: 14px;
+  color: #5C7099;
+  border: 0.5px solid rgba(0,0,0,0.07);
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  background: white;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: scroll;
+}
+
+.topic-title {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 20px 0;
+}
+
+.topic-id {
+  font-size: 12px;
+  word-wrap: break-word;
+  border-bottom: 0.5px solid rgba(0,0,0,0.07);
+  padding: 4px 0;
+}
+
+.topic-card {
+  border: 0.5px solid rgba(0,0,0,0.07);
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  background: #F9F9F9;
+  padding: 0 20px;
+  width: 320px;
+  margin: 20px;
+}
+
+.option-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  padding: 12px;
+  border: solid 1px #F0F0F0;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  background: #FFFFFF;
+}
+
+.option-row .option-value {
+  font-weight: 600;
+}
+
+.topic-info {
+  border-top: 0.5px solid rgba(0,0,0,0.07);
+  padding: 10px 0;
+  font-size: 10px;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+}
+
+/*
+ * END TABS STYLES
+*/
+
+/*
+ * UPGRADE BLOCK
+*/
+.upgrade-list-view {
+  flex: 1 1 auto;
+  font-size: 14px;
+  color: #5C7099;
+  border: 0.5px solid rgba(0,0,0,0.07);
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  background: white;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  align-items: center;
+}
+.upgrade-image {
+  padding: 82px 0;
+  margin: 30px 0;
+  background-image: url(../assets/warning.png);
+  background-position: center;
+  width: 120px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.upgrade-info { padding: 0 80px; }
+.upgrade-info-row { padding: 10px 0; }
+.upgrade-info-row span {
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+/*
+ * END UPGRADE BLOCK
+*/
 
 @media (max-width: 767px) {
   .miner .data-cards .item {

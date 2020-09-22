@@ -75,7 +75,7 @@ export const setCurrentPlugin = (pluginName) => {
 const hookUpPluginButton = (title) => {
 	const elem = document.getElementById(title+'-button')
 	elem.onclick = () => {
-		analytics.pageview(`/${title.toLowerCase()}`, "http://sentient-ui.consensus.ai", title).send()
+		analytics.pageview(`/${title.toLowerCase()}`, 'http://sentient-ui.consensus.ai', title).send()
 		setCurrentPlugin(title)
 	}
 	return elem
@@ -118,11 +118,12 @@ export const unloadPlugins = () => {
 // Scan a folder at path and return an ordered list of plugins.
 // The plugin specified by `homePlugin` is always moved to the top of the list,
 // if it exists.
-export const getOrderedPlugins = (path, homePlugin) => {
-	return List([
-		Path.join(path,"Wallet"),
-		Path.join(path,"Miner"),
-		Path.join(path, "About")
+export const getOrderedPlugins = (path) => (
+	List([
+		Path.join(path, 'Wallet'),
+		Path.join(path, 'Miner'),
+		Path.join(path, 'Topic'),
+		Path.join(path, 'About'),
 	])
-}
+)
 

@@ -130,6 +130,12 @@ html, body {
     height: 21px;
 }
 
+.topic-button-image {
+    background-image: url('../plugins/Topic/assets/button-inactive.png');
+    width: 55px;
+    height: 21px;
+}
+
 .about-button-image {
     background-image: url('../plugins/About/assets/button-inactive.png');
     width: 55px;
@@ -144,6 +150,12 @@ html, body {
 
 .button.current .miner-button-image, .button:hover .miner-button-image {
     background-image: url('../plugins/Miner/assets/button-active.png');
+    width: 55px;
+    height: 55px;
+}
+
+.button.current .topic-button-image, .button:hover .topic-button-image {
+    background-image: url('../plugins/Topic/assets/button-active.png');
     width: 55px;
     height: 55px;
 }

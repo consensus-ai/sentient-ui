@@ -21,7 +21,7 @@ cp ../../LICENSE LICENSE
 # make signed zip archives for each release
 for os in darwin linux windows; do
 	(
-		zipFileName="sentient-ui-$uiVersion-$os-amd64.zip"
+		zipFileName="sentient-ui-$uiVersion-$os.zip"
 		if [ $os = 'darwin' ]; then
 			releaseFileName="sentient-ui-$uiVersion-mac.dmg"
 		elif [ $os = 'windows' ]; then

@@ -140,6 +140,16 @@
       "icon": "assets/app-icon.png",
       "category": "Economy"
     },
+    "snap": {
+      "publish": [
+        {
+          "provider": "s3",
+          "region": "us-east-2",
+          "bucket": "consensus-ai-releases",
+          "path": "sentient-ui"
+        }
+      ]
+    },
     "publish": [
       {
         "provider": "s3",

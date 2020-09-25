@@ -22,6 +22,9 @@ export default function(config) {
 	const mainWindow = new BrowserWindow({
 		icon:   iconPath,
 		title:  'Sentient Hub',
+		webPreferences: {
+			nodeIntegration: true,
+		},
 	})
 	// Set mainWindow's closeToTray flag from config.
 	// This should be used in the renderer to cancel close() events using window.onbeforeunload

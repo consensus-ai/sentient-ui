@@ -23,6 +23,7 @@ export default function(config) {
 		icon:   iconPath,
 		title:  'Sentient Hub',
 		webPreferences: {
+			webviewTag: true,
 			nodeIntegration: true,
 		},
 	})

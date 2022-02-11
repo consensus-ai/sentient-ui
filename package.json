@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "acorn": "^7.1.1",
-    "ajv": "^6.5.5",
+    "ajv": "^6.12.3",
     "babel-polyfill": "^6.26.0",
     "bignumber.js": "^4.1.0",
     "electron-notarize": "^1.0.0",

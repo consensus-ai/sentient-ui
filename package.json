@@ -64,7 +64,7 @@
     "react-dom": "16.9.0",
     "react-redux": "^5.0.6",
     "react-toastify": "^4.0.2",
-    "recharts": "^1.4.1",
+    "recharts": "^2.1.14",
     "redux": "^3.7.2",
     "redux-saga": "^0.15.6",
     "semver": "^5.4.1",

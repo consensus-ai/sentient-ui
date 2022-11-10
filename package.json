@@ -18,7 +18,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "css-loader": "^0.28.11",
-    "electron": "3.0.9",
+    "electron": "18.3.7",
     "electron-builder": "^22.8.0",
     "electron-debug": "^2.0.0",
     "electron-log": "^2.2.17",
